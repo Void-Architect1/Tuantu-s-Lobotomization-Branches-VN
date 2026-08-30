@@ -25,39 +25,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-const abnormalityData = [
-    { id: "F-01-02", name: "Dị thể 1", image: "link_anh_1.jpg", risk: "ZAYIN" },
-    { id: "0-03-03", name: "Dị thể 2", image: "link_anh_2.jpg", risk: "TETH" },
-    { id: "0-01-04", name: "Dị thể 3", image: "link_anh_3.jpg", risk: "HE" }
-];
+async function loadAbnormalities() {
+    try {
+        let response = await fetch('https://www.npoint.io/docs/e40f190a10ae35c0f14d'); 
+        let abnormalityData = await response.json();
 
-function renderAbnormalityList() {
-    const listContainer = document.getElementById("abnormality-list");
-    listContainer.innerHTML = "";
-
-    if (abnormalityData.length > 0) {
+        const listContainer = document.getElementById("abnormality-list");
+        listContainer.innerHTML = ""; 
 
         abnormalityData.forEach(item => {
-
             const card = document.createElement("div");
             card.className = "abnormality-card";
-            
             card.innerHTML = `
                 <img src="${item.image || 'default.jpg'}" alt="${item.id}">
                 <div class="card-id">${item.id}</div>
             `;
-
+            
             card.addEventListener("click", () => {
                 loadDetailToRightPanel(item);
             });
 
             listContainer.appendChild(card);
         });
+
+    } catch (error) {
+        console.error("Lỗi khi tải dữ liệu dị thể:", error);
     }
 }
 
 window.onload = function() {
-    renderAbnormalityList();
+    loadAbnormalities();
 };
 
 function loadDetailToRightPanel(item) {

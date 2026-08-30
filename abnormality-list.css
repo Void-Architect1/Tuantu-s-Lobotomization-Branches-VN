@@ -1,0 +1,232 @@
+body {
+  background-color: #000000;
+}
+
+.lobotomy-ui {
+    position: relative;
+    width: 100%;
+    height: 650px;
+    background-color: #050505;
+    background-image: radial-gradient(circle at center, #151515 0%, #050505 100%);
+    border: 4px solid #ff1a1a;
+    box-shadow: 0 0 20px rgba(255, 26, 26, 0.3);
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    color: #fff;
+    display: flex;
+    box-sizing: border-box;
+}
+
+.lob-left-panel {
+    width: 380px;
+    background: rgba(10, 10, 10, 0.95);
+    border-right: 4px solid #ff1a1a;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+}
+
+.lob-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 2px solid #ff1a1a;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+}
+
+.lob-logo-img {
+    max-width: 48px;
+    max-height: 48px;
+    object-fit: cover;
+    box-shadow: 0 0 10px rgba(255, 26, 26, 0.5);
+    background-color: #000;
+}
+
+.lob-title {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #e6e6e6;
+    font-weight: bold;
+}
+
+.lob-dissolution {
+    background: #121212;
+    border-left: 6px solid #ff1a1a;
+    padding: 15px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.lob-dissolution::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: repeating-linear-gradient(
+        45deg,
+        #ffcc00,
+        #ffcc00 10px,
+        #111 10px,
+        #111 20px
+    );
+}
+
+.lob-diss-label {
+    color: #ffaa00;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.lob-diss-value {
+    font-size: 38px;
+    font-weight: 900;
+    color: #ffaa00;
+    line-height: 1;
+}
+
+.lob-info-screen {
+    flex: 1;
+    border: 1px dashed #333;
+    padding: 15px;
+    color: #777;
+    font-style: italic;
+    font-size: 13px;
+}
+
+.Btn-Leave-Corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 130px;
+  height: 45px;
+  color: #000000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-right: 10px;
+  padding-top: 10px;
+  cursor: pointer;
+  user-select: none;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
+  background: linear-gradient(
+    to left,  
+    rgba(255, 59, 59, 1) 0%,
+    rgba(255, 59, 59, 0.5) 50%,
+    rgba(255, 59, 59, 0) 100%
+  );
+}
+
+.Btn-Leave-Corner:hover {
+  background: linear-gradient(
+    to left,  
+    rgba(255, 0, 0, 1) 0%,
+    rgba(255, 0, 0, 0.7) 50%,
+    rgba(255, 0, 0, 0) 100%
+  );
+  color: #FFFFFF;
+}
+
+.Btn-Leave-Corner span {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  transform: rotate(20deg); 
+  display: inline-block;
+}
+
+.ab-card-item {
+    transition: transform 0.25s ease, filter 0.25s ease;
+    cursor: pointer;
+}
+
+.ab-card-item:hover {
+    transform: translateY(-6px) scale(1.05);
+    filter: drop-shadow(0 0 10px rgba(255, 26, 26, 0.6));
+}
+
+.ab-card-item:hover img {
+    filter: brightness(1.2);
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.lob-create-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    background: linear-gradient(135deg, #ff1a1a 0%, #990000 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    padding: 12px 0;
+    margin-top: 15px;
+    border: 1px solid #ff4d4d;
+    box-shadow: 0 0 10px rgba(255, 26, 26, 0.4);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.lob-create-btn:hover {
+    background: linear-gradient(135deg, #ff3333. 0%, #cc0000 100%);
+    box-shadow: 0 0 15px rgba(255, 26, 26, 0.8);
+    transform: translateY(-2px);
+    color: #fff;
+}
+
+.lob-create-form {
+    margin-top: 15px;
+    width: 100%;
+}
+.lob-create-form .text {
+    width: 100% !important;
+    background: #111 !important;
+    border: 1px solid #ff1a1a !important;
+    color: #fff !important;
+    padding: 8px !important;
+    box-sizing: border-box;
+    margin-bottom: 8px !important;
+    border-radius: 0px !important;
+}
+.lob-create-form .button, 
+.lob-create-btn-wrapper input[type="submit"] {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 100% !important;
+    background: linear-gradient(135deg, #ff1a1a 0%, #990000 100%) !important;
+    color: #fff !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    letter-spacing: 1.5px !important;
+    text-decoration: none;
+    padding: 12px 0 !important;
+    border: 1px solid #ff4d4d !important;
+    box-shadow: 0 0 10px rgba(255, 26, 26, 0.4);
+    cursor: pointer;
+    box-sizing: border-box;
+    border-radius: 0px !important;
+}
+.lob-create-form .button:hover {
+    background: linear-gradient(135deg, #ff3333 0%, #cc0000 100%) !important;
+    box-shadow: 0 0 15px rgba(255, 26, 26, 0.8);
+}

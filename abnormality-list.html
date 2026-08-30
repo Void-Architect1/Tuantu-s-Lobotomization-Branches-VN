@@ -17,7 +17,7 @@
             <div class="lob-diss-value">100%</div>
         </div>
         <div class="lob-info-screen">Để bắt đầu hãy chọn một đối tượng để đọc.</div>
-        <a href="http://tlb-vn.wikidot.com/abnormality:_new" class="lob-create-btn" target="_top">
+        <a href="javascript:void(0);" id="openCreateModalBtn" class="lob-create-btn">
             <span>+ THÊM DỊ THỂ MỚI</span>
         </a>
     </div>
@@ -29,5 +29,22 @@
         <span>CLOSE</span>
     </a>
 </div>
+<div id="createChoiceModal" class="lob-modal-overlay">
+    <div class="lob-modal-box">
+        <a href="javascript:void(0);" id="closeChoiceModal" class="Btn-Leave-Corner modal-close-corner">
+        <span>CLOSE</span>
+        </a>
+        <div class="lob-modal-title">CHỌN LOẠI DỊ THỂ BẠN MUỐN TẠO</div>
+        <div class="lob-modal-options">
+            <a href="http://tlb-vn.wikidot.com/abnormality:_new" class="lob-modal-option-btn" target="_top">
+                + Abnormality
+            </a>
+            <a href="http://tlb-vn.wikidot.com/abnormality-list:_new" class="lob-modal-option-btn" target="_top">
+                + Abnormality-Tool
+            </a>
+        </div>
+    </div>
+</div>
+<script src="abnormality-list.js"></script>
 </body>
 </html>

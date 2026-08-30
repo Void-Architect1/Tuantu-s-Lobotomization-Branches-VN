@@ -2,6 +2,15 @@ body {
   background-color: #000000;
 }
 
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;
+}
+
+html, body {
+    scrollbar-width: none;
+}
+
 .lobotomy-ui {
     position: relative;
     width: 100%;

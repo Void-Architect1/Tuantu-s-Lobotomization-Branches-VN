@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Cabin:wght@600;700&display=swap');
+
+body {
+    background-color: #0d0d0d !original;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#container, #main-content, #page-container {
+    background: transparent !important;
+}
+
+.main-ui-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.ui-background {
+    width: 100%;
+    height: auto;
+    display: block;
+    pointer-events: none;
+}
+
+.sidebar-menu {
+    position: absolute;
+    top: 65%;
+    left: 13%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8vw;
+    z-index: 10;
+    transform: rotate(8deg);
+}
+
+.button-skeleton {
+    position: relative;
+    width: 13vw;
+    max-width: 220px;
+    min-width: 90px;
+    height: 2.6vw;
+    max-height: 40px;
+    min-height: 22px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+}
+
+.button-inner {
+    color: #000000;
+    font-family: 'Cabin', 'Gill sans', sans-serif !important;
+    font-size: clamp(8px, 1vw, 16px);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+}
+
+.button-skeleton:hover {
+    transform: translateY(-3px);
+    background-color: #e54545;
+    border: 1px solid #ff6b6b;
+    box-shadow: 0 0 10px rgba(229, 69, 69, 0.8);
+}
+
+.button-skeleton:hover .button-inner {
+    color: #ffffff;
+}

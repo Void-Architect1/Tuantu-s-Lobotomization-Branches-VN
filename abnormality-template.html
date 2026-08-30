@@ -1,0 +1,618 @@
+<head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+[[include component:abnormality-css]]
+</style>
+</head>
+
+<div class="Base-Layout-Wrapper">
+
+  <input type="checkbox" id="toggle-obs" class="Modal-Toggle">
+  <input type="checkbox" id="toggle-favour" class="Modal-Toggle">
+  <input type="checkbox" id="toggle-tips" class="Modal-Toggle">
+  <input type="checkbox" id="toggle-ego" class="Modal-Toggle">
+  <input type="checkbox" id="toggle-escape" class="Modal-Toggle">
+  <input type="checkbox" id="toggle-appendix" class="Modal-Toggle">
+
+  <div class="sidebar-menu">
+    <label for="toggle-obs" class="skeleton">
+      <div class="inner">Observation Level</div>
+    </label>
+    <label for="toggle-favour" class="skeleton">
+      <div class="inner">Work Favour</div>
+    </label>
+    <label for="toggle-tips" class="skeleton">
+      <div class="inner">Management Tips</div>
+    </label>
+    <label for="toggle-ego" class="skeleton">
+      <div class="inner">E.G.O Equipments</div>
+    </label>
+    <label for="toggle-escape" class="skeleton">
+      <div class="inner">Escape Info</div>
+    </label>
+    <label for="toggle-appendix" class="skeleton">
+      <div class="inner">Appendix</div>
+    </label>
+  </div>
+
+  <div class="Base-Container-Border">
+    <div class="Base-Container">
+      <div class="Header-Title">BASE INFORMATION</div>
+      
+      <div class="Main-Content">
+        <div class="Left-Column">
+          <div class="Info-Row">
+            <strong class="Label">Risk Level</strong>
+            <strong class="Value Rainbow-Level dynamic-risk">{$risk_level}</strong>
+          </div>
+          <div class="Info-Row">
+            <strong class="Label Sub-Class-Label">Subject<br>Classification</strong>
+            <strong class="Value Big">{$subject_id}</strong>
+          </div>
+          
+          <div class="Sub-Grid">
+            <div class="favour-box" style="flex: 1; min-height: 65px; padding: 8px 8px 6px 8px; display: flex !important; flex-direction: column !important; justify-content: space-between !important; align-items: center !important; position: relative !important;">
+              <span class="favour-title" style="color: #ffffa1; font-size: 13px; position: absolute !important; top: -8px !important; left: 50% !important; transform: translateX(-50%) !important; background: #000 !important; padding: 0 4px !important; white-space: nowrap !important;">Work Damage</span>
+              <img id="work-dmg-img" src="" alt="Work Damage" class="Icon-Damage" style="display: none; position: static !important; width: 24px !important; height: 24px !important; margin: 2px auto !important; float: none !important;">
+              <div class="Damage-Info" style="width: 100%; display: flex !important; justify-content: space-between !important; align-items: center !important; margin-top: auto !important; position: static !important;">
+                <span id="work-dmg-type-text" style="display:none;">{$work_damage_type}</span>
+                <span id="work-dmg-label" style="color: #FF0000; font-weight: bold; font-size: 13px;">TYPE</span>
+                <span class="Value" style="color: #ffffa1; font-size: 14px;">{$work_damage}</span>
+              </div>
+            </div>
+            
+            <div class="favour-box" style="flex: 1; min-height: 65px; padding: 12px 8px 6px 8px; justify-content: center;">
+              <span class="favour-title" style="color: #ffffa1; font-size: 13px;">Max.E-Boxes</span>
+              <span class="E-Box-Value" style="font-size: 22px; margin: auto 0 0 0;">{$pe_boxes_max}</span>
+            </div>
+          </div>
+
+          <div class="favour-box" style="flex-direction: column; min-height: auto; padding: 15px 12px 12px 12px; margin-top: 15px;">
+            <span class="favour-title" style="color: #ffffa1;">Work Range</span>
+
+            <div class="Work-Range-List" style="width: 100%;">
+              <div class="Work-Row Good">
+                <span class="Work-Label">
+                  <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Good.webp" class="Icon-Result" alt="Good">
+                  Good
+                </span>
+                <span>{$work_result_good}</span>
+              </div>
+              <div class="Work-Row Neutral">
+                <span class="Work-Label">
+                  <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Neutral.webp" class="Icon-Result" alt="Normal">
+                  Normal
+                </span>
+                <span>{$work_result_normal}</span>
+              </div>
+              <div class="Work-Row Bad">
+                <span class="Work-Label">
+                  <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Bad.webp" class="Icon-Result" alt="Bad">
+                  Bad
+                </span>
+                <span>{$work_result_bad}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="Right-Column">
+          <img class="Abnormality-Image" src="{$abnormality_image}" alt="Item-image">
+          <div class="Abnormality-Name">{$abnormality_name}</div>
+          <div class="Quote"><em><strong>{$quote}</strong></em></div>
+          <details class="Description-Box">
+            <summary class="Description-Title"></summary>
+            <div class="Description-Content">{$abnormality_description}</div>
+          </details>
+        </div>
+      </div>
+
+      <div class="PE-Box-Footer">
+        <div class="PE-Box-Title">PE-Boxes {$pe_box_cost_list}</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-obs" class="Overlay-Modal">
+    <div class="Modal-Content">
+      <div class="obs-container-border">
+        <div class="obs-container">
+          
+          <div class="Info-Row" style="margin-bottom: 15px; padding-bottom: 8px;">
+            <span style="font-size: 18px; font-weight: bold;">OBSERVATION LEVEL</span>
+            <label for="toggle-obs" class="Btn-Leave-Corner"><span>LEAVE</span></label>
+          </div>
+
+          <div class="obs-row">
+            <div class="obs-level">Level 1 ( 1 Section Unlocked )</div>
+            <div class="obs-effect">
+              <span class="obs-type-box" data-type="{$obs_level_1_value}">
+                <img src="" class="obs-icon" style="display:none;">
+                <span class="obs-val">{$obs_level_1_value} {$obs_level_1_type}</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="obs-row">
+            <div class="obs-level">Level 2 ( 2 Sections Unlocked )</div>
+            <div class="obs-effect">
+              <span class="obs-type-box" data-type="{$obs_level_2_value}">
+                <img src="" class="obs-icon" style="display:none;">
+                <span class="obs-val">{$obs_level_2_value} {$obs_level_2_type}</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="obs-row">
+            <div class="obs-level">Level 3 ( 3 Sections Unlocked )</div>
+            <div class="obs-effect">
+              <span class="obs-type-box" data-type="{$obs_level_3_value}">
+                <img src="" class="obs-icon" style="display:none;">
+                <span class="obs-val">{$obs_level_3_value} {$obs_level_3_type}</span>
+              </span>
+              <span>Unlocks The E.G.O Gift [{$obs_ego_gift_name}]</span>
+            </div>
+          </div>
+
+          <div class="obs-row">
+            <div class="obs-level">Level 4 ( All Details Unlocked )</div>
+            <div class="obs-effect">
+              <span class="obs-type-box" data-type="{$obs_level_4_value}">
+                <img src="" class="obs-icon" style="display:none;">
+                <span class="obs-val">{$obs_level_4_value} {$obs_level_4_type}</span>
+              </span>
+              <span>Unlocks The E.G.O Weapon [{$obs_ego_weapon_name}] And Suit [{$obs_ego_suit_name}]</span>
+              <span>Unlocks The Appendix</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-favour" class="Overlay-Modal">
+    <div class="Modal-Content">
+      <div class="obs-container-border">
+        <div class="obs-container">
+          
+          <div class="Info-Row" style="margin-bottom: 20px; padding-bottom: 8px; padding-right: 110px;">
+            <span style="font-size: 18px; font-weight: bold;">ABNORMALITY WORK FAVOUR</span>
+            <label for="toggle-favour" class="Btn-Leave-Corner" style="margin-left: 10px;"><span>LEAVE</span></label>
+          </div>
+
+          <div class="favour-grid">
+            
+            <div class="favour-box">
+              <span class="favour-title" style="color: #FF5555;">Instinct</span>
+              <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Instinct.webp" class="favour-icon" alt="Instinct">
+              <div class="favour-levels">
+                <div class="favour-row"><span>I</span> <span>{$work_favour_instinct_1}</span></div>
+                <div class="favour-row"><span>II</span> <span>{$work_favour_instinct_2}</span></div>
+                <div class="favour-row"><span>III</span> <span>{$work_favour_instinct_3}</span></div>
+                <div class="favour-row"><span>IV</span> <span>{$work_favour_instinct_4}</span></div>
+                <div class="favour-row"><span>V</span> <span>{$work_favour_instinct_5}</span></div>
+              </div>
+            </div>
+
+            <div class="favour-box">
+              <span class="favour-title" style="color: #ffffa1;">Insight</span>
+              <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Insight.webp" class="favour-icon" alt="Insight">
+              <div class="favour-levels">
+                <div class="favour-row"><span>I</span> <span>{$work_favour_insight_1}</span></div>
+                <div class="favour-row"><span>II</span> <span>{$work_favour_insight_2}</span></div>
+                <div class="favour-row"><span>III</span> <span>{$work_favour_insight_3}</span></div>
+                <div class="favour-row"><span>IV</span> <span>{$work_favour_insight_4}</span></div>
+                <div class="favour-row"><span>V</span> <span>{$work_favour_insight_5}</span></div>
+              </div>
+            </div>
+
+            <div class="favour-box">
+              <span class="favour-title" style="color: #CC66FF;">Attachment</span>
+              <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Attachment.webp" class="favour-icon" alt="Attachment">
+              <div class="favour-levels">
+                <div class="favour-row"><span>I</span> <span>{$work_favour_attachment_1}</span></div>
+                <div class="favour-row"><span>II</span> <span>{$work_favour_attachment_2}</span></div>
+                <div class="favour-row"><span>III</span> <span>{$work_favour_attachment_3}</span></div>
+                <div class="favour-row"><span>IV</span> <span>{$work_favour_attachment_4}</span></div>
+                <div class="favour-row"><span>V</span> <span>{$work_favour_attachment_5}</span></div>
+              </div>
+            </div>
+
+            <div class="favour-box">
+              <span class="favour-title" style="color: #55FFFF;">Repression</span>
+              <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Repression.webp" class="favour-icon" alt="Repression">
+              <div class="favour-levels">
+                <div class="favour-row"><span>I</span> <span>{$work_favour_repression_1}</span></div>
+                <div class="favour-row"><span>II</span> <span>{$work_favour_repression_2}</span></div>
+                <div class="favour-row"><span>III</span> <span>{$work_favour_repression_3}</span></div>
+                <div class="favour-row"><span>IV</span> <span>{$work_favour_repression_4}</span></div>
+                <div class="favour-row"><span>V</span> <span>{$work_favour_repression_5}</span></div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-tips" class="Overlay-Modal">
+    <div class="Modal-Content">
+      <div class="tips-wrapper">
+        <div class="tips-container-border">
+          <div class="tips-container">
+          
+            <div class="Info-Row" style="border-bottom: 2px solid #FF9441; margin-bottom: 15px; padding-bottom: 8px; padding-right: 110px;">
+              <span style="font-size: 18px; font-weight: bold; color: #FF9441;">ABNORMALITY MANAGEMENT TIPS</span>
+              <label for="toggle-tips" class="Btn-Leave-Corner" style="margin-left: 10px;"><span>LEAVE</span></label>
+            </div>
+
+            <div class="tips-item dynamic-tips">
+              <div class="tips-header-box">
+                <span class="tips-title">Managerial Guidelines 1</span>
+                <span class="tips-cost">PE-Boxes {$management_tips_1_pe}</span>
+              </div>
+              <div class="tips-text">{$management_tips_1}</div>
+            </div>
+
+            <div class="tips-item dynamic-tip">
+              <div class="tips-header-box">
+                <span class="tips-title">Managerial Guidelines 2</span>
+                <span class="tips-cost">PE-Boxes {$management_tips_2_pe}</span>
+              </div>
+              <div class="tips-text">{$management_tips_2}</div>
+            </div>
+
+            <div class="tips-item dynamic-tip">
+              <div class="tips-header-box">
+                <span class="tips-title">Managerial Guidelines 3</span>
+                <span class="tips-cost">PE-Boxes {$management_tips_3_pe}</span>
+              </div>
+              <div class="tips-text">{$management_tips_3}</div>
+            </div>
+
+            <div class="tips-item dynamic-tip">
+              <div class="tips-header-box">
+                <span class="tips-title">Managerial Guidelines 4</span>
+                <span class="tips-cost">PE-Boxes {$management_tips_4_pe}</span>
+              </div>
+              <div class="tips-text">{$management_tips_4}</div>
+            </div>
+
+            <div class="tips-item dynamic-tip">
+              <div class="tips-header-box">
+                <span class="tips-title">Managerial Guidelines 5</span>
+                <span class="tips-cost">PE-Boxes {$management_tips_5_pe}</span>
+              </div>
+              <div class="tips-text">{$management_tips_5}</div>
+            </div>
+
+            <div class="tips-item dynamic-tip">
+              <div class="tips-header-box">
+                <span class="tips-title">Managerial Guidelines 6</span>
+                <span class="tips-cost">PE-Boxes {$management_tips_6_pe}</span>
+              </div>
+              <div class="tips-text">{$management_tips_6}</div>
+            </div>
+
+            <div class="tips-item dynamic-tip">
+              <div class="tips-header-box">
+                <span class="tips-title">Managerial Guidelines 7</span>
+                <span class="tips-cost">PE-Boxes {$management_tips_7_pe}</span>
+              </div>
+              <div class="tips-text">{$management_tips_7}</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-ego" class="Overlay-Modal">
+    <div class="Modal-Content">
+      <div class="obs-container-border">
+        <div class="obs-container" style="padding-top: 50px;">
+          <label for="toggle-ego" class="Btn-Leave-Corner"><span>LEAVE</span></label>
+          
+          <input type="radio" id="ego-tab-1" name="ego-tabs" class="ego-tab-radio" checked>
+          <input type="radio" id="ego-tab-2" name="ego-tabs" class="ego-tab-radio">
+          <input type="radio" id="ego-tab-3" name="ego-tabs" class="ego-tab-radio">
+
+          <div class="ego-tab-buttons">
+            <label for="ego-tab-1" class="ego-tab-btn">WEAPON</label>
+            <label for="ego-tab-2" class="ego-tab-btn">SUIT</label>
+            <label for="ego-tab-3" class="ego-tab-btn">GIFT</label>
+          </div>
+
+          <div class="ego-content-area">
+            
+            <div id="ego-panel-weapon" class="ego-panel">
+              <div class="Info-Row" style="border-bottom: none;"><span style="font-size: 18px; font-weight: bold; width: 100%; text-align: right;">E.G.O WEAPON</span></div>
+              <div class="ego-grid">
+                <div class="ego-left">
+                  <div class="ego-row">
+                    <span>Grade</span>
+                    <span class="Rainbow-Level dynamic-risk">{$ego_weapon_grade}</span>
+                  </div>
+                  <div class="ego-row"><span>Cost</span><span><img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/EBoxIcon.webp" style="width:14px; vertical-align:-2px;"> {$ego_weapon_cost}</span></div>
+                  <div class="ego-row"><span>Max Amount</span><span>{$ego_weapon_max_amount}</span></div>
+                  
+                  <div class="ego-row" style="flex-direction:column; align-items:stretch; gap:2px;">
+                    <span>Damage</span>
+                    <div class="dmg-icons">
+                      <img id="ego-wep-dmg-icon" data-type="{$ego_weapon_damage_type}" src="" class="dmg-icon" style="display:none;" alt="Damage Icon">
+                    </div>
+                    <span style="text-align:right;">{$ego_weapon_damage_stats}</span>
+                  </div>
+
+                  <div class="ego-row"><span>Attack Speed</span><span>{$ego_weapon_speed}</span></div>
+                  <div class="ego-row"><span>Attack Range</span><span>{$ego_weapon_range}</span></div>
+                  
+                  <div style="font-weight:bold; font-size:12px; margin-top:5px;">Passive</div>
+                  <div class="ego-desc-text">{$ego_weapon_passive}</div>
+
+                  <div style="font-weight:bold; font-size:12px; margin-top:5px;">Requirements</div>
+                    <div class="ego-stat-box">
+                      <span id="ego-wep-req-type-text" style="display:none;">{$ego_weapon_stats_require_type}</span>
+                      <div class="stat-item" id="ego-wep-req-row">
+                        <img id="ego-wep-req-icon" src="" class="stat-icon" style="display:none;" alt="Stat Icon">
+                        <span id="ego-wep-req-label"></span> Level {$ego_weapon_stats_level_require}
+                      </div>
+                    </div>
+                </div>
+
+                <div class="ego-right">
+                  <img src="{$ego_weapon_img}" class="ego-img-box" alt="{$ego_weapon_name}">
+                  <div class="ego-name">{$ego_weapon_name}</div>
+                  <details class="Description-Box">
+                    <summary class="Description-Title"></summary>
+                    <div class="Description-Content">{$ego_weapon_description}</div>
+                  </details>
+                </div>
+              </div>
+              <div class="ego-footer-obs">Observation Level {$ego_weapon_obs}</div>
+            </div>
+
+            <div id="ego-panel-suit" class="ego-panel">
+              <div class="Info-Row" style="border-bottom: none;"><span style="font-size: 18px; font-weight: bold; width: 100%; text-align: right;">E.G.O SUIT</span></div>
+              <div class="ego-grid">
+                <div class="ego-left">
+                  <div class="ego-row">
+                    <span>Grade</span>
+                    <span class="Rainbow-Level dynamic-risk">{$ego_suit_grade}</span>
+                  </div>
+                  <div class="ego-row"><span>Cost</span><span><img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/EBoxIcon.webp" style="width:14px; vertical-align:-2px;"> {$ego_suit_cost}</span></div>
+                  <div class="ego-row"><span>Max Amount</span><span>{$ego_suit_max_amount}</span></div>
+                  
+                  <div class="ego-row" style="color:#FF5555;">
+                    <span style="display: flex; align-items: center; gap: 5px;">
+                      <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Red.webp" class="dmg-icon" alt="Red"> RED Defense
+                    </span>
+                    <span>{$ego_suit_red}</span>
+                  </div>
+
+                  <div class="ego-row" style="color:#F3F3F3;">
+                    <span style="display: flex; align-items: center; gap: 5px;">
+                      <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/White.webp" class="dmg-icon" alt="White"> WHITE Defense
+                    </span>
+                    <span>{$ego_suit_white}</span>
+                  </div>
+
+                  <div class="ego-row" style="color:#CC66FF;">
+                    <span style="display: flex; align-items: center; gap: 5px;">
+                      <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Black.webp" class="dmg-icon" alt="Black"> BLACK Defense
+                    </span>
+                    <span>{$ego_suit_black}</span>
+                  </div>
+
+                  <div class="ego-row" style="color:#55FFFF;">
+                    <span style="display: flex; align-items: center; gap: 5px;">
+                      <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Pale.webp" class="dmg-icon" alt="Pale"> PALE Defense
+                    </span>
+                    <span>{$ego_suit_pale}</span>
+                  </div>
+
+                  <div style="font-weight:bold; font-size:12px; margin-top:5px;">Passive</div>
+                  <div class="ego-desc-text">{$ego_suit_passive}</div>
+
+                  <div style="font-weight:bold; font-size:12px; margin-top:5px;">Requirements</div>
+                  <div class="ego-stat-box">
+                    <span id="ego-suit-req-type-text" style="display:none;">{$ego_suit_stats_require_type}</span>
+                    <div class="stat-item" id="ego-suit-req-row">
+                      <img id="ego-suit-req-icon" src="" class="stat-icon" style="display:none;" alt="Stat Icon">
+                      <span id="ego-suit-req-label"></span> Level {$ego_suit_stats_level_require}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ego-right">
+                  <img src="{$ego_suit_img}" class="ego-img-box" alt="{$ego_suit_name}">
+                  <div class="ego-name">{$ego_suit_name}</div>
+                  <details class="Description-Box">
+                    <summary class="Description-Title"></summary>
+                    <div class="Description-Content">{$ego_suit_description}</div>
+                  </details>
+                </div>
+              </div>
+              <div class="ego-footer-obs">Observation Level {$ego_suit_obs}</div>
+            </div>
+
+            <div id="ego-panel-gift" class="ego-panel">
+              <div class="Info-Row" style="border-bottom: none;"><span style="font-size: 18px; font-weight: bold; width: 100%; text-align: right;">E.G.O GIFT</span></div>
+              <div class="ego-grid">
+                <div class="ego-left">
+                  <div class="ego-row"><span>Chance</span><span>{$ego_gift_chance}</span></div>
+                  
+                  <div style="font-weight:bold; font-size:12px; margin-top:5px;">Stats</div>
+                  <div class="ego-stat-box">
+                    <span id="ego-gift-stat-type-text" style="display:none;">{$ego_gift_stats_type}</span>
+
+                    <div class="stat-item" id="ego-gift-stat-row">
+                      <img id="ego-gift-stat-icon" src="" class="stat-icon" style="display:none;" alt="Stat Icon">
+                      <span id="ego-gift-stats-value-text" data-raw="{$ego_gift_stats_value}">{$ego_gift_stats_value}</span>
+                    </div>
+                  </div>
+
+                  <div style="font-weight:bold; font-size:12px; margin-top:10px;">Passive</div>
+                  <div class="ego-desc-text">{$ego_gift_passive}</div>
+                </div>
+
+                <div class="ego-right">
+                  <img src="{$ego_gift_img}" class="ego-img-box" alt="{$ego_gift_name}">
+                  <div class="ego-name">{$ego_gift_name}</div>
+                  <details class="Description-Box">
+                    <summary class="Description-Title"></summary>
+                    <div class="Description-Content">{$ego_gift_description}</div>
+                  </details>
+                </div>
+              </div>
+              <div class="ego-footer-obs">Observation Level {$ego_gift_obs}</div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-escape" class="Overlay-Modal">
+    <div class="Modal-Content">
+      <div class="obs-container-border">
+        <div class="obs-container">
+          <label for="toggle-escape" class="Btn-Leave-Corner" style="margin-left: 10px;"><span>LEAVE</span></label>
+
+          <div class="Info-Row" style="margin-bottom: 15px; padding-bottom: 8px; padding-right: 110px;">
+            <span style="font-size: 18px; font-weight: bold;">ABNORMALITY ESCAPE INFORMATION</span>
+            
+          </div>
+
+          <div class="ego-grid">
+
+            <div class="ego-left">
+              <div class="ego-row">
+                <span>Risk Level</span>
+                <span class="Rainbow-Level dynamic-risk">{$escape_risk_level}</span>
+              </div>
+              
+              <div class="ego-row">
+                <span>Health</span>
+                <span>{$escape_hp}</span>
+              </div>
+
+              <div class="Sub-Grid" style="margin: 10px 0;">
+                <div class="favour-box" style="flex: 1; min-height: 75px; padding: 12px 8px 6px 8px; justify-content: center;">
+                  <span class="favour-title" style="color: #ffffa1; font-size: 9px;">QLIPHOTH COUNTER</span>
+                  <div style="display: flex; align-items: center; gap: 8px; margin: auto 0 0 0;">
+                    <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Qliphoth.webp" style="width: 22px; height: 22px; object-fit: contain;">
+                    <span style="font-size: 20px; font-weight: bold; color: #FF9900;">{$max_qliphoth_counter}</span>
+                  </div>
+                </div>
+
+                <div class="favour-box" style="flex: 1; min-height: 75px; padding: 12px 8px 6px 8px; justify-content: center;">
+                  <span class="favour-title" style="color: #ffffa1; font-size: 9px;">ABNORMALITY DEFENSE</span>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; width: 100%; font-size: 11px; font-weight: bold; margin: auto 0 0 0;">
+                    <span style="color: #FF5555; text-align: center;">{$escape_red_def} <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Red.webp" class="dmg-icon"></span>
+                    <span style="color: #FFFF99; text-align: center;">{$escape_white_def} <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/White.webp" class="dmg-icon"></span>
+                    <span style="color: #CC66FF; text-align: center;">{$escape_black_def} <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Black.webp" class="dmg-icon"></span>
+                    <span style="color: #55FFFF; text-align: center;">{$escape_pale_def} <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Pale.webp" class="dmg-icon"></span>
+                  </div>
+                </div>
+              </div>
+
+              <details class="Description-Box">
+                <summary class="Description-Title" style="width: 100%; box-sizing: border-box; text-align: center; border: 1px solid #FFFFA1; background: #FFFFA1; color: #12110c; margin-bottom: 5px;">PASSIVE</summary>
+                <div class="Description-Content" style="border-top: 1px dashed #FFFFA1;">
+                  <strong>{$escape_passive}</strong><br>
+                  {$escape_passive_description}
+                </div>
+              </details>
+
+              <details class="Description-Box" style="margin-top: 10px;">
+                <summary class="Description-Title" style="width: 100%; box-sizing: border-box; text-align: center; border: 1px solid #FFFFA1; background: #FFFFA1; color: #12110c; margin-bottom: 5px;">SKILL</summary>
+                <div class="Description-Content" style="border-top: 1px dashed #FFFFA1;">
+                  <strong>{$escape_skill}</strong><br>
+                  {$escape_skill_description}
+                </div>
+              </details>
+
+            </div>
+
+            <div class="ego-right">
+              <img src="{$escape_img_url}" class="ego-img-box" alt="Escape Image">
+              
+              <div class="ego-name dynamic-escape-status" style="font-size: 14px; margin-top: 10px;">{$escape_status_text}</div>
+              
+              <div style="border-top: 1px solid #FFFFA1; margin-top: 8px; padding-top: 8px; text-align: center;">
+                <div style="font-size: 11px; font-weight: bold;">SUBJECT CLASSIFICATION</div>
+                <div style="font-size: 16px; font-weight: bold;">{$escape_id}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="PE-Box-Footer" style="margin-top: 15px;">
+            <div class="PE-Box-Title" style="font-size: 14px; padding: 4px 15px;">PE-Boxes {$escape_pe_unlock}</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-appendix" class="Overlay-Modal">
+    <div class="Modal-Content">
+      <div class="appendix-wrapper">
+        <div class="appendix-container-border">
+          <div class="appendix-container">
+            <label for="toggle-appendix" class="Btn-Leave-Corner" style="margin-left: 10px;"><span>LEAVE</span></label>
+            <div class="Info-Row" style="border-bottom: 2px solid #FF9441; margin-bottom: 15px; padding-bottom: 8px; padding-right: 110px;">
+              <span style="font-size: 18px; font-weight: bold; color: #FF9441;">ABNORMALITY APPENDIX</span>
+            
+            </div>
+
+            <div class="appendix-item dynamic-appendix">
+              <span class="appendix-title">{$appendix_title_1}</span>
+              <div class="appendix-text">{$appendix_text_1}</div>
+            </div>
+
+            <div class="appendix-item dynamic-appendix">
+              <span class="appendix-title">{$appendix_title_2}</span>
+              <div class="appendix-text">{$appendix_text_2}</div>
+            </div>
+
+            <div class="appendix-item dynamic-appendix">
+              <span class="appendix-title">{$appendix_title_3}</span>
+              <div class="appendix-text">{$appendix_text_3}</div>
+            </div>
+
+            <div class="appendix-item dynamic-appendix">
+              <span class="appendix-title">{$appendix_title_4}</span>
+              <div class="appendix-text">{$appendix_text_4}</div>
+            </div>
+
+            <div class="appendix-item dynamic-appendix">
+              <span class="appendix-title">{$appendix_title_5}</span>
+              <div class="appendix-text">{$appendix_text_5}</div>
+            </div>
+
+            <div class="appendix-item dynamic-appendix">
+              <span class="appendix-title">{$appendix_title_6}</span>
+              <div class="appendix-text">{$appendix_text_6}</div>
+            </div>
+
+            <div class="appendix-item dynamic-appendix">
+              <span class="appendix-title">{$appendix_title_7}</span>
+              <div class="appendix-text">{$appendix_text_7}</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

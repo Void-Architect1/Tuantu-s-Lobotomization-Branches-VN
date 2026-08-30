@@ -301,3 +301,38 @@ html, body {
     color: #000;
     transform: TranslateY(-3px);
 }
+
+#abnormality-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 10px;
+    overflow-y: auto;
+    max-height: calc(100% - 80px);
+}
+
+.abnormality-card {
+    background: #111;
+    border: 1px solid #333;
+    cursor: pointer;
+    text-align: center;
+    padding: 5px;
+    transition: 0.2s;
+}
+
+.abnormality-card:hover {
+    border-color: #ff3333;
+    transform: scale(1.05);
+}
+
+.abnormality-card img {
+    width: 100%;
+    height: 50px;
+    object-fit: cover;
+}
+
+.abnormality-card .card-id {
+    color: #ffffa1;
+    font-size: 11px;
+    margin-top: 4px;
+}

@@ -134,7 +134,6 @@ async function loadAllAbnormalitiesFromShards() {
     }
 }
 
-// HÀM BƠM VÀ DỊCH DỮ LIỆU TỪ JSON VÀO TEMPLATE CHI TIẾT
 function fillDataToDetailTemplate(item) {
     const defaultScreen = document.querySelector(".lob-info-screen");
     if (defaultScreen) defaultScreen.style.display = "none";
@@ -144,7 +143,7 @@ function fillDataToDetailTemplate(item) {
 
     const info = item.baseInfo || {};
 
-    // Base Info
+    // 1. Base Info
     safeSetText('out-id', info.id);
     safeSetText('out-name', info.name);
     
@@ -170,12 +169,11 @@ function fillDataToDetailTemplate(item) {
     }
 
     // Work Damage & Type
-    const workData = item.workInfo || {};
-    safeSetText('out-work-dmg', workData.damage || "");
+    safeSetText('out-work-dmg', info.workDmg || "");
     
     const workDmgTypeText = document.getElementById('out-work-dmg-type-text');
     if (workDmgTypeText) {
-        workDmgTypeText.textContent = workData.damageType || "";
+        workDmgTypeText.textContent = info.workDmgType || "";
         var dmgType = clean(workDmgTypeText.textContent).toUpperCase();
         var img = document.getElementById("work-dmg-img");
         var labelEl = document.getElementById("work-dmg-label");
@@ -189,21 +187,39 @@ function fillDataToDetailTemplate(item) {
         }
     }
 
-    // Success Rates
-    safeSetText('out-good', workData.good || "");
-    safeSetText('out-normal', workData.normal || "");
-    safeSetText('out-bad', workData.bad || "");
+    // Success Rates (nằm trong workRange của baseInfo)
+    const workRange = info.workRange || {};
+    safeSetText('out-good', workRange.good || "");
+    safeSetText('out-normal', workRange.normal || "");
+    safeSetText('out-bad', workRange.bad || "");
     
-    safeSetText('out-max-pe', workData.maxPE || "");
-    safeSetText('out-pe-unlock', workData.peUnlock || "");
+    safeSetText('out-max-pe', info.maxPE || "");
+    safeSetText('out-pe-unlock', info.peUnlock || "");
 
-    // Management Tips (1 -> 7)
+    // 2. Observation Levels (1 -> 4) - Đọc từ observationLevels.level_X
+    const obsLevels = item.observationLevels || {};
+    for (let level = 1; level <= 4; level++) {
+        const outputObs = document.getElementById(`out-obs-${level}`);
+        if (outputObs) {
+            const rawVal = obsLevels[`level_${level}`] || "";
+            outputObs.innerHTML = parseCustomEmojis(rawVal);
+            
+            const parentItem = outputObs.closest('.obs-item, .dynamic-obs');
+            if (parentItem) {
+                const cleanTxt = clean(rawVal.trim());
+                parentItem.style.display = (!cleanTxt || rawVal.includes("{$")) ? 'none' : 'block';
+            }
+        }
+    }
+
+    // 3. Management Tips (1 -> 7) - Đọc từ mảng managementTips (index từ 0 đến 6)
+    const tipsArr = item.managementTips || [];
     for (let level = 1; level <= 7; level++) {
-        const tipData = (item.tips && item.tips[level]) || {};
+        const tipData = tipsArr[level - 1] || {};
         
         const outputTips = document.getElementById(`out-tips-${level}`);
         if (outputTips) {
-            const rawVal = tipData.content || "";
+            const rawVal = tipData.tip || "";
             outputTips.innerHTML = parseCustomEmojis(rawVal);
             const parentItem = outputTips.closest('.dynamic-tip, .tips-item');
             if (parentItem) {
@@ -219,14 +235,15 @@ function fillDataToDetailTemplate(item) {
             const parentItem = outputTipsCost.closest('.dynamic-tip, .tips-item');
             if (parentItem) {
                 const cleanTxt = clean(rawCostVal.trim());
-                parentItem.style.display = (!cleanTxt || rawCostVal.includes("{$") || cleanTxt.startsWith("MANAGEMENT_TIPS_")) ? 'none' : 'block';
+                parentItem.style.display = (!cleanTxt || rawCostVal.includes("{$") || rawCostVal.startsWith("MANAGEMENT_TIPS_")) ? 'none' : 'block';
             }
         }
     }
 
-    // Appendix / Story (1 -> 7)
+    // 4. Appendix / Story (1 -> 7) - Đọc từ mảng appendix (index từ 0 đến 6)
+    const appendixArr = item.appendix || [];
     for (let level = 1; level <= 7; level++) {
-        const appData = (item.appendix && item.appendix[level]) || {};
+        const appData = appendixArr[level - 1] || {};
 
         const outputAppendix = document.getElementById(`out-appendix-${level}`);
         if (outputAppendix) {
@@ -246,24 +263,24 @@ function fillDataToDetailTemplate(item) {
             const parentItem = outputTitleAppendix.closest('.dynamic-appendix, .dynamic-text');
             if (parentItem) {
                 const cleanTxt = clean(rawTitleVal.trim());
-                parentItem.style.display = (!cleanTxt || rawTitleVal.includes("{$") || cleanTxt.startsWith("APPENDIX_TEXT_")) ? 'none' : 'block';
+                parentItem.style.display = (!cleanTxt || rawTitleVal.includes("{$") || rawTitleVal.startsWith("APPENDIX_TEXT_")) ? 'none' : 'block';
             }
         }
     }
 
-    // Work Types (Instinct, Insight, Attachment, Repression) levels 1->5
+    // 5. Work Types Favour (Instinct, Insight, Attachment, Repression) levels 1->5 - Đọc từ mảng workFavour
     const workTypes = ["instinct", "insight", "attachment", "repression"];
     workTypes.forEach(type => {
         for (let level = 1; level <= 5; level++) {
             const outputElement = document.getElementById(`out-${type}-${level}`);
-            if (outputElement && item.workLevels && item.workLevels[type]) {
-                const val = item.workLevels[type][level] || "";
+            if (outputElement && item.workFavour && item.workFavour[type]) {
+                const val = item.workFavour[type][level - 1] || "";
                 outputElement.innerHTML = parseCustomEmojis(val);
             }
         }
     });
 
-    // E.G.O Equipment (Weapon, Suit, Gift)
+    // 6. E.G.O Equipment (Weapon, Suit, Gift) - Đọc từ egoEquipment
     const egoConfig = {
         weapon: ["grade", "cost", "amount", "damage", "speed", "range", "passive", "require", "name", "image", "des", "obs"],
         suit:   ["grade", "cost", "amount", "red", "white", "black", "pale", "passive", "require", "name", "image", "des", "obs"],
@@ -273,7 +290,7 @@ function fillDataToDetailTemplate(item) {
     Object.keys(egoConfig).forEach(type => {
         egoConfig[type].forEach(prop => {
             const outputEl = document.getElementById(`out-${type}-${prop}`);
-            const val = (item.ego && item.ego[type] && item.ego[type][prop]) ? String(item.ego[type][prop]).trim() : "";
+            const val = (item.egoEquipment && item.egoEquipment[type] && item.egoEquipment[type][prop]) ? String(item.egoEquipment[type][prop]).trim() : "";
 
             if (outputEl) {
                 if (val === "") {
@@ -293,11 +310,11 @@ function fillDataToDetailTemplate(item) {
         });
     });
 
-    // Escape Info
+    // 7. Escape Info - Đọc từ escapeInfo
     const escapeConfig = ["risk", "hp", "qliphoth", "red", "white", "black", "pale", "passive", "skill", "image", "status", "id", "pe"];
     escapeConfig.forEach(prop => {
         const outputEl = document.getElementById(`out-escape-${prop}`);
-        const val = (item.escape && item.escape[prop]) ? String(item.escape[prop]).trim() : "";
+        const val = (item.escapeInfo && item.escapeInfo[prop]) ? String(item.escapeInfo[prop]).trim() : "";
 
         if (outputEl) {
             if (val === "") {
@@ -316,28 +333,6 @@ function fillDataToDetailTemplate(item) {
         }
     });
 }
-
-function safeSetText(elementId, value) {
-    const el = document.getElementById(elementId);
-    if (el) {
-        el.textContent = value !== undefined && value !== null ? value : "";
-    }
-}
-
-for (let level = 1; level <= 4; level++) {
-        const obsData = (item.obs && item.obs[level]) || {};
-
-        const outputObs = document.getElementById(`out-obs-${level}`);
-        if (outputObs) {
-            const rawVal = typeof obsData === 'string' ? obsData : (obsData.content || "");
-            outputObs.innerHTML = parseCustomEmojis(rawVal);
-            const parentItem = outputObs.closest('.obs-item, .dynamic-obs');
-            if (parentItem) {
-                const cleanTxt = clean(rawVal.trim());
-                parentItem.style.display = (!cleanTxt || rawVal.includes("{$")) ? 'none' : 'block';
-            }
-        }
-    }
 
 // Xử lý sự kiện mở các Modal phụ (Quan sát, Ưu ái, v.v.)
 document.querySelectorAll('.Modal-Toggle').forEach(toggle => {

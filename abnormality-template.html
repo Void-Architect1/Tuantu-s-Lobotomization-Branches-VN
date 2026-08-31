@@ -1,13 +1,145 @@
+<!DOCTYPE html>
+<html>
 <head>
-<meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-[[include component:abnormality-css]]
-</style>
+    <title>Abnormality List - Tuantu's Lobotomization Branches VN</title>
+    <link rel="stylesheet" href="template.css">
+    <link rel="icon" type="image/png" href="TLB.VN.png">
 </head>
+<body>
+    <div class="form-panel">
+        <h2>Lobotomy Corp - Abnormality Creator</h2>
+        <form id="abnormality-form">
+            <div class="form-group">
+                <label>Subject Classification:</label>
+                <input type="text" id="in-id" placeholder="X-XX-XXX" required>
+            </div>
+            <div class="form-group">
+                <label>Abnormality Name:</label>
+                <input type="text" id="in-name" placeholder="Name" required>
+            </div>
+            <div class="form-group">
+                <label>Risk Level:</label>
+                <select id="in-risk">
+                    <option value="ZAYIN">ZAYIN</option>
+                    <option value="TETH">TETH</option>
+                    <option value="HE">HE</option>
+                    <option value="WAW">WAW</option>
+                    <option value="ALEPH">ALEPH</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Quote:</label>
+                <input type="text" id="in-quote" placeholder="Quote" required>
+            </div>
+            <div class="form-group">
+                <label>Image URL:</label>
+                <input type="text" id="in-image" placeholder="link ảnh">
+            </div>
+            <div class="form-group">
+                <label>Work Damage Type:</label>
+                <select id="in-work-dmg-type-text">
+                     <option value="RED">RED</option>
+                     <option value="WHITE">WHITE</option>
+                     <option value="BLACK">BLACK</option>
+                     <option value="PALE">PALE</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Work Damage Value</label>
+                <input type="text" id="in-work-dmg" placeholder="XX-XX">
+            </div>
+            <div class="form-group">
+                <label>Work Range</label>
+                    <label>Good Result</label>
+                    <input type="text" id="in-good" placeholder="XX-XX">
+                    <label>Normal Result</label>
+                    <input type="text" id="in-normal" placeholder="XX-XX">
+                    <label>Bad Result</label>
+                    <input type="text" id="in-bad" placeholder="XX-XX">
+            </div>
+            <div class="form-group">
+                <label>Max PE</label>
+                <input type="text" id="in-max-pe" placeholder="XX">
+            </div>
+            <div class="form-group">
+                <label>PE unlock</label>
+                <input type="text" id="in-pe-unlock" placeholder="Số PE cần để mở trang này">
+            </div>
+            <div class="form-group">
+                <label>Observation Level</label>
+                    <label>Level 1</label>
+                    <input type="text" id="in-obs-1" placeholder="+X% dùng :speed: để có icon speedrate, :work: để có icon workrate, điền thêm thông tin mở khóa nếu có">
+                    <label>Level 2</label>
+                    <input type="text" id="in-obs-2" placeholder="+X% dùng :speed: để có icon speedrate, :work: để có icon workrate, điền thêm thông tin mở khóa nếu có">
+                    <label>Level 3</label>
+                    <input type="text" id="in-obs-3" placeholder="+X% dùng :speed: để có icon speedrate, :work: để có icon workrate, điền thêm thông tin mở khóa nếu có">
+                    <label>Level 4</label>
+                    <input type="text" id="in-obs-4" placeholder="+X% dùng :speed: để có icon speedrate, :work: để có icon workrate, điền thêm thông tin mở khóa nếu có">
+            </div>
+            <div class="form-group">
+                <label>Work Favour</label>
+                    <label>Instinct</label>
+                        <input type="text" id="in-instinct-1" placeholder="Level 1">
+                        <input type="text" id="in-instinct-2" placeholder="Level 2">
+                        <input type="text" id="in-instinct-3" placeholder="Level 3">
+                        <input type="text" id="in-instinct-4" placeholder="Level 4">
+                        <input type="text" id="in-instinct-5" placeholder="Level 5">
+                    <label>Insight</label>
+                        <input type="text" id="in-insight-1" placeholder="Level 1">
+                        <input type="text" id="in-insight-2" placeholder="Level 2">
+                        <input type="text" id="in-insight-3" placeholder="Level 3">
+                        <input type="text" id="in-insight-4" placeholder="Level 4">
+                        <input type="text" id="in-insight-5" placeholder="Level 5">
+                    <label>Attachment</label>
+                        <input type="text" id="in-attachment-1" placeholder="Level 1">
+                        <input type="text" id="in-attachment-2" placeholder="Level 2">
+                        <input type="text" id="in-attachment-3" placeholder="Level 3">
+                        <input type="text" id="in-attachment-4" placeholder="Level 4">
+                        <input type="text" id="in-attachment-5" placeholder="Level 5">
+                    <label>Repression</label>
+                        <input type="text" id="in-repression-1" placeholder="Level 1">
+                        <input type="text" id="in-repression-2" placeholder="Level 2">
+                        <input type="text" id="in-repression-3" placeholder="Level 3">
+                        <input type="text" id="in-repression-4" placeholder="Level 4">
+                        <input type="text" id="in-repression-5" placeholder="Level 5">
+            </div>
+            <div class="form-group">
+                <label>Management Tips</label>
+                    <label>Tips 1</label>
+                    <textarea id="in-tips-1" rows="10" placeholder="Nhập mẹo quản lý số 1"></textarea>
+                    <input type="text" id="in-tipscost-1" placeholder="Giá để mua tips này">
+                    <label>Tips 2</label>
+                    <textarea id="in-tips-2" rows="10" placeholder="Nhập mẹo quản lý số 2"></textarea>
+                    <input type="text" id="in-tipscost-2" placeholder="Giá để mua tips này">
+                    <label>Tips 3</label>
+                    <textarea id="in-tips-3" rows="10" placeholder="Nhập mẹo quản lý số 3"></textarea>
+                    <input type="text" id="in-tipscost-3" placeholder="Giá để mua tips này">
+                    <label>Tips 4</label>
+                    <textarea id="in-tips-4" rows="10" placeholder="Nhập mẹo quản lý số 4"></textarea>
+                    <input type="text" id="in-tipscost-4" placeholder="Giá để mua tips này">
+                    <label>Tips 5</label>
+                    <textarea id="in-tips-5" rows="10" placeholder="Nhập mẹo quản lý số 5"></textarea>
+                    <input type="text" id="in-tipscost-5" placeholder="Giá để mua tips này">
+                    <label>Tips 6</label>
+                    <textarea id="in-tips-6" rows="10" placeholder="Nhập mẹo quản lý số 6"></textarea>
+                    <input type="text" id="in-tipscost-6" placeholder="Giá để mua tips này">
+                    <label>Tips 7</label>
+                    <textarea id="in-tips-7" rows="10" placeholder="Nhập mẹo quản lý số 7"></textarea>
+                    <input type="text" id="in-tipscost-7" placeholder="Giá để mua tips này">
+            </div>
+            <div class="form-group">
+                <label>Description:</label>
+                <textarea id="in-des" rows="4" placeholder="Nhập mô tả dị thể..."></textarea>
+            </div>
+            
+            <button type="button" id="btn-save">SAVE</button>
+        </form>
+    </div>
 
-<div class="Base-Layout-Wrapper">
-
+    <div class="preview-panel">
+        <h3>Preview</h3>
+        
+        <div class="Base-Layout-Wrapper">
   <input type="checkbox" id="toggle-obs" class="Modal-Toggle">
   <input type="checkbox" id="toggle-favour" class="Modal-Toggle">
   <input type="checkbox" id="toggle-tips" class="Modal-Toggle">
@@ -44,11 +176,12 @@
         <div class="Left-Column">
           <div class="Info-Row">
             <strong class="Label">Risk Level</strong>
-            <strong class="Value Rainbow-Level dynamic-risk">{$risk_level}</strong>
+            <strong class="Value" id="out-risk">
+            </strong>
           </div>
           <div class="Info-Row">
             <strong class="Label Sub-Class-Label">Subject<br>Classification</strong>
-            <strong class="Value Big">{$subject_id}</strong>
+            <strong class="Value Big", id="out-id">X-XX-XXX</strong>
           </div>
           
           <div class="Sub-Grid">
@@ -56,15 +189,15 @@
               <span class="favour-title" style="color: #ffffa1; font-size: 13px; position: absolute !important; top: -8px !important; left: 50% !important; transform: translateX(-50%) !important; background: #000 !important; padding: 0 4px !important; white-space: nowrap !important;">Work Damage</span>
               <img id="work-dmg-img" src="" alt="Work Damage" class="Icon-Damage" style="display: none; position: static !important; width: 24px !important; height: 24px !important; margin: 2px auto !important; float: none !important;">
               <div class="Damage-Info" style="width: 100%; display: flex !important; justify-content: space-between !important; align-items: center !important; margin-top: auto !important; position: static !important;">
-                <span id="work-dmg-type-text" style="display:none;">{$work_damage_type}</span>
+                <span id="out-work-dmg-type-text" style="display:none;"></span>
                 <span id="work-dmg-label" style="color: #FF0000; font-weight: bold; font-size: 13px;">TYPE</span>
-                <span class="Value" style="color: #ffffa1; font-size: 14px;">{$work_damage}</span>
+                <span class="Value" id="out-work-dmg" style="color: #ffffa1; font-size: 14px; white-space: nowrap !important; margin-left: 6px !important;" ></span>
               </div>
             </div>
             
             <div class="favour-box" style="flex: 1; min-height: 65px; padding: 12px 8px 6px 8px; justify-content: center;">
               <span class="favour-title" style="color: #ffffa1; font-size: 13px;">Max.E-Boxes</span>
-              <span class="E-Box-Value" style="font-size: 22px; margin: auto 0 0 0;">{$pe_boxes_max}</span>
+              <span class="E-Box-Value" id="out-max-pe" style="font-size: 22px; margin: auto 0 0 0;"></span>
             </div>
           </div>
 
@@ -74,42 +207,42 @@
             <div class="Work-Range-List" style="width: 100%;">
               <div class="Work-Row Good">
                 <span class="Work-Label">
-                  <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Good.webp" class="Icon-Result" alt="Good">
+                  <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Good.webp?raw=true" class="Icon-Result" alt="Good">
                   Good
                 </span>
-                <span>{$work_result_good}</span>
+                <span id="out-good">XX</span>
               </div>
               <div class="Work-Row Neutral">
                 <span class="Work-Label">
-                  <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Neutral.webp" class="Icon-Result" alt="Normal">
+                  <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Neutral.webp?raw=true" class="Icon-Result" alt="Normal">
                   Normal
                 </span>
-                <span>{$work_result_normal}</span>
+                <span id="out-normal">XX</span>
               </div>
               <div class="Work-Row Bad">
                 <span class="Work-Label">
-                  <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Bad.webp" class="Icon-Result" alt="Bad">
+                  <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Bad.webp?raw=true" class="Icon-Result" alt="Bad">
                   Bad
                 </span>
-                <span>{$work_result_bad}</span>
+                <span id="out-bad">XX</span>
               </div>
             </div>
           </div>
         </div>
 
         <div class="Right-Column">
-          <img class="Abnormality-Image" src="{$abnormality_image}" alt="Item-image">
-          <div class="Abnormality-Name">{$abnormality_name}</div>
-          <div class="Quote"><em><strong>{$quote}</strong></em></div>
+          <img class="Abnormality-Image" id="out-image" src="" alt="Item-image">
+          <div class="Abnormality-Name" id="out-name">Abnormality Name</div>
+          <div class="Quote", id="out-quote"><em><strong>Quote</strong></em></div>
           <details class="Description-Box">
             <summary class="Description-Title"></summary>
-            <div class="Description-Content">{$abnormality_description}</div>
+            <div class="Description-Content" id="out-des">Mô tả</div>
           </details>
         </div>
       </div>
 
       <div class="PE-Box-Footer">
-        <div class="PE-Box-Title">PE-Boxes {$pe_box_cost_list}</div>
+        <div class="PE-Box-Title">PE-Boxes <span id="out-pe-unlock"></span></div>
       </div>
     </div>
   </div>
@@ -129,7 +262,7 @@
             <div class="obs-effect">
               <span class="obs-type-box" data-type="{$obs_level_1_value}">
                 <img src="" class="obs-icon" style="display:none;">
-                <span class="obs-val">{$obs_level_1_value} {$obs_level_1_type}</span>
+                <span class="obs-val" id="out-obs-1"></span>
               </span>
             </div>
           </div>
@@ -139,7 +272,7 @@
             <div class="obs-effect">
               <span class="obs-type-box" data-type="{$obs_level_2_value}">
                 <img src="" class="obs-icon" style="display:none;">
-                <span class="obs-val">{$obs_level_2_value} {$obs_level_2_type}</span>
+                <span class="obs-val" id="out-obs-2"></span>
               </span>
             </div>
           </div>
@@ -149,9 +282,8 @@
             <div class="obs-effect">
               <span class="obs-type-box" data-type="{$obs_level_3_value}">
                 <img src="" class="obs-icon" style="display:none;">
-                <span class="obs-val">{$obs_level_3_value} {$obs_level_3_type}</span>
+                <span class="obs-val" id="out-obs-3"></span>
               </span>
-              <span>Unlocks The E.G.O Gift [{$obs_ego_gift_name}]</span>
             </div>
           </div>
 
@@ -160,9 +292,8 @@
             <div class="obs-effect">
               <span class="obs-type-box" data-type="{$obs_level_4_value}">
                 <img src="" class="obs-icon" style="display:none;">
-                <span class="obs-val">{$obs_level_4_value} {$obs_level_4_type}</span>
+                <span class="obs-val" id="out-obs-4"></span>
               </span>
-              <span>Unlocks The E.G.O Weapon [{$obs_ego_weapon_name}] And Suit [{$obs_ego_suit_name}]</span>
               <span>Unlocks The Appendix</span>
             </div>
           </div>
@@ -186,49 +317,49 @@
             
             <div class="favour-box">
               <span class="favour-title" style="color: #FF5555;">Instinct</span>
-              <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Instinct.webp" class="favour-icon" alt="Instinct">
+              <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Instinct.webp?raw=true" class="favour-icon" alt="Instinct">
               <div class="favour-levels">
-                <div class="favour-row"><span>I</span> <span>{$work_favour_instinct_1}</span></div>
-                <div class="favour-row"><span>II</span> <span>{$work_favour_instinct_2}</span></div>
-                <div class="favour-row"><span>III</span> <span>{$work_favour_instinct_3}</span></div>
-                <div class="favour-row"><span>IV</span> <span>{$work_favour_instinct_4}</span></div>
-                <div class="favour-row"><span>V</span> <span>{$work_favour_instinct_5}</span></div>
+                <div class="favour-row"><span>I</span> <span id="out-instinct-1"></span></div>
+                <div class="favour-row"><span>II</span> <span id="out-instinct-2"></span></div>
+                <div class="favour-row"><span>III</span> <span id="out-instinct-3"></span></div>
+                <div class="favour-row"><span>IV</span> <span id="out-instinct-4"></span></div>
+                <div class="favour-row"><span>V</span> <span id="out-instinct-5"></span></div>
               </div>
             </div>
 
             <div class="favour-box">
               <span class="favour-title" style="color: #ffffa1;">Insight</span>
-              <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Insight.webp" class="favour-icon" alt="Insight">
+              <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Insight.webp?raw=true" class="favour-icon" alt="Insight">
               <div class="favour-levels">
-                <div class="favour-row"><span>I</span> <span>{$work_favour_insight_1}</span></div>
-                <div class="favour-row"><span>II</span> <span>{$work_favour_insight_2}</span></div>
-                <div class="favour-row"><span>III</span> <span>{$work_favour_insight_3}</span></div>
-                <div class="favour-row"><span>IV</span> <span>{$work_favour_insight_4}</span></div>
-                <div class="favour-row"><span>V</span> <span>{$work_favour_insight_5}</span></div>
+                <div class="favour-row"><span>I</span> <span id="out-insight-1"></span></div>
+                <div class="favour-row"><span>II</span> <span id="out-insight-2"></span></div>
+                <div class="favour-row"><span>III</span> <span id="out-insight-3"></span></div>
+                <div class="favour-row"><span>IV</span> <span id="out-insight-4"></span></div>
+                <div class="favour-row"><span>V</span> <span id="out-insight-5"></span></div>
               </div>
             </div>
 
             <div class="favour-box">
               <span class="favour-title" style="color: #CC66FF;">Attachment</span>
-              <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Attachment.webp" class="favour-icon" alt="Attachment">
+              <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Attachment.webp?raw=true" class="favour-icon" alt="Attachment">
               <div class="favour-levels">
-                <div class="favour-row"><span>I</span> <span>{$work_favour_attachment_1}</span></div>
-                <div class="favour-row"><span>II</span> <span>{$work_favour_attachment_2}</span></div>
-                <div class="favour-row"><span>III</span> <span>{$work_favour_attachment_3}</span></div>
-                <div class="favour-row"><span>IV</span> <span>{$work_favour_attachment_4}</span></div>
-                <div class="favour-row"><span>V</span> <span>{$work_favour_attachment_5}</span></div>
+                <div class="favour-row"><span>I</span> <span id="out-attachment-1"></span></div>
+                <div class="favour-row"><span>II</span> <span id="out-attachment-2"></span></div>
+                <div class="favour-row"><span>III</span> <span id="out-attachment-3"></span></div>
+                <div class="favour-row"><span>IV</span> <span id="out-attachment-4"></span></div>
+                <div class="favour-row"><span>V</span> <span id="out-attachment-5"></span></div>
               </div>
             </div>
 
             <div class="favour-box">
               <span class="favour-title" style="color: #55FFFF;">Repression</span>
-              <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Repression.webp" class="favour-icon" alt="Repression">
+              <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Repression.webp?raw=true" class="favour-icon" alt="Repression">
               <div class="favour-levels">
-                <div class="favour-row"><span>I</span> <span>{$work_favour_repression_1}</span></div>
-                <div class="favour-row"><span>II</span> <span>{$work_favour_repression_2}</span></div>
-                <div class="favour-row"><span>III</span> <span>{$work_favour_repression_3}</span></div>
-                <div class="favour-row"><span>IV</span> <span>{$work_favour_repression_4}</span></div>
-                <div class="favour-row"><span>V</span> <span>{$work_favour_repression_5}</span></div>
+                <div class="favour-row"><span>I</span> <span id="out-repression-1"></span></div>
+                <div class="favour-row"><span>II</span> <span id="out-repression-2"></span></div>
+                <div class="favour-row"><span>III</span> <span id="out-repression-3"></span></div>
+                <div class="favour-row"><span>IV</span> <span id="out-repression-4"></span></div>
+                <div class="favour-row"><span>V</span> <span id="out-repression-5"></span></div>
               </div>
             </div>
 
@@ -250,60 +381,60 @@
               <label for="toggle-tips" class="Btn-Leave-Corner" style="margin-left: 10px;"><span>LEAVE</span></label>
             </div>
 
-            <div class="tips-item dynamic-tips">
+            <div class="tips-item dynamic-tip">
               <div class="tips-header-box">
                 <span class="tips-title">Managerial Guidelines 1</span>
-                <span class="tips-cost">PE-Boxes {$management_tips_1_pe}</span>
+                <span class="tips-cost">PE-Boxes <span id="out-tipscost-1"></span></span>
               </div>
-              <div class="tips-text">{$management_tips_1}</div>
+              <div class="tips-text" id="out-tips-1"></div>
             </div>
 
             <div class="tips-item dynamic-tip">
               <div class="tips-header-box">
                 <span class="tips-title">Managerial Guidelines 2</span>
-                <span class="tips-cost">PE-Boxes {$management_tips_2_pe}</span>
+                <span class="tips-cost">PE-Boxes <span id="out-tipscost-2"></span></span>
               </div>
-              <div class="tips-text">{$management_tips_2}</div>
+              <div class="tips-text" id="out-tips-2"></div>
             </div>
 
             <div class="tips-item dynamic-tip">
               <div class="tips-header-box">
                 <span class="tips-title">Managerial Guidelines 3</span>
-                <span class="tips-cost">PE-Boxes {$management_tips_3_pe}</span>
+                <span class="tips-cost">PE-Boxes <span id="out-tipscost-3"></span></span>
               </div>
-              <div class="tips-text">{$management_tips_3}</div>
+              <div class="tips-text" id="out-tips-3"></div>
             </div>
 
             <div class="tips-item dynamic-tip">
               <div class="tips-header-box">
                 <span class="tips-title">Managerial Guidelines 4</span>
-                <span class="tips-cost">PE-Boxes {$management_tips_4_pe}</span>
+                <span class="tips-cost">PE-Boxes <span id="out-tipscost-4"></span></span>
               </div>
-              <div class="tips-text">{$management_tips_4}</div>
+              <div class="tips-text" id="out-tips-4"></div>
             </div>
 
             <div class="tips-item dynamic-tip">
               <div class="tips-header-box">
                 <span class="tips-title">Managerial Guidelines 5</span>
-                <span class="tips-cost">PE-Boxes {$management_tips_5_pe}</span>
+                <span class="tips-cost">PE-Boxes <span id="out-tipscost-5"></span></span>
               </div>
-              <div class="tips-text">{$management_tips_5}</div>
+              <div class="tips-text" id="out-tips-5"></div>
             </div>
 
             <div class="tips-item dynamic-tip">
               <div class="tips-header-box">
                 <span class="tips-title">Managerial Guidelines 6</span>
-                <span class="tips-cost">PE-Boxes {$management_tips_6_pe}</span>
+                <span class="tips-cost">PE-Boxes <span id="out-tipscost-6"></span></span>
               </div>
-              <div class="tips-text">{$management_tips_6}</div>
+              <div class="tips-text" id="out-tips-6"></div>
             </div>
 
             <div class="tips-item dynamic-tip">
               <div class="tips-header-box">
                 <span class="tips-title">Managerial Guidelines 7</span>
-                <span class="tips-cost">PE-Boxes {$management_tips_7_pe}</span>
+                <span class="tips-cost">PE-Boxes <span id="out-tipscost-7"></span></span>
               </div>
-              <div class="tips-text">{$management_tips_7}</div>
+              <div class="tips-text" id="out-tips-7"></div>
             </div>
 
           </div>
@@ -338,7 +469,7 @@
                     <span>Grade</span>
                     <span class="Rainbow-Level dynamic-risk">{$ego_weapon_grade}</span>
                   </div>
-                  <div class="ego-row"><span>Cost</span><span><img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/EBoxIcon.webp" style="width:14px; vertical-align:-2px;"> {$ego_weapon_cost}</span></div>
+                  <div class="ego-row"><span>Cost</span><span><img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/EBoxIcon.webp?raw=true" style="width:14px; vertical-align:-2px;"> {$ego_weapon_cost}</span></div>
                   <div class="ego-row"><span>Max Amount</span><span>{$ego_weapon_max_amount}</span></div>
                   
                   <div class="ego-row" style="flex-direction:column; align-items:stretch; gap:2px;">
@@ -385,33 +516,33 @@
                     <span>Grade</span>
                     <span class="Rainbow-Level dynamic-risk">{$ego_suit_grade}</span>
                   </div>
-                  <div class="ego-row"><span>Cost</span><span><img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/EBoxIcon.webp" style="width:14px; vertical-align:-2px;"> {$ego_suit_cost}</span></div>
+                  <div class="ego-row"><span>Cost</span><span><img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/EBoxIcon.webp?raw=true" style="width:14px; vertical-align:-2px;"> {$ego_suit_cost}</span></div>
                   <div class="ego-row"><span>Max Amount</span><span>{$ego_suit_max_amount}</span></div>
                   
                   <div class="ego-row" style="color:#FF5555;">
                     <span style="display: flex; align-items: center; gap: 5px;">
-                      <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Red.webp" class="dmg-icon" alt="Red"> RED Defense
+                      <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Red.webp?raw=true" class="dmg-icon" alt="Red"> RED Defense
                     </span>
                     <span>{$ego_suit_red}</span>
                   </div>
 
                   <div class="ego-row" style="color:#F3F3F3;">
                     <span style="display: flex; align-items: center; gap: 5px;">
-                      <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/White.webp" class="dmg-icon" alt="White"> WHITE Defense
+                      <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/White.webp?raw=true" class="dmg-icon" alt="White"> WHITE Defense
                     </span>
                     <span>{$ego_suit_white}</span>
                   </div>
 
                   <div class="ego-row" style="color:#CC66FF;">
                     <span style="display: flex; align-items: center; gap: 5px;">
-                      <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Black.webp" class="dmg-icon" alt="Black"> BLACK Defense
+                      <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Black.webp?raw=true" class="dmg-icon" alt="Black"> BLACK Defense
                     </span>
                     <span>{$ego_suit_black}</span>
                   </div>
 
                   <div class="ego-row" style="color:#55FFFF;">
                     <span style="display: flex; align-items: center; gap: 5px;">
-                      <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Pale.webp" class="dmg-icon" alt="Pale"> PALE Defense
+                      <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Qliphoth.webp?raw=true" class="dmg-icon" alt="Pale"> PALE Defense
                     </span>
                     <span>{$ego_suit_pale}</span>
                   </div>
@@ -508,7 +639,7 @@
                 <div class="favour-box" style="flex: 1; min-height: 75px; padding: 12px 8px 6px 8px; justify-content: center;">
                   <span class="favour-title" style="color: #ffffa1; font-size: 9px;">QLIPHOTH COUNTER</span>
                   <div style="display: flex; align-items: center; gap: 8px; margin: auto 0 0 0;">
-                    <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Qliphoth.webp" style="width: 22px; height: 22px; object-fit: contain;">
+                    <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Qliphoth.webp?raw=true" style="width: 22px; height: 22px; object-fit: contain;">
                     <span style="font-size: 20px; font-weight: bold; color: #FF9900;">{$max_qliphoth_counter}</span>
                   </div>
                 </div>
@@ -516,10 +647,10 @@
                 <div class="favour-box" style="flex: 1; min-height: 75px; padding: 12px 8px 6px 8px; justify-content: center;">
                   <span class="favour-title" style="color: #ffffa1; font-size: 9px;">ABNORMALITY DEFENSE</span>
                   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; width: 100%; font-size: 11px; font-weight: bold; margin: auto 0 0 0;">
-                    <span style="color: #FF5555; text-align: center;">{$escape_red_def} <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Red.webp" class="dmg-icon"></span>
-                    <span style="color: #FFFF99; text-align: center;">{$escape_white_def} <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/White.webp" class="dmg-icon"></span>
-                    <span style="color: #CC66FF; text-align: center;">{$escape_black_def} <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Black.webp" class="dmg-icon"></span>
-                    <span style="color: #55FFFF; text-align: center;">{$escape_pale_def} <img src="https://tlb-vn.wikidot.com/local--files/component:abnormality-html/Pale.webp" class="dmg-icon"></span>
+                    <span style="color: #FF5555; text-align: center;">{$escape_red_def} <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Red.webp?raw=true" class="dmg-icon"></span>
+                    <span style="color: #FFFF99; text-align: center;">{$escape_white_def} <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/White.webp?raw=true" class="dmg-icon"></span>
+                    <span style="color: #CC66FF; text-align: center;">{$escape_black_def} <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Black.webp?raw=true" class="dmg-icon"></span>
+                    <span style="color: #55FFFF; text-align: center;">{$escape_pale_def} <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Pale.webp?raw=true" class="dmg-icon"></span>
                   </div>
                 </div>
               </div>
@@ -616,3 +747,6 @@
   </div>
 
 </div>
+<script src="template.js"></script>
+</body>
+</html>

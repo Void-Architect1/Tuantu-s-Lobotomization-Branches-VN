@@ -177,15 +177,6 @@ for (let level = 1; level <= 7; level++) {
     }
 }
 
-      const inputTipsCost = document.getElementById(`in-tipscost-${level}`);
-      const outputTipsCost = document.getElementById(`out-tipscost-${level}`);
-      if (inputTipsCost && outputTipsCost) {
-          inputTipsCost.addEventListener("input", (e) => {
-              outputTipsCost.innerHTML = parseCustomEmojis(e.target.value);
-          });
-      }
-  }
-
   const workTypes = ["instinct", "insight", "attachment", "repression"];
   workTypes.forEach(type => {
       for (let level = 1; level <= 5; level++) {

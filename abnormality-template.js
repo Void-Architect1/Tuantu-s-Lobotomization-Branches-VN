@@ -453,3 +453,110 @@ function parseCustomEmojis(text) {
   const observer = new MutationObserver(() => scanAndApply());
   observer.observe(document.body, { childList: true, subtree: true });
 })();
+
+document.getElementById("btn-save").addEventListener("click", function() {
+const abnormalityData = {
+        baseInfo: {
+            id: document.getElementById('in-id').value,
+            name: document.getElementById('in-name').value,
+            risk: document.getElementById('in-risk').value,
+            quote: document.getElementById('in-quote').value,
+            image: document.getElementById('in-image').value,
+            workDmgType: document.getElementById('in-work-dmg-type-text').value,
+            workDmg: document.getElementById('in-work-dmg').value,
+            workRange: {
+                good: document.getElementById('in-good').value,
+                normal: document.getElementById('in-normal').value,
+                bad: document.getElementById('in-bad').value
+            },
+            maxPE: document.getElementById('in-max-pe').value,
+            description: document.getElementById('in-des').value,
+            peUnlock: document.getElementById('in-pe-unlock').value
+        },
+        observationLevels: {},
+        workFavour: {
+            instinct: [],
+            insight: [],
+            attachment: [],
+            repression: []
+        },
+        managementTips: [],
+        egoEquipment: {
+            weapon: {},
+            suit: {},
+            gift: {}
+        },
+        escapeInfo: {},
+        appendix: []
+    };
+
+    for (let i = 1; i <= 4; i++) {
+        abnormalityData.observationLevels[`level_${i}`] = document.getElementById(`in-obs-${i}`).value;
+    }
+
+    const workTypes = ["instinct", "insight", "attachment", "repression"];
+    workTypes.forEach(type => {
+        for (let i = 1; i <= 5; i++) {
+            abnormalityData.workFavour[type].push(document.getElementById(`in-${type}-${i}`).value);
+        }
+    });
+
+    for (let i = 1; i <= 7; i++) {
+        abnormalityData.managementTips.push({
+            tip: document.getElementById(`in-tips-${i}`).value,
+            cost: document.getElementById(`in-tipscost-${i}`).value
+        });
+    }
+
+    const egoConfig = {
+        weapon: ["grade", "cost", "amount", "damage", "speed", "range", "passive", "require", "name", "image", "des", "obs"],
+        suit:   ["grade", "cost", "amount", "red", "white", "black", "pale", "passive", "require", "name", "image", "des", "obs"],
+        gift:   ["chance", "stats", "passive", "name", "image", "des", "obs"]
+    };
+
+    Object.keys(egoConfig).forEach(type => {
+        egoConfig[type].forEach(prop => {
+            abnormalityData.egoEquipment[type][prop] = document.getElementById(`in-${type}-${prop}`).value;
+        });
+    });
+
+    const escapeConfig = ["risk", "hp", "qliphoth", "red", "white", "black", "pale", "passive", "skill", "image", "status", "id", "pe"];
+    escapeConfig.forEach(prop => {
+        abnormalityData.escapeInfo[prop] = document.getElementById(`in-escape-${prop}`).value;
+    });
+
+    for (let i = 1; i <= 7; i++) {
+        abnormalityData.appendix.push({
+            title: document.getElementById(`in-titleappendix-${i}`).value,
+            content: document.getElementById(`in-appendix-${i}`).value
+        });
+    }
+    const BIN_ID = "6a95630dda38895dfe25e876"; 
+    const MASTER_KEY = "$2a$10$h5.pNRAtf4NXNJN73CcjiuShkqM/GdoeYZ92.c9wa.SOuatXz7YhS";
+
+    const url = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Master-Key': MASTER_KEY
+            },
+            body: JSON.stringify(abnormalityData)
+        });
+
+        const result = await response.json();
+        
+        if (response.ok) {
+            console.log("Đã cập nhật dữ liệu lên Bin thành công!", result);
+            alert("Lưu dữ liệu lên JSONBin thành công!");
+        } else {
+            console.error("Lỗi từ JSONBin:", result);
+            alert("Lưu thất bại, hãy kiểm tra lại Key hoặc Bin ID!");
+        }
+    } catch (error) {
+        console.error("Lỗi kết nối:", error);
+        alert("Không thể kết nối tới server JSONBin!");
+    }
+}

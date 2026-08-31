@@ -71,7 +71,9 @@ async function loadAllAbnormalitiesFromShards() {
             headers: { 'X-Master-Key': MASTER_KEY }
         });
         const masterData = await masterRes.json();
-        let binList = masterData.record.binList || [];
+        
+        const masterRecord = masterData.record || {};
+        let binList = masterRecord.binList || [];
 
         let allAbnormalities = [];
 
@@ -81,8 +83,15 @@ async function loadAllAbnormalitiesFromShards() {
                     headers: { 'X-Master-Key': MASTER_KEY }
                 });
                 const binData = await binRes.json();
-                if (Array.isArray(binData.record)) {
-                    allAbnormalities = allAbnormalities.concat(binData.record);
+                
+                // QUAN TRỌNG: Dữ liệu mảng các dị thể nằm bên trong binData.record
+                const actualRecords = binData.record;
+                
+                if (Array.isArray(actualRecords)) {
+                    allAbnormalities = allAbnormalities.concat(actualRecords);
+                } else if (actualRecords && typeof actualRecords === 'object') {
+                    // Phòng trường hợp Bin chỉ chứa duy nhất 1 object đơn lẻ thay vì mảng
+                    allAbnormalities.push(actualRecords);
                 }
             } catch (err) {
                 console.error(`Không thể tải dữ liệu từ Bin con: ${binId}`, err);

@@ -177,6 +177,50 @@ for (let level = 1; level <= 7; level++) {
     }
 }
 
+for (let level = 1; level <= 7; level++) {
+    const inputAppendix = document.getElementById(`in-appendix-${level}`);
+    const outputAppendix = document.getElementById(`out-appendix-${level}`);
+    if (inputAppendix && outputAppendix) {
+        const updateAppendixState = () => {
+            const rawVal = inputAppendix.value;
+            outputAppendix.innerHTML = parseCustomEmojis(rawVal);
+            const parentItem = outputAppendix.closest('.dynamic-appendix, .dynamic-text');
+            if (parentItem) {
+                const cleanTxt = clean(rawVal.trim());
+                if (!cleanTxt || rawVal.includes("{$") || cleanTxt.startsWith("APPENDIX_TEXT_")) {
+                    parentItem.style.display = 'none';
+                } else {
+                    parentItem.style.display = 'block';
+                }
+            }
+        };
+        
+        updateAppendixState();
+        inputAppendix.addEventListener("input", updateAppendixState);
+    }
+    
+    const inputTitleAppendix = document.getElementById(`in-titleappendix-${level}`);
+    const outputTitleAppendix = document.getElementById(`out-titleappendix-${level}`);
+    if (inputTitleAppendix && outputTitleAppendix) {
+        const updateTitleAppendixState = () => {
+            const rawVal = inputTitleAppendix.value;
+            outputTitleAppendix.innerHTML = parseCustomEmojis(rawVal);
+            const parentItem = outputTitleAppendix.closest('.dynamic-appendix, .dynamic-text');
+            if (parentItem) {
+                const cleanTxt = clean(rawVal.trim());
+                if (!cleanTxt || rawVal.includes("{$") || cleanTxt.startsWith("APPENDIX_TEXT_")) {
+                    parentItem.style.display = 'none';
+                } else {
+                    parentItem.style.display = 'block';
+                }
+            }
+        };
+        
+        updateTitleAppendixState();
+        inputTitleAppendix.addEventListener("input", updateTitleAppendixState);
+    }
+}
+
   const workTypes = ["instinct", "insight", "attachment", "repression"];
   workTypes.forEach(type => {
       for (let level = 1; level <= 5; level++) {
@@ -189,6 +233,50 @@ for (let level = 1; level <= 7; level++) {
           }
       }
   });
+  
+const egoConfig = {
+    weapon: ["grade", "cost", "amount", "damage", "speed", "range", "passive", "require", "name", "image", "des", "obs"],
+    suit:   ["grade", "cost", "amount", "red", "white", "black", "pale", "passive", "require", "name", "image", "des", "obs"],
+    gift:   ["chance", "stats", "passive", "name", "image", "des", "obs"]
+};
+
+Object.keys(egoConfig).forEach(type => {
+    egoConfig[type].forEach(prop => {
+        const inputId = `in-${type}-${prop}`;
+        const outputId = `out-${type}-${prop}`;
+        
+        const inputEl = document.getElementById(inputId);
+        const outputEl = document.getElementById(outputId);
+
+        if (inputEl && outputEl) {
+            const updateField = () => {
+                const val = inputEl.value;
+                
+                if (prop === "image") {
+                    outputEl.src = val;
+                } 
+                else if (prop === "grade") {
+                    const upperVal = val.trim().toUpperCase();
+                    if (riskIconsMap[upperVal]) {
+                        outputEl.innerHTML = riskIconsMap[upperVal];
+                    } else {
+                        outputEl.textContent = val;
+                    }
+                }
+                else if (["passive", "require", "des", "stats", "damage"].includes(prop)) {
+                    outputEl.innerHTML = parseCustomEmojis(val);
+                } 
+                else {
+                    outputEl.textContent = val;
+                }
+            };
+
+            updateField();
+            inputEl.addEventListener("input", updateField);
+            inputEl.addEventListener("change", updateField);
+        }
+    });
+});
 
   document.querySelectorAll('.form-panel input, .form-panel select, .form-panel textarea').forEach(function(element) {
       element.addEventListener('input', updatePreview);
@@ -267,7 +355,9 @@ function parseCustomEmojis(text) {
         ":red:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Red.webp?raw=true" class="inline-icon" alt="red">',
         ":white:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/White.webp?raw=true" class="inline-icon" alt="white">',
         ":black:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Black.webp?raw=true" class="inline-icon" alt="black">',
-        ":pale:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Pale.webp?raw=true" class="inline-icon" alt="pale">'
+        ":pale:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Pale.webp?raw=true" class="inline-icon" alt="pale">',
+        ":hp:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/HP.webp?raw=true" class="inline-icon" alt="hp">',
+        ":sp:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/SP.webp?raw=true" class="inline-icon" alt="hp">'
     };
     return text.replace(/:([a-zA-Z0-9_-]+):/g, (match) => {
         return emojiMap[match] || match; 

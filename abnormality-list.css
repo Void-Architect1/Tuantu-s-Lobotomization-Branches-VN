@@ -336,3 +336,8 @@ html, body {
     font-size: 11px;
     margin-top: 4px;
 }
+.abnormality-card.active-card {
+    border: 2px solid #ffcc00;
+    background-color: rgba(255, 204, 0, 0.15);
+    transform: scale(1.02);
+}

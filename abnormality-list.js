@@ -110,13 +110,20 @@ async function loadAllAbnormalitiesFromShards() {
                 <div class="card-id">${abvId}</div>
             `;
             
-            card.addEventListener("click", () => {
-                fillDataToDetailTemplate(item);
-            });
+card.addEventListener("click", () => {
+    const detailTemplate = document.getElementById("abnormality-detail-template");
+    const defaultScreen = document.querySelector(".lob-info-screen");
 
-            listContainer.appendChild(card);
-        });
-
+    if (card.classList.contains("active-card")) {
+        card.classList.remove("active-card");
+        if (detailTemplate) detailTemplate.style.display = "none";
+        if (defaultScreen) defaultScreen.style.display = "flex";
+    } else {
+        document.querySelectorAll(".abnormality-card").forEach(c => c.classList.remove("active-card"));
+        card.classList.add("active-card");
+        fillDataToDetailTemplate(item);
+    }
+});
     } catch (error) {
         console.error("Lỗi khi tải hệ thống phân vùng:", error);
         listContainer.innerHTML = "<div style='color: #ff1a1a; font-size: 11px; padding: 10px;'>Lỗi kết nối!</div>";

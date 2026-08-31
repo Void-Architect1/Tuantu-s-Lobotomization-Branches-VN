@@ -133,6 +133,15 @@ document.addEventListener("DOMContentLoaded", function() {
         outputUnlockPE.textContent = inputUnlockPE.value;
     }
   }
+  for (let level = 1; level <= 4; level++) {
+      const inputObs = document.getElementById(`in-obs-${level}`);
+      const outputObs = document.getElementById(`out-obs-${level}`);
+      if (inputObs && outputObs) {
+          inputObs.addEventListener("input", (e) => {
+              outputObs.innerHTML = parseCustomEmojis(e.target.value);
+          });
+      }
+  }
 
 for (let level = 1; level <= 7; level++) {
     const inputTips = document.getElementById(`in-tips-${level}`);

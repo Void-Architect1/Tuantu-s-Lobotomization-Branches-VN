@@ -220,6 +220,45 @@
                 </div>
             </div>
             <div class="form-group">
+                <label>Escape Info</label>
+                    <label>Risk Level</label>
+                    <select id="in-escape-risk">
+                        <option value="ZAYIN">ZAYIN</option>
+                        <option value="TETH">TETH</option>
+                        <option value="HE">HE</option>
+                        <option value="WAW">WAW</option>
+                        <option value="ALEPH">ALEPH</option>
+                    </select>
+                    <label>HP</label>
+                    <input type="text" id="in-escape-hp" placeholder="lượng máu">
+                    <label>Qliphoth Counter</label>
+                    <input type="text" id="in-escape-qliphoth" placeholder="số bộ đếm qliphoth">
+                    <label>Abnormality Defense</label>
+                        <label>RED Def</label>
+                        <input type="text" id="in-escape-red" placeholder="chỉ số kháng red">
+                        <label>WHITE Def</label>
+                        <input type="text" id="in-escape-white" placeholder="chỉ số kháng white">
+                        <label>BLACK Def</label>
+                        <input type="text" id="in-escape-black" placeholder="chỉ số kháng black">
+                        <label>PALE Def</label>
+                        <input type="text" id="in-escape-pale" placeholder="chỉ số kháng pale">
+                    <label>Passive</label>
+                    <textarea id="in-escape-passive" rows="10" placeholder="passive của đối tượng nếu có"></textarea>
+                    <label>Skill</label>
+                    <textarea id="in-escape-skill" rows="10" placeholder="skill của đối tượng nếu có"></textarea>
+                    <label>Image Escape</label>
+                    <input type="text" id="in-escape-image" placeholder="hình ảnh khi trốn thoát">
+                    <label>Type</label>
+                    <select id="in-escape-status">
+                        <option value="NON-ESCAPING">NON-ESCAPING</option>
+                        <option value="ESCAPING-ENTITY">ESCAPING-ENTITY</option
+                    </select>
+                    <label>Subject Classification</label>
+                    <input type="text" id="in-escape-id" placeholder="mã số khi trốn thoát">
+                    <label>PE Unlock</label>
+                    <input type="text" id="in-escape-pe" placeholder="số PE để mở trang này">
+            </div>
+            <div class="form-group">
                 <label>Appendix List</label>
                     <label>Appendix 1</label>
                     <input type="text" id="in-titleappendix-1" placeholder="tiêu đề phụ lục">
@@ -750,12 +789,12 @@
             <div class="ego-left">
               <div class="ego-row">
                 <span>Risk Level</span>
-                <span class="Rainbow-Level dynamic-risk">{$escape_risk_level}</span>
+                <span class="Rainbow-Level dynamic-risk" id="out-escape-risk"></span>
               </div>
               
               <div class="ego-row">
                 <span>Health</span>
-                <span>{$escape_hp}</span>
+                <span id="out-escape-hp"></span>
               </div>
 
               <div class="Sub-Grid" style="margin: 10px 0;">
@@ -763,17 +802,21 @@
                   <span class="favour-title" style="color: #ffffa1; font-size: 9px;">QLIPHOTH COUNTER</span>
                   <div style="display: flex; align-items: center; gap: 8px; margin: auto 0 0 0;">
                     <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Qliphoth.webp?raw=true" style="width: 22px; height: 22px; object-fit: contain;">
-                    <span style="font-size: 20px; font-weight: bold; color: #FF9900;">{$max_qliphoth_counter}</span>
+                    <span style="font-size: 20px; font-weight: bold; color: #FF9900;" id="out-escape-qliphoth"></span>
                   </div>
                 </div>
 
                 <div class="favour-box" style="flex: 1; min-height: 75px; padding: 12px 8px 6px 8px; justify-content: center;">
                   <span class="favour-title" style="color: #ffffa1; font-size: 9px;">ABNORMALITY DEFENSE</span>
                   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; width: 100%; font-size: 11px; font-weight: bold; margin: auto 0 0 0;">
-                    <span style="color: #FF5555; text-align: center;">{$escape_red_def} <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Red.webp?raw=true" class="dmg-icon"></span>
-                    <span style="color: #FFFF99; text-align: center;">{$escape_white_def} <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/White.webp?raw=true" class="dmg-icon"></span>
-                    <span style="color: #CC66FF; text-align: center;">{$escape_black_def} <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Black.webp?raw=true" class="dmg-icon"></span>
-                    <span style="color: #55FFFF; text-align: center;">{$escape_pale_def} <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Pale.webp?raw=true" class="dmg-icon"></span>
+                    <span style="color: #FF5555; text-align: center;" id="out-escape-red"></span>
+                    <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Red.webp?raw=true" class="dmg-icon">
+                    <span style="color: #FFFF99; text-align: center;" id="out-escape-white"></span>
+                    <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/White.webp?raw=true" class="dmg-icon">
+                    <span style="color: #CC66FF; text-align: center;" id="out-escape-black"></span>
+                    <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Black.webp?raw=true" class="dmg-icon">
+                    <span style="color: #55FFFF; text-align: center;" id="out-escape-pale"></span>
+                    <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Pale.webp?raw=true" class="dmg-icon">
                   </div>
                 </div>
               </div>
@@ -781,35 +824,33 @@
               <details class="Description-Box">
                 <summary class="Description-Title" style="width: 100%; box-sizing: border-box; text-align: center; border: 1px solid #FFFFA1; background: #FFFFA1; color: #12110c; margin-bottom: 5px;">PASSIVE</summary>
                 <div class="Description-Content" style="border-top: 1px dashed #FFFFA1;">
-                  <strong>{$escape_passive}</strong><br>
-                  {$escape_passive_description}
+                  <span id="out-escape-passive"></span>
                 </div>
               </details>
 
               <details class="Description-Box" style="margin-top: 10px;">
                 <summary class="Description-Title" style="width: 100%; box-sizing: border-box; text-align: center; border: 1px solid #FFFFA1; background: #FFFFA1; color: #12110c; margin-bottom: 5px;">SKILL</summary>
                 <div class="Description-Content" style="border-top: 1px dashed #FFFFA1;">
-                  <strong>{$escape_skill}</strong><br>
-                  {$escape_skill_description}
+                  <span id="out-escape-skill"></span>
                 </div>
               </details>
 
             </div>
 
             <div class="ego-right">
-              <img src="{$escape_img_url}" class="ego-img-box" alt="Escape Image">
+              <img src="" id="out-escape-image" class="ego-img-box" alt="Escape Image">
               
-              <div class="ego-name dynamic-escape-status" style="font-size: 14px; margin-top: 10px;">{$escape_status_text}</div>
+              <div class="ego-name dynamic-escape-status" style="font-size: 14px; margin-top: 10px;" id="out-escape-status"></div>
               
               <div style="border-top: 1px solid #FFFFA1; margin-top: 8px; padding-top: 8px; text-align: center;">
                 <div style="font-size: 11px; font-weight: bold;">SUBJECT CLASSIFICATION</div>
-                <div style="font-size: 16px; font-weight: bold;">{$escape_id}</div>
+                <div style="font-size: 16px; font-weight: bold;" id="out-escape-id"></div>
               </div>
             </div>
           </div>
 
           <div class="PE-Box-Footer" style="margin-top: 15px;">
-            <div class="PE-Box-Title" style="font-size: 14px; padding: 4px 15px;">PE-Boxes {$escape_pe_unlock}</div>
+            <div class="PE-Box-Title" style="font-size: 14px; padding: 4px 15px;">PE-Boxes <span id="out-escape-pe"></span></div>
           </div>
 
         </div>

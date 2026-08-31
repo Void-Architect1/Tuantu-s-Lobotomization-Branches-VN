@@ -143,6 +143,13 @@ async function loadAllAbnormalitiesFromShards() {
     }
 }
 
+function safeSetText(elementId, value) {
+    const el = document.getElementById(elementId);
+    if (el) {
+        el.textContent = value !== undefined && value !== null ? value : "";
+    }
+}
+
 function fillDataToDetailTemplate(item) {
     const defaultScreen = document.querySelector(".lob-info-screen");
     if (defaultScreen) defaultScreen.style.display = "none";

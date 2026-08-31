@@ -346,14 +346,17 @@ function openModalById(modalId) {
     }
 }
 
-document.querySelectorAll('.Btn-Leave-Corner').forEach(button => {
-    button.addEventListener('click', function(e) {
+document.addEventListener('click', function(e) {
+    const leaveBtn = e.target.closest('.Btn-Leave-Corner');
+    if (leaveBtn) {
+        if (leaveBtn.id === 'closeChoiceModal') return; 
+
         e.preventDefault();
-        const modal = this.closest('.Overlay-Modal');
+        const modal = leaveBtn.closest('.Overlay-Modal');
         if (modal) {
             closeModalWithAnimation(modal);
         }
-    });
+    }
 });
 
 function closeModalWithAnimation(modal) {

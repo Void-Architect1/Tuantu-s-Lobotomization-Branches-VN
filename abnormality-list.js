@@ -324,6 +324,21 @@ function safeSetText(elementId, value) {
     }
 }
 
+for (let level = 1; level <= 4; level++) {
+        const obsData = (item.obs && item.obs[level]) || {};
+
+        const outputObs = document.getElementById(`out-obs-${level}`);
+        if (outputObs) {
+            const rawVal = typeof obsData === 'string' ? obsData : (obsData.content || "");
+            outputObs.innerHTML = parseCustomEmojis(rawVal);
+            const parentItem = outputObs.closest('.obs-item, .dynamic-obs');
+            if (parentItem) {
+                const cleanTxt = clean(rawVal.trim());
+                parentItem.style.display = (!cleanTxt || rawVal.includes("{$")) ? 'none' : 'block';
+            }
+        }
+    }
+
 // Xử lý sự kiện mở các Modal phụ (Quan sát, Ưu ái, v.v.)
 document.querySelectorAll('.Modal-Toggle').forEach(toggle => {
   toggle.addEventListener('change', function() {

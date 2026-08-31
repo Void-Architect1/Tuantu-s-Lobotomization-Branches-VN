@@ -454,6 +454,9 @@ function parseCustomEmojis(text) {
   observer.observe(document.body, { childList: true, subtree: true });
 })();
 
+const MASTER_BIN_ID = "6a956e4fda38895dfe2616b5"; 
+const MASTER_KEY = "$2a$10$h5.pNRAtf4NXNJN73CcjiuShkqM/GdoeYZ92.c9wa.SOuatXz7YhS";
+const MAX_ITEMS_PER_BIN = 100;
 document.getElementById("btn-save").addEventListener("click", async function() {
     const currentAbnormality = {
         baseInfo: {
@@ -521,54 +524,96 @@ document.getElementById("btn-save").addEventListener("click", async function() {
             content: document.getElementById(`in-appendix-${i}`).value
         });
     }
-
-    const BIN_ID = "6a95630dda38895dfe25e876"; 
-    const MASTER_KEY = "$2a$10$h5.pNRAtf4NXNJN73CcjiuShkqM/GdoeYZ92.c9wa.SOuatXz7YhS";
-    const url = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+    const currentId = currentAbnormality.baseInfo.id;
 
     try {
-        const getResponse = await fetch(url, {
+        const masterUrl = `https://api.jsonbin.io/v3/b/${MASTER_BIN_ID}`;
+        const masterRes = await fetch(masterUrl, {
             method: 'GET',
             headers: { 'X-Master-Key': MASTER_KEY }
         });
+        const masterData = await masterRes.json();
         
-        let existingData = await getResponse.json();
-        
-        let abnormalityList = existingData.record;
+        let binList = masterData.record.binList || [];
 
-        if (!Array.isArray(abnormalityList)) {
-            abnormalityList = [];
-        }
+        let targetBinId = "";
 
-        const currentId = currentAbnormality.baseInfo.id;
-        const index = abnormalityList.findIndex(item => item.baseInfo && item.baseInfo.id === currentId);
-
-        if (index !== -1) {
-            abnormalityList[index] = currentAbnormality;
-            console.log(`Đã cập nhật thông tin cho dị dạng: ${currentId}`);
+        if (binList.length === 0) {
+            targetBinId = await createNewBinAtJSONBin();
+            binList.push(targetBinId);
         } else {
-            abnormalityList.push(currentAbnormality);
-            console.log(`Đã thêm mới dị dạng: ${currentId}`);
+            targetBinId = binList[binList.length - 1];
         }
-        const putResponse = await fetch(url, {
+
+        const targetUrl = `https://api.jsonbin.io/v3/b/${targetBinId}`;
+        const targetRes = await fetch(targetUrl, {
+            method: 'GET',
+            headers: { 'X-Master-Key': MASTER_KEY }
+        });
+        const targetData = await targetRes.json();
+        let currentItems = targetData.record;
+
+        if (!Array.isArray(currentItems)) {
+            currentItems = [];
+        }
+
+        const existingIndex = currentItems.findIndex(item => item.baseInfo && item.baseInfo.id === currentId);
+
+        if (existingIndex !== -1) {
+            currentItems[existingIndex] = currentAbnormality;
+        } else {
+            if (currentItems.length >= MAX_ITEMS_PER_BIN) {
+                console.log("Bin hiện tại đã đầy, đang tạo Bin mới...");
+                targetBinId = await createNewBinAtJSONBin();
+                binList.push(targetBinId);
+
+                // Cập nhật lại Bin Quản Lý trên mây
+                await updateMasterBin(binList);
+
+                currentItems = [currentAbnormality];
+            } else {
+                currentItems.push(currentAbnormality);
+            }
+        }
+
+        await fetch(`https://api.jsonbin.io/v3/b/${targetBinId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'X-Master-Key': MASTER_KEY
             },
-            body: JSON.stringify(abnormalityList)
+            body: JSON.stringify(currentItems)
         });
 
-        const result = await putResponse.json();
-        
-        if (putResponse.ok) {
-            alert("Đã lưu danh sách vào JSONBin thành công!");
-        } else {
-            alert("Lưu thất bại!");
-        }
+        alert("Lưu dữ liệu thành công (Đã tự động quản lý phân vùng Bin)!");
 
     } catch (error) {
-        console.error("Lỗi kết nối:", error);
-        alert("Không thể kết nối tới server JSONBin!");
+        console.error("Lỗi hệ thống Sharding:", error);
+        alert("Có lỗi xảy ra khi lưu trữ phân vùng!");
     }
 });
+
+async function createNewBinAtJSONBin() {
+    const response = await fetch('https://api.jsonbin.io/v3/b', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Master-Key': MASTER_KEY,
+            'X-Bin-Name': 'Abnormality_Partition'
+        },
+        body: JSON.stringify([])
+    });
+    const result = await response.json();
+    return result.metadata.id;
+}
+
+async function updateMasterBin(binList) {
+    await fetch(`https://api.jsonbin.io/v3/b/${MASTER_BIN_ID}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Master-Key': MASTER_KEY
+        },
+        body: JSON.stringify({ binList: binList })
+    });
+}

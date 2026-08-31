@@ -34,20 +34,13 @@
         <!-- Template chi tiết dị thể (Sẽ hiển thị khi click vào một card ở danh sách) -->
         <div id="abnormality-detail-template" style="display: none;">
             <div class="Base-Layout-Wrapper">
-              <input type="checkbox" id="toggle-obs" class="Modal-Toggle">
-              <input type="checkbox" id="toggle-favour" class="Modal-Toggle">
-              <input type="checkbox" id="toggle-tips" class="Modal-Toggle">
-              <input type="checkbox" id="toggle-ego" class="Modal-Toggle">
-              <input type="checkbox" id="toggle-escape" class="Modal-Toggle">
-              <input type="checkbox" id="toggle-appendix" class="Modal-Toggle">
-
               <div class="sidebar-menu">
-                <label for="toggle-obs" class="skeleton"><div class="inner">Observation Level</div></label>
-                <label for="toggle-favour" class="skeleton"><div class="inner">Work Favour</div></label>
-                <label for="toggle-tips" class="skeleton"><div class="inner">Management Tips</div></label>
-                <label for="toggle-ego" class="skeleton"><div class="inner">E.G.O Equipments</div></label>
-                <label for="toggle-escape" class="skeleton"><div class="inner">Escape Info</div></label>
-                <label for="toggle-appendix" class="skeleton"><div class="inner">Appendix</div></label>
+                <label class="skeleton" onclick="openModalById('modal-obs')"><div class="inner">Observation Level</div></label>
+                <label class="skeleton" onclick="openModalById('modal-favour')"><div class="inner">Work Favour</div></label>
+                <label class="skeleton" onclick="openModalById('modal-tips')"><div class="inner">Management Tips</div></label>
+                <label class="skeleton" onclick="openModalById('modal-ego')"><div class="inner">E.G.O Equipments</div></label>
+                <label class="skeleton" onclick="openModalById('modal-escape')"><div class="inner">Escape Info</div></label>
+                <label class="skeleton" onclick="openModalById('modal-appendix')"><div class="inner">Appendix</div></label>
               </div>
 
               <div class="Base-Container-Border">

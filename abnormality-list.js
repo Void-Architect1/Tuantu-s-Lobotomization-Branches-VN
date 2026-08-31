@@ -84,7 +84,6 @@ async function loadAllAbnormalitiesFromShards() {
                 });
                 const binData = await binRes.json();
                 
-                // QUAN TRỌNG: Dữ liệu mảng các dị thể nằm bên trong binData.record
                 const actualRecords = binData.record;
                 
                 if (Array.isArray(actualRecords)) {
@@ -108,6 +107,7 @@ async function loadAllAbnormalitiesFromShards() {
         allAbnormalities.forEach(item => {
             const info = item.baseInfo || {};
             const abvId = info.id || "Unknown";
+            if (abvId === "DUMMY") return;
             const abvRisk = (info.risk || "zayin").toLowerCase(); 
             const abvImage = info.image || DEFAULT_IMAGE;
 

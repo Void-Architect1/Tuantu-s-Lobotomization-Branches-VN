@@ -134,24 +134,48 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   }
 
-  for (let level = 1; level <= 4; level++) {
-      const inputObs = document.getElementById(`in-obs-${level}`);
-      const outputObs = document.getElementById(`out-obs-${level}`);
-      if (inputObs && outputObs) {
-          inputObs.addEventListener("input", (e) => {
-              outputObs.innerHTML = parseCustomEmojis(e.target.value);
-          });
-      }
-  }
+for (let level = 1; level <= 7; level++) {
+    const inputTips = document.getElementById(`in-tips-${level}`);
+    const outputTips = document.getElementById(`out-tips-${level}`);
+    if (inputTips && outputTips) {
+        const updateTipState = () => {
+            const rawVal = inputTips.value;
+            outputTips.innerHTML = parseCustomEmojis(rawVal);
+            const parentItem = outputTips.closest('.dynamic-tip, .tips-item');
+            if (parentItem) {
+                const cleanTxt = clean(rawVal.trim());
+                if (!cleanTxt || rawVal.includes("{$") || cleanTxt.startsWith("MANAGEMENT_TIPS_")) {
+                    parentItem.style.display = 'none';
+                } else {
+                    parentItem.style.display = 'block';
+                }
+            }
+        };
+        updateTipState();
+        inputTips.addEventListener("input", updateTipState);
+    }
 
-  for (let level = 1; level <= 7; level++) {
-      const inputTips = document.getElementById(`in-tips-${level}`);
-      const outputTips = document.getElementById(`out-tips-${level}`);
-      if (inputTips && outputTips) {
-          inputTips.addEventListener("input", (e) => {
-              outputTips.innerHTML = parseCustomEmojis(e.target.value);
-          });
-      }
+    const inputTipsCost = document.getElementById(`in-tipscost-${level}`);
+    const outputTipsCost = document.getElementById(`out-tipscost-${level}`);
+    if (inputTipsCost && outputTipsCost) {
+        const updateCostState = () => {
+            const rawVal = inputTipsCost.value;
+            outputTipsCost.innerHTML = parseCustomEmojis(rawVal);
+            const parentItem = outputTipsCost.closest('.dynamic-tip, .tips-item');
+            if (parentItem) {
+                const cleanTxt = clean(rawVal.trim());
+                if (!cleanTxt || rawVal.includes("{$") || cleanTxt.startsWith("MANAGEMENT_TIPS_")) {
+                    parentItem.style.display = 'none';
+                } else {
+                    parentItem.style.display = 'block';
+                }
+            }
+        };
+
+        updateCostState();
+        inputTipsCost.addEventListener("input", updateCostState);
+    }
+}
 
       const inputTipsCost = document.getElementById(`in-tipscost-${level}`);
       const outputTipsCost = document.getElementById(`out-tipscost-${level}`);

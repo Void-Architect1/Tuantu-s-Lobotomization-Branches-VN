@@ -287,6 +287,52 @@ Object.keys(egoConfig).forEach(type => {
     });
 });
 
+const escapeConfig = ["risk", "hp", "qliphoth", "red", "white", "black", "pale", "passive", "skill", "image", "status", "id", "pe"];
+
+escapeConfig.forEach(prop => {
+    const inputId = `in-escape-${prop}`;
+    const outputId = `out-escape-${prop}`;
+    
+    const inputEl = document.getElementById(inputId);
+    const outputEl = document.getElementById(outputId);
+
+    if (inputEl && outputEl) {
+        const updateField = () => {
+            const val = inputEl.value.trim();
+            
+            if (val === "") {
+                if (prop === "image") {
+                    outputEl.src = "";
+                } else {
+                    outputEl.textContent = "[NO DATA]";
+                }
+                return;
+            }
+            if (prop === "image") {
+                outputEl.src = val;
+            } 
+            else if (prop === "risk") {
+                const upperVal = val.toUpperCase();
+                if (riskIconsMap[upperVal]) {
+                    outputEl.innerHTML = riskIconsMap[upperVal];
+                } else {
+                    outputEl.textContent = val;
+                }
+            }
+            else if (["passive", "skill"].includes(prop)) {
+                outputEl.innerHTML = parseCustomEmojis(val);
+            } 
+            else {
+                outputEl.textContent = val;
+            }
+        };
+
+        updateField();
+        inputEl.addEventListener("input", updateField);
+        inputEl.addEventListener("change", updateField);
+    }
+});
+
   document.querySelectorAll('.form-panel input, .form-panel select, .form-panel textarea').forEach(function(element) {
       element.addEventListener('input', updatePreview);
       element.addEventListener('change', updatePreview);

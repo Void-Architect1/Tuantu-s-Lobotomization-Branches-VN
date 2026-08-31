@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Abnormality List - Tuantu's Lobotomization Branches VN</title>
     <link rel="stylesheet" href="abnormality-list.css">
     <link rel="icon" type="image/png" href="TLB.VN.png">
@@ -9,7 +10,7 @@
 <div class="lobotomy-ui">
     <div class="lob-left-panel">
         <div class="lob-header">
-            <img src="https://tlb-vn.wikidot.com/local--files/home:home/TLB.VN.png" alt="Logo" class="lob-logo-img">
+            <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/TLB.VN.png?raw=true" alt="Logo" class="lob-logo-img">
             <div class="lob-title">THE ABNORMALITY ENCYCLOPEDIA</div>
         </div>
         <div class="lob-dissolution">
@@ -17,35 +18,394 @@
             <div class="lob-diss-value">100%</div>
         </div>
         <div class="Abnormality-List-Container" id="abnormality-list">
-
+            <!-- Danh sách card dị thể sẽ được JavaScript tự động điền vào đây -->
         </div>
         <a href="javascript:void(0);" id="openCreateModalBtn" class="lob-create-btn">
             <span>+ THÊM DỊ THỂ MỚI</span>
         </a>
     </div>
-    <div class="hide-scrollbar" style="flex: 1; padding: 30px; overflow-y: auto;">
+
+    <div class="hide-scrollbar" style="flex: 1; padding: 30px; overflow-y: auto; position: relative;">
+        
+        <!-- Màn hình chờ ban đầu khi chưa chọn đối tượng -->
         <div class="lob-info-screen">Để bắt đầu hãy chọn một đối tượng để đọc.</div>
+
+        <!-- Template chi tiết dị thể (Sẽ hiển thị khi click vào một card ở danh sách) -->
+        <div id="abnormality-detail-template" style="display: none;">
+            <div class="Base-Layout-Wrapper">
+              <input type="checkbox" id="toggle-obs" class="Modal-Toggle">
+              <input type="checkbox" id="toggle-favour" class="Modal-Toggle">
+              <input type="checkbox" id="toggle-tips" class="Modal-Toggle">
+              <input type="checkbox" id="toggle-ego" class="Modal-Toggle">
+              <input type="checkbox" id="toggle-escape" class="Modal-Toggle">
+              <input type="checkbox" id="toggle-appendix" class="Modal-Toggle">
+
+              <div class="sidebar-menu">
+                <label for="toggle-obs" class="skeleton"><div class="inner">Observation Level</div></label>
+                <label for="toggle-favour" class="skeleton"><div class="inner">Work Favour</div></label>
+                <label for="toggle-tips" class="skeleton"><div class="inner">Management Tips</div></label>
+                <label for="toggle-ego" class="skeleton"><div class="inner">E.G.O Equipments</div></label>
+                <label for="toggle-escape" class="skeleton"><div class="inner">Escape Info</div></label>
+                <label for="toggle-appendix" class="skeleton"><div class="inner">Appendix</div></label>
+              </div>
+
+              <div class="Base-Container-Border">
+                <div class="Base-Container">
+                  <div class="Header-Title">BASE INFORMATION</div>
+                  
+                  <div class="Main-Content">
+                    <div class="Left-Column">
+                      <div class="Info-Row">
+                        <strong class="Label">Risk Level</strong>
+                        <strong class="Value" id="out-risk"></strong>
+                      </div>
+                      <div class="Info-Row">
+                        <strong class="Label Sub-Class-Label">Subject<br>Classification</strong>
+                        <strong class="Value Big" id="out-id">X-XX-XXX</strong>
+                      </div>
+                      
+                      <div class="Sub-Grid">
+                        <div class="favour-box" style="flex: 1; min-height: 65px; padding: 8px 8px 6px 8px; display: flex !important; flex-direction: column !important; justify-content: space-between !important; align-items: center !important; position: relative !important;">
+                          <span class="favour-title" style="color: #ffffa1; font-size: 13px; position: absolute !important; top: -8px !important; left: 50% !important; transform: translateX(-50%) !important; background: #000 !important; padding: 0 4px !important; white-space: nowrap !important;">Work Damage</span>
+                          <img id="work-dmg-img" src="" alt="Work Damage" class="Icon-Damage" style="display: none; position: static !important; width: 24px !important; height: 24px !important; margin: 2px auto !important; float: none !important;">
+                          <div class="Damage-Info" style="width: 100%; display: flex !important; justify-content: space-between !important; align-items: center !important; margin-top: auto !important; position: static !important;">
+                            <span id="out-work-dmg-type-text" style="display:none;"></span>
+                            <span id="work-dmg-label" style="color: #FF0000; font-weight: bold; font-size: 13px;">TYPE</span>
+                            <span class="Value" id="out-work-dmg" style="color: #ffffa1; font-size: 14px; white-space: nowrap !important; margin-left: 6px !important;"></span>
+                          </div>
+                        </div>
+                        
+                        <div class="favour-box" style="flex: 1; min-height: 65px; padding: 12px 8px 6px 8px; justify-content: center;">
+                          <span class="favour-title" style="color: #ffffa1; font-size: 13px;">Max.E-Boxes</span>
+                          <span class="E-Box-Value" id="out-max-pe" style="font-size: 22px; margin: auto 0 0 0;"></span>
+                        </div>
+                      </div>
+
+                      <div class="favour-box" style="flex-direction: column; min-height: auto; padding: 15px 12px 12px 12px; margin-top: 15px;">
+                        <span class="favour-title" style="color: #ffffa1;">Work Range</span>
+                        <div class="Work-Range-List" style="width: 100%;">
+                          <div class="Work-Row Good">
+                            <span class="Work-Label">
+                              <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Good.webp?raw=true" class="Icon-Result" alt="Good"> Good
+                            </span>
+                            <span id="out-good">XX</span>
+                          </div>
+                          <div class="Work-Row Neutral">
+                            <span class="Work-Label">
+                              <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Neutral.webp?raw=true" class="Icon-Result" alt="Normal"> Normal
+                            </span>
+                            <span id="out-normal">XX</span>
+                          </div>
+                          <div class="Work-Row Bad">
+                            <span class="Work-Label">
+                              <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Bad.webp?raw=true" class="Icon-Result" alt="Bad"> Bad
+                            </span>
+                            <span id="out-bad">XX</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="Right-Column">
+                      <img class="Abnormality-Image" id="out-image" src="" alt="Item-image">
+                      <div class="Abnormality-Name" id="out-name">Abnormality Name</div>
+                      <div class="Quote" id="out-quote"><em><strong>Quote</strong></em></div>
+                      <details class="Description-Box">
+                        <summary class="Description-Title"></summary>
+                        <div class="Description-Content" id="out-des">Mô tả</div>
+                      </details>
+                    </div>
+                  </div>
+
+                  <div class="PE-Box-Footer">
+                    <div class="PE-Box-Title">PE-Boxes <span id="out-pe-unlock"></span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="modal-obs" class="Overlay-Modal">
+                <div class="Modal-Content">
+                  <div class="obs-container-border">
+                    <div class="obs-container">
+                      <div class="Info-Row" style="margin-bottom: 15px; padding-bottom: 8px;">
+                        <span style="font-size: 18px; font-weight: bold;">OBSERVATION LEVEL</span>
+                        <label for="toggle-obs" class="Btn-Leave-Corner"><span>LEAVE</span></label>
+                      </div>
+                      <div class="obs-row"><div class="obs-level">Level 1 ( 1 Section Unlocked )</div><div class="obs-effect"><span class="obs-type-box"><span class="obs-val" id="out-obs-1"></span></span></div></div>
+                      <div class="obs-row"><div class="obs-level">Level 2 ( 2 Sections Unlocked )</div><div class="obs-effect"><span class="obs-type-box"><span class="obs-val" id="out-obs-2"></span></span></div></div>
+                      <div class="obs-row"><div class="obs-level">Level 3 ( 3 Sections Unlocked )</div><div class="obs-effect"><span class="obs-type-box"><span class="obs-val" id="out-obs-3"></span></span></div></div>
+                      <div class="obs-row"><div class="obs-level">Level 4 ( All Details Unlocked )</div><div class="obs-effect"><span class="obs-type-box"><span class="obs-val" id="out-obs-4"></span></span><span>Unlocks The Appendix</span></div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="modal-favour" class="Overlay-Modal">
+                <div class="Modal-Content">
+                  <div class="obs-container-border">
+                    <div class="obs-container">
+                      <div class="Info-Row" style="margin-bottom: 20px; padding-bottom: 8px; padding-right: 110px;">
+                        <span style="font-size: 18px; font-weight: bold;">ABNORMALITY WORK FAVOUR</span>
+                        <label for="toggle-favour" class="Btn-Leave-Corner" style="margin-left: 10px;"><span>LEAVE</span></label>
+                      </div>
+                      <div class="favour-grid">
+                        <div class="favour-box">
+                          <span class="favour-title" style="color: #FF5555;">Instinct</span>
+                          <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Instinct.webp?raw=true" class="favour-icon" alt="Instinct">
+                          <div class="favour-levels">
+                            <div class="favour-row"><span>I</span> <span id="out-instinct-1"></span></div>
+                            <div class="favour-row"><span>II</span> <span id="out-instinct-2"></span></div>
+                            <div class="favour-row"><span>III</span> <span id="out-instinct-3"></span></div>
+                            <div class="favour-row"><span>IV</span> <span id="out-instinct-4"></span></div>
+                            <div class="favour-row"><span>V</span> <span id="out-instinct-5"></span></div>
+                          </div>
+                        </div>
+                        <div class="favour-box">
+                          <span class="favour-title" style="color: #ffffa1;">Insight</span>
+                          <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Insight.webp?raw=true" class="favour-icon" alt="Insight">
+                          <div class="favour-levels">
+                            <div class="favour-row"><span>I</span> <span id="out-insight-1"></span></div>
+                            <div class="favour-row"><span>II</span> <span id="out-insight-2"></span></div>
+                            <div class="favour-row"><span>III</span> <span id="out-insight-3"></span></div>
+                            <div class="favour-row"><span>IV</span> <span id="out-insight-4"></span></div>
+                            <div class="favour-row"><span>V</span> <span id="out-insight-5"></span></div>
+                          </div>
+                        </div>
+                        <div class="favour-box">
+                          <span class="favour-title" style="color: #CC66FF;">Attachment</span>
+                          <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Attachment.webp?raw=true" class="favour-icon" alt="Attachment">
+                          <div class="favour-levels">
+                            <div class="favour-row"><span>I</span> <span id="out-attachment-1"></span></div>
+                            <div class="favour-row"><span>II</span> <span id="out-attachment-2"></span></div>
+                            <div class="favour-row"><span>III</span> <span id="out-attachment-3"></span></div>
+                            <div class="favour-row"><span>IV</span> <span id="out-attachment-4"></span></div>
+                            <div class="favour-row"><span>V</span> <span id="out-attachment-5"></span></div>
+                          </div>
+                        </div>
+                        <div class="favour-box">
+                          <span class="favour-title" style="color: #55FFFF;">Repression</span>
+                          <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Repression.webp?raw=true" class="favour-icon" alt="Repression">
+                          <div class="favour-levels">
+                            <div class="favour-row"><span>I</span> <span id="out-repression-1"></span></div>
+                            <div class="favour-row"><span>II</span> <span id="out-repression-2"></span></div>
+                            <div class="favour-row"><span>III</span> <span id="out-repression-3"></span></div>
+                            <div class="favour-row"><span>IV</span> <span id="out-repression-4"></span></div>
+                            <div class="favour-row"><span>V</span> <span id="out-repression-5"></span></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="modal-tips" class="Overlay-Modal">
+                <div class="Modal-Content">
+                  <div class="tips-wrapper">
+                    <div class="tips-container-border">
+                      <div class="tips-container">
+                        <div class="Info-Row" style="border-bottom: 2px solid #FF9441; margin-bottom: 15px; padding-bottom: 8px; padding-right: 110px;">
+                          <span style="font-size: 18px; font-weight: bold; color: #FF9441;">ABNORMALITY MANAGEMENT TIPS</span>
+                          <label for="toggle-tips" class="Btn-Leave-Corner" style="margin-left: 10px;"><span>LEAVE</span></label>
+                        </div>
+                        <div class="tips-item dynamic-tip"><div class="tips-header-box"><span class="tips-title">Managerial Guidelines 1</span><span class="tips-cost">PE-Boxes <span id="out-tipscost-1"></span></span></div><div class="tips-text" id="out-tips-1"></div></div>
+                        <div class="tips-item dynamic-tip"><div class="tips-header-box"><span class="tips-title">Managerial Guidelines 2</span><span class="tips-cost">PE-Boxes <span id="out-tipscost-2"></span></span></div><div class="tips-text" id="out-tips-2"></div></div>
+                        <div class="tips-item dynamic-tip"><div class="tips-header-box"><span class="tips-title">Managerial Guidelines 3</span><span class="tips-cost">PE-Boxes <span id="out-tipscost-3"></span></span></div><div class="tips-text" id="out-tips-3"></div></div>
+                        <div class="tips-item dynamic-tip"><div class="tips-header-box"><span class="tips-title">Managerial Guidelines 4</span><span class="tips-cost">PE-Boxes <span id="out-tipscost-4"></span></span></div><div class="tips-text" id="out-tips-4"></div></div>
+                        <div class="tips-item dynamic-tip"><div class="tips-header-box"><span class="tips-title">Managerial Guidelines 5</span><span class="tips-cost">PE-Boxes <span id="out-tipscost-5"></span></span></div><div class="tips-text" id="out-tips-5"></div></div>
+                        <div class="tips-item dynamic-tip"><div class="tips-header-box"><span class="tips-title">Managerial Guidelines 6</span><span class="tips-cost">PE-Boxes <span id="out-tipscost-6"></span></span></div><div class="tips-text" id="out-tips-6"></div></div>
+                        <div class="tips-item dynamic-tip"><div class="tips-header-box"><span class="tips-title">Managerial Guidelines 7</span><span class="tips-cost">PE-Boxes <span id="out-tipscost-7"></span></span></div><div class="tips-text" id="out-tips-7"></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="modal-ego" class="Overlay-Modal">
+                <div class="Modal-Content">
+                  <div class="obs-container-border">
+                    <div class="obs-container" style="padding-top: 50px;">
+                      <label for="toggle-ego" class="Btn-Leave-Corner"><span>LEAVE</span></label>
+                      <input type="radio" id="ego-tab-1" name="ego-tabs" class="ego-tab-radio" checked>
+                      <input type="radio" id="ego-tab-2" name="ego-tabs" class="ego-tab-radio">
+                      <input type="radio" id="ego-tab-3" name="ego-tabs" class="ego-tab-radio">
+                      <div class="ego-tab-buttons">
+                        <label for="ego-tab-1" class="ego-tab-btn">WEAPON</label>
+                        <label for="ego-tab-2" class="ego-tab-btn">SUIT</label>
+                        <label for="ego-tab-3" class="ego-tab-btn">GIFT</label>
+                      </div>
+                      <div class="ego-content-area">
+                        <div id="ego-panel-weapon" class="ego-panel">
+                          <div class="Info-Row" style="border-bottom: none;"><span style="font-size: 18px; font-weight: bold; width: 100%; text-align: right;">E.G.O WEAPON</span></div>
+                          <div class="ego-grid">
+                            <div class="ego-left">
+                              <div class="ego-row"><span>Grade</span><span class="Rainbow-Level dynamic-risk" id="out-weapon-grade"></span></div>
+                              <div class="ego-row"><span>Cost</span><span><img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/EBoxIcon.webp?raw=true" style="width:14px; vertical-align:-2px;"> <span id="out-weapon-cost"></span></span></div>
+                              <div class="ego-row"><span>Max Amount</span><span id="out-weapon-amount"></span></div>
+                              <div class="ego-row" style="flex-direction:column; align-items:stretch; gap:2px;"><span>Damage</span><span id="out-weapon-damage" style="text-align:right;"></span></div>
+                              <div class="ego-row"><span>Attack Speed</span><span id="out-weapon-speed"></span></div>
+                              <div class="ego-row"><span>Attack Range</span><span id="out-weapon-range"></span></div>
+                              <div style="font-weight:bold; font-size:12px; margin-top:5px;">Passive</div>
+                              <div class="ego-desc-text" id="out-weapon-passive"></div>
+                              <div style="font-weight:bold; font-size:12px; margin-top:5px;">Requirements</div>
+                              <div class="ego-stat-box"><div class="stat-item"><span id="out-weapon-require"></span></div></div>
+                            </div>
+                            <div class="ego-right">
+                              <img src="" class="ego-img-box" id="out-weapon-image" alt="Weapon Image">
+                              <div class="ego-name" id="out-weapon-name"></div>
+                              <details class="Description-Box"><summary class="Description-Title"></summary><div class="Description-Content" id="out-weapon-des"></div></details>
+                            </div>
+                          </div>
+                          <div class="ego-footer-obs">Observation Level <span id="out-weapon-obs"></span></div>
+                        </div>
+                        <div id="ego-panel-suit" class="ego-panel">
+                          <div class="Info-Row" style="border-bottom: none;"><span style="font-size: 18px; font-weight: bold; width: 100%; text-align: right;">E.G.O SUIT</span></div>
+                          <div class="ego-grid">
+                            <div class="ego-left">
+                              <div class="ego-row"><span>Grade</span><span class="Rainbow-Level dynamic-risk" id="out-suit-grade"></span></div>
+                              <div class="ego-row"><span>Cost</span><span><img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/EBoxIcon.webp?raw=true" style="width:14px; vertical-align:-2px;"> <span id="out-suit-cost"></span></span></div>
+                              <div class="ego-row"><span>Max Amount</span><span id="out-suit-amount"></span></div>
+                              <div class="ego-row" style="color:#FF5555;"><span style="display: flex; align-items: center; gap: 5px;"><img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Red.webp?raw=true" class="dmg-icon" alt="Red"> RED Defense</span><span id="out-suit-red"></span></div>
+                              <div class="ego-row" style="color:#F3F3F3;"><span style="display: flex; align-items: center; gap: 5px;"><img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/White.webp?raw=true" class="dmg-icon" alt="White"> WHITE Defense</span><span id="out-suit-white"></span></div>
+                              <div class="ego-row" style="color:#CC66FF;"><span style="display: flex; align-items: center; gap: 5px;"><img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Black.webp?raw=true" class="dmg-icon" alt="Black"> BLACK Defense</span><span id="out-suit-black"></span></div>
+                              <div class="ego-row" style="color:#55FFFF;"><span style="display: flex; align-items: center; gap: 5px;"><img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Pale.webp?raw=true" class="dmg-icon" alt="Pale"> PALE Defense</span><span id="out-suit-pale"></span></div>
+                              <div style="font-weight:bold; font-size:12px; margin-top:5px;">Passive</div>
+                              <div class="ego-desc-text" id="out-suit-passive"></div>
+                              <div style="font-weight:bold; font-size:12px; margin-top:5px;">Requirements</div>
+                              <div class="ego-stat-box"><div class="stat-item"><span id="out-suit-require"></span></div></div>
+                            </div>
+                            <div class="ego-right">
+                              <img src="" class="ego-img-box" id="out-suit-image" alt="Suit Image">
+                              <div class="ego-name" id="out-suit-name"></div>
+                              <details class="Description-Box"><summary class="Description-Title"></summary><div class="Description-Content" id="out-suit-des"></div></details>
+                            </div>
+                          </div>
+                          <div class="ego-footer-obs">Observation Level <span id="out-suit-obs"></span></div>
+                        </div>
+                        <div id="ego-panel-gift" class="ego-panel">
+                          <div class="Info-Row" style="border-bottom: none;"><span style="font-size: 18px; font-weight: bold; width: 100%; text-align: right;">E.G.O GIFT</span></div>
+                          <div class="ego-grid">
+                            <div class="ego-left">
+                              <div class="ego-row"><span>Chance</span><span id="out-gift-chance"></span></div>
+                              <div style="font-weight:bold; font-size:12px; margin-top:5px;">Stats</div>
+                              <div class="ego-stat-box"><div class="stat-item"><span id="out-gift-stats"></span></div></div>
+                              <div style="font-weight:bold; font-size:12px; margin-top:10px;">Passive</div>
+                              <div class="ego-desc-text" id="out-gift-passive"></div>
+                            </div>
+                            <div class="ego-right">
+                              <img src="" class="ego-img-box" id="out-gift-image" alt="Gift Image">
+                              <div class="ego-name" id="out-gift-name"></div>
+                              <details class="Description-Box"><summary class="Description-Title"></summary><div class="Description-Content" id="out-gift-des"></div></details>
+                            </div>
+                          </div>
+                          <div class="ego-footer-obs">Observation Level <span id="out-gift-obs"></span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="modal-escape" class="Overlay-Modal">
+                <div class="Modal-Content">
+                  <div class="obs-container-border">
+                    <div class="obs-container">
+                      <label for="toggle-escape" class="Btn-Leave-Corner" style="margin-left: 10px;"><span>LEAVE</span></label>
+                      <div class="Info-Row" style="margin-bottom: 15px; padding-bottom: 8px; padding-right: 110px;">
+                        <span style="font-size: 18px; font-weight: bold;">ABNORMALITY ESCAPE INFORMATION</span>
+                      </div>
+                      <div class="ego-grid">
+                        <div class="ego-left">
+                          <div class="ego-row"><span>Risk Level</span><span class="Rainbow-Level dynamic-risk" id="out-escape-risk"></span></div>
+                          <div class="ego-row"><span>Health</span><span id="out-escape-hp"></span></div>
+                          <div class="Sub-Grid" style="margin: 10px 0;">
+                            <div class="favour-box" style="flex: 1; min-height: 75px; padding: 12px 8px 6px 8px; justify-content: center;">
+                              <span class="favour-title" style="color: #ffffa1; font-size: 9px;">QLIPHOTH COUNTER</span>
+                              <div style="display: flex; align-items: center; gap: 8px; margin: auto 0 0 0;">
+                                <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Qliphoth.webp?raw=true" style="width: 22px; height: 22px; object-fit: contain;">
+                                <span style="font-size: 20px; font-weight: bold; color: #FF9900;" id="out-escape-qliphoth"></span>
+                              </div>
+                            </div>
+                            <div class="favour-box" style="flex: 1; min-height: 75px; padding: 12px 8px 6px 8px; justify-content: center;">
+                              <span class="favour-title" style="color: #ffffa1; font-size: 9px;">ABNORMALITY DEFENSE</span>
+                              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; width: 100%; font-size: 11px; font-weight: bold; margin: auto 0 0 0;">
+                                <span style="color: #FF5555; text-align: center;" id="out-escape-red"></span><img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Red.webp?raw=true" class="dmg-icon">
+                                <span style="color: #FFFF99; text-align: center;" id="out-escape-white"></span><img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/White.webp?raw=true" class="dmg-icon">
+                                <span style="color: #CC66FF; text-align: center;" id="out-escape-black"></span><img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Black.webp?raw=true" class="dmg-icon">
+                                <span style="color: #55FFFF; text-align: center;" id="out-escape-pale"></span><img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Pale.webp?raw=true" class="dmg-icon">
+                              </div>
+                            </div>
+                          </div>
+                          <details class="Description-Box">
+                            <summary class="Description-Title" style="width: 100%; box-sizing: border-box; text-align: center; border: 1px solid #FFFFA1; background: #FFFFA1; color: #12110c; margin-bottom: 5px;">PASSIVE</summary>
+                            <div class="Description-Content" style="border-top: 1px dashed #FFFFA1;"><span id="out-escape-passive"></span></div>
+                          </details>
+                          <details class="Description-Box" style="margin-top: 10px;">
+                            <summary class="Description-Title" style="width: 100%; box-sizing: border-box; text-align: center; border: 1px solid #FFFFA1; background: #FFFFA1; color: #12110c; margin-bottom: 5px;">SKILL</summary>
+                            <div class="Description-Content" style="border-top: 1px dashed #FFFFA1;"><span id="out-escape-skill"></span></div>
+                          </details>
+                        </div>
+                        <div class="ego-right">
+                          <img src="" id="out-escape-image" class="ego-img-box" alt="Escape Image">
+                          <div class="ego-name dynamic-escape-status" style="font-size: 14px; margin-top: 10px;" id="out-escape-status"></div>
+                          <div style="border-top: 1px solid #FFFFA1; margin-top: 8px; padding-top: 8px; text-align: center;">
+                            <div style="font-size: 11px; font-weight: bold;">SUBJECT CLASSIFICATION</div>
+                            <div style="font-size: 16px; font-weight: bold;" id="out-escape-id"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="PE-Box-Footer" style="margin-top: 15px;">
+                        <div class="PE-Box-Title" style="font-size: 14px; padding: 4px 15px;">PE-Boxes <span id="out-escape-pe"></span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="modal-appendix" class="Overlay-Modal">
+                <div class="Modal-Content">
+                  <div class="appendix-wrapper">
+                    <div class="appendix-container-border">
+                      <div class="appendix-container">
+                        <label for="toggle-appendix" class="Btn-Leave-Corner" style="margin-left: 10px;"><span>LEAVE</span></label>
+                        <div class="Info-Row" style="border-bottom: 2px solid #FF9441; margin-bottom: 15px; padding-bottom: 8px; padding-right: 110px;">
+                          <span style="font-size: 18px; font-weight: bold; color: #FF9441;">ABNORMALITY APPENDIX</span>
+                        </div>
+                        <div class="appendix-item dynamic-appendix"><span class="appendix-title" id="out-titleappendix-1">BUG</span><div class="appendix-text" id="out-appendix-1">BUG</div></div>
+                        <div class="appendix-item dynamic-appendix"><span class="appendix-title" id="out-titleappendix-2">BUG</span><div class="appendix-text" id="out-appendix-2">BUG</div></div>
+                        <div class="appendix-item dynamic-appendix"><span class="appendix-title" id="out-titleappendix-3">BUG</span><div class="appendix-text" id="out-appendix-3">BUG</div></div>
+                        <div class="appendix-item dynamic-appendix"><span class="appendix-title" id="out-titleappendix-4">BUG</span><div class="appendix-text" id="out-appendix-4">BUG</div></div>
+                        <div class="appendix-item dynamic-appendix"><span class="appendix-title" id="out-titleappendix-5">BUG</span><div class="appendix-text" id="out-appendix-5">BUG</div></div>
+                        <div class="appendix-item dynamic-appendix"><span class="appendix-title" id="out-titleappendix-6">BUG</span><div class="appendix-text" id="out-appendix-6">BUG</div></div>
+                        <div class="appendix-item dynamic-appendix"><span class="appendix-title" id="out-titleappendix-7">BUG</span><div class="appendix-text" id="out-appendix-7">BUG</div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+        </div>
     </div>
+
     <a href="index.html" class="Btn-Leave-Corner" target="_top">
         <span>CLOSE</span>
     </a>
 </div>
+
 <div id="createChoiceModal" class="lob-modal-overlay">
     <div class="lob-modal-box">
         <a href="javascript:void(0);" id="closeChoiceModal" class="Btn-Leave-Corner modal-close-corner">
-        <span>CLOSE</span>
+            <span>CLOSE</span>
         </a>
         <div class="lob-modal-title">CHỌN LOẠI DỊ THỂ BẠN MUỐN TẠO</div>
         <div class="lob-modal-options">
-            <a href="abnormality-template.html" class="lob-modal-option-btn" target="_top">
-                + Abnormality
-            </a>
-            <a href="http://tlb-vn.wikidot.com/abnormality-list:_new" class="lob-modal-option-btn" target="_top">
-                + Abnormality-Tool
-            </a>
+            <a href="abnormality-template.html" class="lob-modal-option-btn" target="_top">+ Abnormality</a>
+            <a href="http://tlb-vn.wikidot.com/abnormality-list:_new" class="lob-modal-option-btn" target="_top">+ Abnormality-Tool</a>
         </div>
     </div>
 </div>
+
 <script src="abnormality-list.js"></script>
 </body>
 </html>

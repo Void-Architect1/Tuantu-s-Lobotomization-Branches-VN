@@ -250,17 +250,26 @@ Object.keys(egoConfig).forEach(type => {
 
         if (inputEl && outputEl) {
             const updateField = () => {
-                const val = inputEl.value;
+                const val = inputEl.value.trim();
                 
+                if (val === "") {
+                    if (prop === "image") {
+
+                        outputEl.src = ""; 
+                    } else {
+                        outputEl.textContent = "[NO DATA]";
+                    }
+                    return;
+                }
                 if (prop === "image") {
                     outputEl.src = val;
                 } 
                 else if (prop === "grade") {
-                    const upperVal = val.trim().toUpperCase();
+                    const upperVal = val.toUpperCase();
                     if (riskIconsMap[upperVal]) {
                         outputEl.innerHTML = riskIconsMap[upperVal];
                     } else {
-                        outputEl.textContent = val;
+                        outputEl.textContent = val; 
                     }
                 }
                 else if (["passive", "require", "des", "stats", "damage"].includes(prop)) {

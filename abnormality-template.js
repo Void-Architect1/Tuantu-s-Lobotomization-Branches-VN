@@ -258,3 +258,38 @@ function parseCustomEmojis(text) {
         return emojiMap[match] || match; 
     });
 }
+
+(function initScrollIndicators() {
+  const SELECTORS = '.appendix-container, .tips-container, .Description-Content, .obs-container';
+  function attachScrollListener(box) {
+    if (box.dataset.hasScrollListener) return;
+    box.dataset.hasScrollListener = "true";
+    const checkScroll = () => {
+      const wrapper = box.closest('.appendix-wrapper, .tips-wrapper, .obs-container-wrapper') || box.parentElement; 
+      if (!wrapper) return;
+      if (box.scrollTop <= 5) {
+        wrapper.classList.add('hide-top-arrow');
+      } else {
+        wrapper.classList.remove('hide-top-arrow');
+      }
+      const isAtBottom = box.scrollHeight - box.scrollTop <= box.clientHeight + 25;
+      if (isAtBottom) {
+        wrapper.classList.add('hide-arrow');
+      } else {
+        wrapper.classList.remove('hide-arrow');
+      }
+    };
+    checkScroll();
+    box.addEventListener('scroll', checkScroll);
+  }
+  function scanAndApply() {
+    document.querySelectorAll(SELECTORS).forEach(attachScrollListener);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scanAndApply);
+  } else {
+    scanAndApply();
+  }
+  const observer = new MutationObserver(() => scanAndApply());
+  observer.observe(document.body, { childList: true, subtree: true });
+})();

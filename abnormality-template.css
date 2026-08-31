@@ -1,3 +1,11 @@
+body { display: flex; font-family: sans-serif; background: #111; color: #fff; margin: 0; }
+.form-panel { width: 40%; padding: 20px; background: #1a1a1a; height: 100vh; overflow-y: auto; box-sizing: border-box; border-right: 2px solid #333; }
+.preview-panel { width: 60%; padding: 20px; height: 100vh; overflow-y: auto; box-sizing: border-box; }
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #ddd; }
+.form-group input, .form-group textarea, .form-group select { width: 100%; padding: 8px; background: #222; border: 1px solid #444; color: #fff; border-radius: 4px; box-sizing: border-box; }
+button { background: #d9534f; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; font-weight: bold; width: 100%; margin-top: 10px; }
+button:hover { background: #c9302c; }
 .Base-Layout-Wrapper {
   display: flex;
   align-items: flex-start;
@@ -904,4 +912,11 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
   .Modal-Content {
     width: 98%;
   }
+}
+
+.inline-icon {
+    height: 1.2em;
+    width: auto;
+    vertical-align: middle;
+    margin: 0 2px;
 }

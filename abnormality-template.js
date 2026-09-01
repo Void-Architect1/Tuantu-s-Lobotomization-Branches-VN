@@ -587,7 +587,7 @@ document.getElementById("btn-save").addEventListener("click", async function() {
     
     const rawRisk = currentAbnormality.baseInfo.risk || "zayin";
     const riskCategory = rawRisk.toLowerCase().trim(); // zayin, teth, he, waw, aleph
-    const targetFilePath = `data/abnormality-${riskCategory}.json`;
+    const targetFilePath = `abnormality-${riskCategory}.json`;
 
     try {
         let masterFile = await getGitHubFile(MASTER_JSON_PATH);

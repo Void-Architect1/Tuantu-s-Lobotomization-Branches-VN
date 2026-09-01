@@ -24,12 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Tự động tải danh sách dị thể khi mở trang
     loadAllAbnormalitiesFromShards();
 });
 
-// THÔNG TIN KẾT NỐI GITHUB (Thay link Raw của file master.json vào đây)
-const MASTER_JSON_URL = "https://raw.githubusercontent.com/TÊN_USER/TÊN_REPO/main/master.json"; 
+
+const MASTER_JSON_URL = "https://raw.githubusercontent.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN-Database/refs/heads/main/abnormality-list.json?token=GHSAT0AAAAAAEHJTFJZTAGSUCPUPBNQKKNO2UWJBBQ"; 
 
 var DEFAULT_IMAGE = "https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/placeholder.webp?raw=true";
 
@@ -66,7 +65,6 @@ async function loadAllAbnormalitiesFromShards() {
     listContainer.innerHTML = "<div style='color: #777; font-size: 11px; padding: 10px;'>Đang tải dữ liệu từ GitHub...</div>";
 
     try {
-        // Gọi thẳng link tĩnh file master JSON trên GitHub không cần Header rườm rà nữa
         const masterRes = await fetch(MASTER_JSON_URL);
         const masterData = await masterRes.json();
         
@@ -143,7 +141,6 @@ function fillDataToDetailTemplate(item) {
 
     const info = item.baseInfo || {};
 
-    // 1. Base Info
     safeSetText('out-id', info.id);
     safeSetText('out-name', info.name);
     
@@ -193,7 +190,6 @@ function fillDataToDetailTemplate(item) {
     safeSetText('out-max-pe', info.maxPE || "");
     safeSetText('out-pe-unlock', info.peUnlock || "");
 
-    // 2. Observation Levels
     const obsLevels = item.observationLevels || {};
     for (let level = 1; level <= 4; level++) {
         const outputObs = document.getElementById(`out-obs-${level}`);
@@ -209,7 +205,6 @@ function fillDataToDetailTemplate(item) {
         }
     }
 
-    // 3. Management Tips
     const tipsArr = item.managementTips || [];
     for (let level = 1; level <= 7; level++) {
         const tipData = tipsArr[level - 1] || {};
@@ -236,7 +231,6 @@ function fillDataToDetailTemplate(item) {
         }
     }
 
-    // 4. Appendix / Story
     const appendixArr = item.appendix || [];
     for (let level = 1; level <= 7; level++) {
         const appData = appendixArr[level - 1] || {};
@@ -263,7 +257,6 @@ function fillDataToDetailTemplate(item) {
         }
     }
 
-    // 5. Work Types Favour
     const workTypes = ["instinct", "insight", "attachment", "repression"];
     workTypes.forEach(type => {
         for (let level = 1; level <= 5; level++) {
@@ -275,7 +268,6 @@ function fillDataToDetailTemplate(item) {
         }
     });
 
-    // 6. E.G.O Equipment
     const egoConfig = {
         weapon: ["grade", "cost", "amount", "damage", "speed", "range", "passive", "require", "name", "image", "des", "obs"],
         suit:   ["grade", "cost", "amount", "red", "white", "black", "pale", "passive", "require", "name", "image", "des", "obs"],
@@ -305,7 +297,6 @@ function fillDataToDetailTemplate(item) {
         });
     });
 
-    // 7. Escape Info
     const escapeConfig = ["risk", "hp", "qliphoth", "red", "white", "black", "pale", "passive", "skill", "image", "status", "id", "pe"];
     escapeConfig.forEach(prop => {
         const outputEl = document.getElementById(`out-escape-${prop}`);
@@ -362,7 +353,6 @@ function closeModalWithAnimation(modal) {
     }, 350);
 }
 
-// HÀM DỊCH BIỂU TƯỢNG VÀ ICON
 function parseCustomEmojis(text) {
     if (!text) return "";
     const emojiMap = {
@@ -390,7 +380,6 @@ function parseCustomEmojis(text) {
     });
 }
 
-// Tự động kiểm tra và xử lý lỗi ảnh hỏng
 (function initScrollIndicators() {
   const SELECTORS = '.appendix-container, .tips-container, .Description-Content, .obs-container';
   function attachScrollListener(box) {

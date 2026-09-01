@@ -463,9 +463,6 @@ function parseCustomEmojis(text) {
   observer.observe(document.body, { childList: true, subtree: true });
 })();
 
-const MASTER_BIN_ID = "6a956e4fda38895dfe2616b5"; 
-const MASTER_KEY = "$2a$10$h5.pNRAtf4NXNJN73CcjiuShkqM/GdoeYZ92.c9wa.SOuatXz7YhS";
-const MAX_ITEMS_PER_BIN = 100;
 document.getElementById("btn-save").addEventListener("click", async function() {
     const currentAbnormality = {
         baseInfo: {
@@ -533,34 +530,39 @@ document.getElementById("btn-save").addEventListener("click", async function() {
             content: document.getElementById(`in-appendix-${i}`).value
         });
     }
+
     const currentId = currentAbnormality.baseInfo.id;
+    const rawRisk = currentAbnormality.baseInfo.risk || "ZAYIN";
+    const riskLevel = rawRisk.trim().toLowerCase();
+
+    const targetFileName = `abnormality-${riskLevel}.json`;
+
+    const owner = "Void-Architect1";
+    const repo = "Tuantu-s-Lobotomization-Branches-VN";
+    const token = "";
 
     try {
-        const masterUrl = `https://api.jsonbin.io/v3/b/${MASTER_BIN_ID}`;
-        const masterRes = await fetch(masterUrl, {
+        alert("Đang kết nối tới GitHub để lưu dữ liệu...");
+
+        const fileApiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${targetFileName}`;
+
+        let currentItems = [];
+        let fileSha = "";
+
+        const getRes = await fetch(fileApiUrl, {
             method: 'GET',
-            headers: { 'X-Master-Key': MASTER_KEY }
+            headers: { 
+                'Authorization': `token ${token}`,
+                'Accept': 'application/vnd.github.v3+json'
+            }
         });
-        const masterData = await masterRes.json();
-        
-        let binList = masterData.record.binList || [];
 
-        let targetBinId = "";
-
-        if (binList.length === 0) {
-            targetBinId = await createNewBinAtJSONBin();
-            binList.push(targetBinId);
-        } else {
-            targetBinId = binList[binList.length - 1];
+        if (getRes.ok) {
+            const fileData = await getRes.json();
+            fileSha = fileData.sha;
+            const decodedContent = decodeURIComponent(escape(atob(fileData.content)));
+            currentItems = JSON.parse(decodedContent);
         }
-
-        const targetUrl = `https://api.jsonbin.io/v3/b/${targetBinId}`;
-        const targetRes = await fetch(targetUrl, {
-            method: 'GET',
-            headers: { 'X-Master-Key': MASTER_KEY }
-        });
-        const targetData = await targetRes.json();
-        let currentItems = targetData.record;
 
         if (!Array.isArray(currentItems)) {
             currentItems = [];
@@ -571,58 +573,35 @@ document.getElementById("btn-save").addEventListener("click", async function() {
         if (existingIndex !== -1) {
             currentItems[existingIndex] = currentAbnormality;
         } else {
-            if (currentItems.length >= MAX_ITEMS_PER_BIN) {
-                console.log("Bin hiện tại đã đầy, đang tạo Bin mới...");
-                targetBinId = await createNewBinAtJSONBin();
-                binList.push(targetBinId);
-
-                // Cập nhật lại Bin Quản Lý trên mây
-                await updateMasterBin(binList);
-
-                currentItems = [currentAbnormality];
-            } else {
-                currentItems.push(currentAbnormality);
-            }
+            currentItems.push(currentAbnormality);
         }
 
-        await fetch(`https://api.jsonbin.io/v3/b/${targetBinId}`, {
+        const updateBody = {
+            message: `Update abnormality data for ${currentId} in ${targetFileName}`,
+            content: btoa(unescape(encodeURIComponent(JSON.stringify(currentItems, null, 2)))),
+            sha: fileSha
+        };
+
+        const putRes = await fetch(fileApiUrl, {
             method: 'PUT',
             headers: {
+                'Authorization': `token ${token}`,
                 'Content-Type': 'application/json',
-                'X-Master-Key': MASTER_KEY
+                'Accept': 'application/vnd.github.v3+json'
             },
-            body: JSON.stringify(currentItems)
+            body: JSON.stringify(updateBody)
         });
 
-        alert("Lưu dữ liệu thành công (Đã tự động quản lý phân vùng Bin)!");
+        if (putRes.ok) {
+            alert(`Lưu thành công dị thể [${currentId}] vào file ${targetFileName} trên GitHub!`);
+        } else {
+            const errText = await putRes.text();
+            console.error("Lỗi từ GitHub API:", errText);
+            alert("Lưu thất bại! Kiểm tra lại Console để xem chi tiết lỗi.");
+        }
 
     } catch (error) {
-        console.error("Lỗi hệ thống Sharding:", error);
-        alert("Có lỗi xảy ra khi lưu trữ phân vùng!");
+        console.error("Lỗi hệ thống khi lưu GitHub:", error);
+        alert("Có lỗi xảy ra khi kết nối tới GitHub!");
     }
 });
-
-async function createNewBinAtJSONBin() {
-    const response = await fetch('https://api.jsonbin.io/v3/b', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-Master-Key': MASTER_KEY,
-            'X-Bin-Name': 'Abnormality_Partition'
-        },
-        body: JSON.stringify([])
-    });
-    const result = await response.json();
-    return result.metadata.id;
-}
-
-async function updateMasterBin(binList) {
-    await fetch(`https://api.jsonbin.io/v3/b/${MASTER_BIN_ID}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-Master-Key': MASTER_KEY
-        },
-        body: JSON.stringify({ binList: binList })
-    });
-}

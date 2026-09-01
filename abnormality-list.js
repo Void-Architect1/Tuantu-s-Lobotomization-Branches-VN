@@ -1,3 +1,8 @@
+const SUPABASE_URL = "https://tlgbnahlzsvwxsydnjpo.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_VHq3KL7PZbSHtCDYZQ061w_CIVWJFeI";
+
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 document.addEventListener("DOMContentLoaded", () => {
     const openBtn = document.getElementById("openCreateModalBtn");
     const modal = document.getElementById("createChoiceModal");
@@ -24,11 +29,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    loadAllAbnormalitiesFromShards();
+    // Tự động tải danh sách dị thể từ Supabase khi mở trang
+    loadAllAbnormalitiesFromSupabase();
 });
-
-
-const MASTER_JSON_URL = "https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN-Database/blob/main/abnormality-list.json"; 
 
 var DEFAULT_IMAGE = "https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/placeholder.webp?raw=true";
 
@@ -59,60 +62,32 @@ function clean(str) {
     return str.replace(/[{}$]/g, '').trim();
 }
 
-const REPO_OWNER = "Void-Architect1";              
-const REPO_NAME = "Tuantu-s-Lobotomization-Branches-VN-Database"; 
-const BRANCH = "main";
-const MASTER_LIST_PATH = "abnormality-list.json";
-
-async function loadAllAbnormalitiesFromShards() {
+// HÀM TẢI DỮ LIỆU THAY THẾ CHO JSONBIN SHARDING
+async function loadAllAbnormalitiesFromSupabase() {
     const listContainer = document.getElementById("abnormality-list");
     if (!listContainer) return;
-    listContainer.innerHTML = "<div style='color: #777; font-size: 11px; padding: 10px;'>Đang tải dữ liệu từ GitHub...</div>";
+    listContainer.innerHTML = "<div style='color: #777; font-size: 11px; padding: 10px;'>Đang tải dữ liệu từ Supabase...</div>";
 
     try {
-        const masterUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${MASTER_LIST_PATH}`;
-        const masterRes = await fetch(masterUrl);
-        
-        if (!masterRes.ok) {
-            throw new Error("Không thể tải file danh sách chính abnormality-list.json");
-        }
-        
-        const masterData = await masterRes.json();
-        const riskFilesMap = masterData.riskFiles || {}; // { zayin: "url...", teth: "url...", ... }
+        // Truy vấn thẳng vào bảng abnormalities, lấy cột data chứa toàn bộ object JSON
+        const { data, error } = await supabaseClient
+            .from('abnormalities')
+            .select('data');
 
-        let allAbnormalities = [];
-
-        const riskKeys = Object.keys(riskFilesMap);
-        
-        for (let riskKey of riskKeys) {
-            const fileUrl = riskFilesMap[riskKey];
-            if (!fileUrl) continue;
-
-            try {
-                const fileRes = await fetch(fileUrl);
-                if (!fileRes.ok) continue;
-                
-                const fileRecords = await fileRes.json();
-                
-                if (Array.isArray(fileRecords)) {
-                    allAbnormalities = allAbnormalities.concat(fileRecords);
-                } else if (fileRecords && typeof fileRecords === 'object') {
-                    allAbnormalities.push(fileRecords);
-                }
-            } catch (err) {
-                console.error(`Không thể tải dữ liệu từ file risk: ${riskKey}`, err);
-            }
+        if (error) {
+            throw error;
         }
 
         listContainer.innerHTML = "";
 
-        if (allAbnormalities.length === 0) {
+        if (!data || data.length === 0) {
             listContainer.innerHTML = "<div style='color: #777; font-size: 11px; padding: 10px;'>Chưa có dị thể nào.</div>";
             return;
         }
 
-        // 3. Render danh sách thẻ dị thể ra giao diện
-        allAbnormalities.forEach(item => {
+        // data trả về dạng [{ data: {...}, data: {...} }]
+        data.forEach(row => {
+            const item = row.data; // Lấy cục JSON gốc bên trong cột data
             const info = item.baseInfo || {};
             const abvId = info.id || "Unknown";
             const abvRisk = (info.risk || "zayin").toLowerCase(); 
@@ -145,8 +120,8 @@ async function loadAllAbnormalitiesFromShards() {
         });
 
     } catch (error) {
-        console.error("Lỗi khi tải dữ liệu từ GitHub:", error);
-        listContainer.innerHTML = "<div style='color: #ff1a1a; font-size: 11px; padding: 10px;'>Lỗi kết nối GitHub!</div>";
+        console.error("Lỗi khi tải dữ liệu từ Supabase:", error);
+        listContainer.innerHTML = "<div style='color: #ff1a1a; font-size: 11px; padding: 10px;'>Lỗi kết nối database!</div>";
     }
 }
 

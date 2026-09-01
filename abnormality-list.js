@@ -59,31 +59,48 @@ function clean(str) {
     return str.replace(/[{}$]/g, '').trim();
 }
 
+const REPO_OWNER = "Void-Architect1";              
+const REPO_NAME = "Tuantu-s-Lobotomization-Branches-VN-Database"; 
+const BRANCH = "main";
+const MASTER_LIST_PATH = "abnormality-list.json";
+
 async function loadAllAbnormalitiesFromShards() {
     const listContainer = document.getElementById("abnormality-list");
     if (!listContainer) return;
     listContainer.innerHTML = "<div style='color: #777; font-size: 11px; padding: 10px;'>Đang tải dữ liệu từ GitHub...</div>";
 
     try {
-        const masterRes = await fetch(MASTER_JSON_URL);
-        const masterData = await masterRes.json();
+        const masterUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${MASTER_LIST_PATH}`;
+        const masterRes = await fetch(masterUrl);
         
-        let binList = masterData.binList || []; // Hoặc danh sách link các file con tùy bạn định nghĩa trong master.json
+        if (!masterRes.ok) {
+            throw new Error("Không thể tải file danh sách chính abnormality-list.json");
+        }
+        
+        const masterData = await masterRes.json();
+        const riskFilesMap = masterData.riskFiles || {}; // { zayin: "url...", teth: "url...", ... }
 
         let allAbnormalities = [];
 
-        for (let fileUrl of binList) {
+        const riskKeys = Object.keys(riskFilesMap);
+        
+        for (let riskKey of riskKeys) {
+            const fileUrl = riskFilesMap[riskKey];
+            if (!fileUrl) continue;
+
             try {
                 const fileRes = await fetch(fileUrl);
-                const actualRecords = await fileRes.json();
+                if (!fileRes.ok) continue;
                 
-                if (Array.isArray(actualRecords)) {
-                    allAbnormalities = allAbnormalities.concat(actualRecords);
-                } else if (actualRecords && typeof actualRecords === 'object') {
-                    allAbnormalities.push(actualRecords);
+                const fileRecords = await fileRes.json();
+                
+                if (Array.isArray(fileRecords)) {
+                    allAbnormalities = allAbnormalities.concat(fileRecords);
+                } else if (fileRecords && typeof fileRecords === 'object') {
+                    allAbnormalities.push(fileRecords);
                 }
             } catch (err) {
-                console.error(`Không thể tải dữ liệu từ file: ${fileUrl}`, err);
+                console.error(`Không thể tải dữ liệu từ file risk: ${riskKey}`, err);
             }
         }
 
@@ -94,6 +111,7 @@ async function loadAllAbnormalitiesFromShards() {
             return;
         }
 
+        // 3. Render danh sách thẻ dị thể ra giao diện
         allAbnormalities.forEach(item => {
             const info = item.baseInfo || {};
             const abvId = info.id || "Unknown";

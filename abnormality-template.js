@@ -463,6 +463,58 @@ function parseCustomEmojis(text) {
   observer.observe(document.body, { childList: true, subtree: true });
 })();
 
+const GITHUB_TOKEN = "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";
+const REPO_OWNER = "Void-Architect1";               
+const REPO_NAME = "Tuantu-s-Lobotomization-Branches-VN-Database"; 
+const BRANCH = "main";
+const MASTER_JSON_PATH = "abnormality-list.json";
+
+async function getGitHubFile(path) {
+    const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}?ref=${BRANCH}`;
+    try {
+        const res = await fetch(url, {
+            headers: { 'Authorization': `Bearer ${GITHUB_TOKEN}` }
+        });
+        if (!res.ok) return { content: null, sha: null };
+        const data = await res.json();
+        const jsonString = decodeURIComponent(escape(atob(data.content)));
+        return { content: JSON.parse(jsonString), sha: data.sha };
+    } catch (e) {
+        return { content: null, sha: null };
+    }
+}
+
+async function saveGitHubFile(path, contentObj, sha) {
+    const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`;
+    const jsonString = JSON.stringify(contentObj, null, 2);
+    const base64Content = btoa(unescape(encodeURIComponent(jsonString)));
+    
+    const bodyData = {
+        message: `Update ${path} via Web Admin`,
+        content: base64Content,
+        branch: BRANCH
+    };
+    if (sha) {
+        bodyData.sha = sha;
+    }
+
+    const res = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${GITHUB_TOKEN}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bodyData)
+    });
+    
+    if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || "Không thể lưu file lên GitHub");
+    }
+    const result = await res.json();
+    return result.content.sha;
+}
+
 document.getElementById("btn-save").addEventListener("click", async function() {
     const currentAbnormality = {
         baseInfo: {
@@ -532,42 +584,21 @@ document.getElementById("btn-save").addEventListener("click", async function() {
     }
 
     const currentId = currentAbnormality.baseInfo.id;
-    const rawRisk = currentAbnormality.baseInfo.risk || "ZAYIN";
-    const riskLevel = rawRisk.trim().toLowerCase();
-
-    const targetFileName = `abnormality-${riskLevel}.json`;
-
-    const owner = "Void-Architect1";
-    const repo = "Tuantu-s-Lobotomization-Branches-VN";
-    const token = "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";
+    
+    const rawRisk = currentAbnormality.baseInfo.risk || "zayin";
+    const riskCategory = rawRisk.toLowerCase().trim(); // zayin, teth, he, waw, aleph
+    const targetFilePath = `data/abnormality-${riskCategory}.json`;
 
     try {
-        alert("Đang kết nối tới GitHub để lưu dữ liệu...");
-
-        const fileApiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${targetFileName}`;
-
-        let currentItems = [];
-        let fileSha = "";
-
-        const getRes = await fetch(fileApiUrl, {
-            method: 'GET',
-            headers: { 
-                'Authorization': `token ${token}`,
-                'Accept': 'application/vnd.github.v3+json'
-            }
-        });
-
-        if (getRes.ok) {
-            const fileData = await getRes.json();
-            fileSha = fileData.sha;
-            const decodedContent = decodeURIComponent(escape(atob(fileData.content)));
-            currentItems = JSON.parse(decodedContent);
-        }
+        let masterFile = await getGitHubFile(MASTER_JSON_PATH);
+        let masterData = masterFile.content || { riskFiles: {} };
+        if (!masterData.riskFiles) masterData.riskFiles = {};
+        let targetFile = await getGitHubFile(targetFilePath);
+        let currentItems = targetFile.content;
 
         if (!Array.isArray(currentItems)) {
             currentItems = [];
         }
-
         const existingIndex = currentItems.findIndex(item => item.baseInfo && item.baseInfo.id === currentId);
 
         if (existingIndex !== -1) {
@@ -575,33 +606,16 @@ document.getElementById("btn-save").addEventListener("click", async function() {
         } else {
             currentItems.push(currentAbnormality);
         }
+        await saveGitHubFile(targetFilePath, currentItems, targetFile.sha);
+        masterData.riskFiles[riskCategory] = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${targetFilePath}`;
+        
+        let latestMaster = await getGitHubFile(MASTER_JSON_PATH);
+        await saveGitHubFile(MASTER_JSON_PATH, masterData, latestMaster.sha);
 
-        const updateBody = {
-            message: `Update abnormality data for ${currentId} in ${targetFileName}`,
-            content: btoa(unescape(encodeURIComponent(JSON.stringify(currentItems, null, 2)))),
-            sha: fileSha
-        };
-
-        const putRes = await fetch(fileApiUrl, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `token ${token}`,
-                'Content-Type': 'application/json',
-                'Accept': 'application/vnd.github.v3+json'
-            },
-            body: JSON.stringify(updateBody)
-        });
-
-        if (putRes.ok) {
-            alert(`Lưu thành công dị thể [${currentId}] vào file ${targetFileName} trên GitHub!`);
-        } else {
-            const errText = await putRes.text();
-            console.error("Lỗi từ GitHub API:", errText);
-            alert("Lưu thất bại! Kiểm tra lại Console để xem chi tiết lỗi.");
-        }
+        alert(`Lưu thành công dị thể vào file [abnormality-${riskCategory}.json] trên GitHub!`);
 
     } catch (error) {
-        console.error("Lỗi hệ thống khi lưu GitHub:", error);
-        alert("Có lỗi xảy ra khi kết nối tới GitHub!");
+        console.error("Lỗi khi lưu phân loại Risk:", error);
+        alert("Có lỗi xảy ra khi lưu trữ lên GitHub: " + error.message);
     }
 });

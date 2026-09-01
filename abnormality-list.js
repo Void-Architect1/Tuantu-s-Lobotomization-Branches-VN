@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-const MASTER_JSON_URL = "https://raw.githubusercontent.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN-Database/refs/heads/main/abnormality-list.json?token=GHSAT0AAAAAAEHJTFJZTAGSUCPUPBNQKKNO2UWJBBQ"; 
+const MASTER_JSON_URL = "https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN-Database/blob/main/abnormality-list.json"; 
 
 var DEFAULT_IMAGE = "https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/placeholder.webp?raw=true";
 

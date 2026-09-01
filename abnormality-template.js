@@ -463,7 +463,7 @@ function parseCustomEmojis(text) {
   observer.observe(document.body, { childList: true, subtree: true });
 })();
 
-const GITHUB_TOKEN = "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";
+const GITHUB_TOKEN = "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";
 const REPO_OWNER = "Void-Architect1";               
 const REPO_NAME = "Tuantu-s-Lobotomization-Branches-VN-Database"; 
 const BRANCH = "main";

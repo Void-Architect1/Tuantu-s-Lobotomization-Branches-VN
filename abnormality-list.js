@@ -24,13 +24,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Tự động tải danh sách dị thể từ các Bin khi mở trang
+    // Tự động tải danh sách dị thể khi mở trang
     loadAllAbnormalitiesFromShards();
 });
 
-// THÔNG TIN KẾT NỐI JSONBIN CỦA BẠN
-const MASTER_BIN_ID = "6a956e4fda38895dfe2616b5"; 
-const MASTER_KEY = "$2a$10$h5.pNRAtf4NXNJN73CcjiuShkqM/GdoeYZ92.c9wa.SOuatXz7YhS";
+// THÔNG TIN KẾT NỐI GITHUB (Thay link Raw của file master.json vào đây)
+const MASTER_JSON_URL = "https://raw.githubusercontent.com/TÊN_USER/TÊN_REPO/main/master.json"; 
 
 var DEFAULT_IMAGE = "https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/placeholder.webp?raw=true";
 
@@ -64,36 +63,29 @@ function clean(str) {
 async function loadAllAbnormalitiesFromShards() {
     const listContainer = document.getElementById("abnormality-list");
     if (!listContainer) return;
-    listContainer.innerHTML = "<div style='color: #777; font-size: 11px; padding: 10px;'>Đang tải dữ liệu...</div>";
+    listContainer.innerHTML = "<div style='color: #777; font-size: 11px; padding: 10px;'>Đang tải dữ liệu từ GitHub...</div>";
 
     try {
-        const masterRes = await fetch(`https://api.jsonbin.io/v3/b/${MASTER_BIN_ID}/latest`, {
-            headers: { 'X-Master-Key': MASTER_KEY }
-        });
+        // Gọi thẳng link tĩnh file master JSON trên GitHub không cần Header rườm rà nữa
+        const masterRes = await fetch(MASTER_JSON_URL);
         const masterData = await masterRes.json();
         
-        const masterRecord = masterData.record || {};
-        let binList = masterRecord.binList || [];
+        let binList = masterData.binList || []; // Hoặc danh sách link các file con tùy bạn định nghĩa trong master.json
 
         let allAbnormalities = [];
 
-        for (let binId of binList) {
+        for (let fileUrl of binList) {
             try {
-                const binRes = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
-                    headers: { 'X-Master-Key': MASTER_KEY }
-                });
-                const binData = await binRes.json();
-                
-                const actualRecords = binData.record;
+                const fileRes = await fetch(fileUrl);
+                const actualRecords = await fileRes.json();
                 
                 if (Array.isArray(actualRecords)) {
                     allAbnormalities = allAbnormalities.concat(actualRecords);
                 } else if (actualRecords && typeof actualRecords === 'object') {
-                    // Phòng trường hợp Bin chỉ chứa duy nhất 1 object đơn lẻ thay vì mảng
                     allAbnormalities.push(actualRecords);
                 }
             } catch (err) {
-                console.error(`Không thể tải dữ liệu từ Bin con: ${binId}`, err);
+                console.error(`Không thể tải dữ liệu từ file: ${fileUrl}`, err);
             }
         }
 
@@ -107,7 +99,6 @@ async function loadAllAbnormalitiesFromShards() {
         allAbnormalities.forEach(item => {
             const info = item.baseInfo || {};
             const abvId = info.id || "Unknown";
-            if (abvId === "DUMMY") return;
             const abvRisk = (info.risk || "zayin").toLowerCase(); 
             const abvImage = info.image || DEFAULT_IMAGE;
 
@@ -138,15 +129,8 @@ async function loadAllAbnormalitiesFromShards() {
         });
 
     } catch (error) {
-        console.error("Lỗi khi tải hệ thống phân vùng:", error);
-        listContainer.innerHTML = "<div style='color: #ff1a1a; font-size: 11px; padding: 10px;'>Lỗi kết nối!</div>";
-    }
-}
-
-function safeSetText(elementId, value) {
-    const el = document.getElementById(elementId);
-    if (el) {
-        el.textContent = value !== undefined && value !== null ? value : "";
+        console.error("Lỗi khi tải dữ liệu từ GitHub:", error);
+        listContainer.innerHTML = "<div style='color: #ff1a1a; font-size: 11px; padding: 10px;'>Lỗi kết nối GitHub!</div>";
     }
 }
 
@@ -177,14 +161,12 @@ function fillDataToDetailTemplate(item) {
         detailImg.src = info.image || DEFAULT_IMAGE;
     }
 
-    // Risk Level Icon
     const riskImg = document.getElementById('out-risk');
     if (riskImg) {
         const type = clean(info.risk).toUpperCase();
         riskImg.innerHTML = riskIconsMap[type] || info.risk || "";
     }
 
-    // Work Damage & Type
     safeSetText('out-work-dmg', info.workDmg || "");
     
     const workDmgTypeText = document.getElementById('out-work-dmg-type-text');
@@ -203,7 +185,6 @@ function fillDataToDetailTemplate(item) {
         }
     }
 
-    // Success Rates (nằm trong workRange của baseInfo)
     const workRange = info.workRange || {};
     safeSetText('out-good', workRange.good || "");
     safeSetText('out-normal', workRange.normal || "");
@@ -212,7 +193,7 @@ function fillDataToDetailTemplate(item) {
     safeSetText('out-max-pe', info.maxPE || "");
     safeSetText('out-pe-unlock', info.peUnlock || "");
 
-    // 2. Observation Levels (1 -> 4) - Đọc từ observationLevels.level_X
+    // 2. Observation Levels
     const obsLevels = item.observationLevels || {};
     for (let level = 1; level <= 4; level++) {
         const outputObs = document.getElementById(`out-obs-${level}`);
@@ -228,11 +209,10 @@ function fillDataToDetailTemplate(item) {
         }
     }
 
-    // 3. Management Tips (1 -> 7) - Đọc từ mảng managementTips (index từ 0 đến 6)
+    // 3. Management Tips
     const tipsArr = item.managementTips || [];
     for (let level = 1; level <= 7; level++) {
         const tipData = tipsArr[level - 1] || {};
-        
         const outputTips = document.getElementById(`out-tips-${level}`);
         if (outputTips) {
             const rawVal = tipData.tip || "";
@@ -256,11 +236,10 @@ function fillDataToDetailTemplate(item) {
         }
     }
 
-    // 4. Appendix / Story (1 -> 7) - Đọc từ mảng appendix (index từ 0 đến 6)
+    // 4. Appendix / Story
     const appendixArr = item.appendix || [];
     for (let level = 1; level <= 7; level++) {
         const appData = appendixArr[level - 1] || {};
-
         const outputAppendix = document.getElementById(`out-appendix-${level}`);
         if (outputAppendix) {
             const rawVal = appData.content || "";
@@ -279,12 +258,12 @@ function fillDataToDetailTemplate(item) {
             const parentItem = outputTitleAppendix.closest('.dynamic-appendix, .dynamic-text');
             if (parentItem) {
                 const cleanTxt = clean(rawTitleVal.trim());
-                parentItem.style.display = (!cleanTxt || rawTitleVal.includes("{$") || rawTitleVal.startsWith("APPENDIX_TEXT_")) ? 'none' : 'block';
+                parentItem.style.display = (!cleanTxt || rawTitleVal.includes("{$") || cleanTitleVal.startsWith("APPENDIX_TEXT_")) ? 'none' : 'block';
             }
         }
     }
 
-    // 5. Work Types Favour (Instinct, Insight, Attachment, Repression) levels 1->5 - Đọc từ mảng workFavour
+    // 5. Work Types Favour
     const workTypes = ["instinct", "insight", "attachment", "repression"];
     workTypes.forEach(type => {
         for (let level = 1; level <= 5; level++) {
@@ -296,7 +275,7 @@ function fillDataToDetailTemplate(item) {
         }
     });
 
-    // 6. E.G.O Equipment (Weapon, Suit, Gift) - Đọc từ egoEquipment
+    // 6. E.G.O Equipment
     const egoConfig = {
         weapon: ["grade", "cost", "amount", "damage", "speed", "range", "passive", "require", "name", "image", "des", "obs"],
         suit:   ["grade", "cost", "amount", "red", "white", "black", "pale", "passive", "require", "name", "image", "des", "obs"],
@@ -326,7 +305,7 @@ function fillDataToDetailTemplate(item) {
         });
     });
 
-    // 7. Escape Info - Đọc từ escapeInfo
+    // 7. Escape Info
     const escapeConfig = ["risk", "hp", "qliphoth", "red", "white", "black", "pale", "passive", "skill", "image", "status", "id", "pe"];
     escapeConfig.forEach(prop => {
         const outputEl = document.getElementById(`out-escape-${prop}`);

@@ -463,57 +463,10 @@ function parseCustomEmojis(text) {
   observer.observe(document.body, { childList: true, subtree: true });
 })();
 
-const GITHUB_TOKEN = "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";
-const REPO_OWNER = "Void-Architect1";               
-const REPO_NAME = "Tuantu-s-Lobotomization-Branches-VN-Database"; 
-const BRANCH = "main";
-const MASTER_JSON_PATH = "abnormality-list.json";
+const SUPABASE_URL = "https://tlgbnahlzsvwxsydnjpo.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_VHq3KL7PZbSHtCDYZQ061w_CIVwJFeI";
 
-async function getGitHubFile(path) {
-    const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}?ref=${BRANCH}`;
-    try {
-        const res = await fetch(url, {
-            headers: { 'Authorization': `Bearer ${GITHUB_TOKEN}` }
-        });
-        if (!res.ok) return { content: null, sha: null };
-        const data = await res.json();
-        const jsonString = decodeURIComponent(escape(atob(data.content)));
-        return { content: JSON.parse(jsonString), sha: data.sha };
-    } catch (e) {
-        return { content: null, sha: null };
-    }
-}
-
-async function saveGitHubFile(path, contentObj, sha) {
-    const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`;
-    const jsonString = JSON.stringify(contentObj, null, 2);
-    const base64Content = btoa(unescape(encodeURIComponent(jsonString)));
-    
-    const bodyData = {
-        message: `Update ${path} via Web Admin`,
-        content: base64Content,
-        branch: BRANCH
-    };
-    if (sha) {
-        bodyData.sha = sha;
-    }
-
-    const res = await fetch(url, {
-        method: 'PUT',
-        headers: {
-            'Authorization': `Bearer ${GITHUB_TOKEN}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(bodyData)
-    });
-    
-    if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.message || "Không thể lưu file lên GitHub");
-    }
-    const result = await res.json();
-    return result.content.sha;
-}
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 document.getElementById("btn-save").addEventListener("click", async function() {
     const currentAbnormality = {
@@ -583,39 +536,28 @@ document.getElementById("btn-save").addEventListener("click", async function() {
         });
     }
 
-    const currentId = currentAbnormality.baseInfo.id;
-    
-    const rawRisk = currentAbnormality.baseInfo.risk || "zayin";
-    const riskCategory = rawRisk.toLowerCase().trim(); // zayin, teth, he, waw, aleph
-    const targetFilePath = `abnormality-${riskCategory}.json`;
+    const recordToSave = {
+        id: currentAbnormality.baseInfo.id,
+        name: currentAbnormality.baseInfo.name || "Unnamed",
+        risk: currentAbnormality.baseInfo.risk || "ZAYIN",
+        type: "abnormality",
+        image: currentAbnormality.baseInfo.image || "",
+        data: currentAbnormality
+    };
 
     try {
-        let masterFile = await getGitHubFile(MASTER_JSON_PATH);
-        let masterData = masterFile.content || { riskFiles: {} };
-        if (!masterData.riskFiles) masterData.riskFiles = {};
-        let targetFile = await getGitHubFile(targetFilePath);
-        let currentItems = targetFile.content;
+        const { error } = await supabaseClient
+            .from('abnormalities')
+            .upsert([recordToSave]);
 
-        if (!Array.isArray(currentItems)) {
-            currentItems = [];
+        if (error) {
+            throw error;
         }
-        const existingIndex = currentItems.findIndex(item => item.baseInfo && item.baseInfo.id === currentId);
 
-        if (existingIndex !== -1) {
-            currentItems[existingIndex] = currentAbnormality;
-        } else {
-            currentItems.push(currentAbnormality);
-        }
-        await saveGitHubFile(targetFilePath, currentItems, targetFile.sha);
-        masterData.riskFiles[riskCategory] = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${targetFilePath}`;
-        
-        let latestMaster = await getGitHubFile(MASTER_JSON_PATH);
-        await saveGitHubFile(MASTER_JSON_PATH, masterData, latestMaster.sha);
-
-        alert(`Lưu thành công dị thể vào file [abnormality-${riskCategory}.json] trên GitHub!`);
+        alert("Lưu dữ liệu lên Supabase thành công!");
 
     } catch (error) {
-        console.error("Lỗi khi lưu phân loại Risk:", error);
-        alert("Có lỗi xảy ra khi lưu trữ lên GitHub: " + error.message);
+        console.error("Lỗi lưu Supabase:", error);
+        alert("Có lỗi xảy ra khi lưu vào database: " + error.message);
     }
 });

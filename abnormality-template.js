@@ -539,7 +539,7 @@ document.getElementById("btn-save").addEventListener("click", async function() {
 
     const owner = "Void-Architect1";
     const repo = "Tuantu-s-Lobotomization-Branches-VN";
-    const token = "";
+    const token = "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";
 
     try {
         alert("Đang kết nối tới GitHub để lưu dữ liệu...");

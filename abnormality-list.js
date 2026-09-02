@@ -88,42 +88,54 @@ async function loadAllAbnormalitiesFromFirebase() {
         }
 
 querySnapshot.forEach(docSnap => {
-            const row = docSnap.data();
-            const item = row.data; // Lấy cục JSON gốc bên trong thuộc tính data
-            if (!item) return;
+    const row = docSnap.data();
+    const item = row.data; 
+    if (!item) return;
 
-            const info = item.baseInfo || {};
-            const abvId = info.id || docSnap.id;
-            const abvRisk = (info.risk || "zayin").toLowerCase(); 
-            const abvImage = info.image || DEFAULT_IMAGE;
+    const info = item.baseInfo || {};
+    const abvId = info.id || docSnap.id;
+    const abvRisk = (info.risk || "zayin").toLowerCase(); 
+    const abvImage = info.image || DEFAULT_IMAGE;
+    
+    // Lấy kiểu loại từ row (nếu không có thì mặc định là abnormality)
+    const dataType = row.type || "abnormality";
 
-            const card = document.createElement("div");
-            // Thêm class risk-<level> để CSS nhận diện màu sắc
-            card.className = `abnormality-card risk-${abvRisk}`;
-            
-            // Đảo vị trí: card-id lên trước, img xuống sau
-            card.innerHTML = `
-                <div class="card-id">${abvId}</div>
-                <img src="${abvImage}" alt="${abvId}" onerror="this.src='${DEFAULT_IMAGE}'">
-            `;
-            
-            card.addEventListener("click", () => {
-                const detailTemplate = document.getElementById("abnormality-detail-template");
-                const defaultScreen = document.querySelector(".lob-info-screen");
+    const card = document.createElement("div");
+    card.className = `abnormality-card risk-${abvRisk}`;
+    
+    card.innerHTML = `
+        <div class="card-id">${abvId}</div>
+        <img src="${abvImage}" alt="${abvId}" onerror="this.src='${DEFAULT_IMAGE}'">
+    `;
+    
+    card.addEventListener("click", () => {
+        const abnormalityTemplate = document.getElementById("abnormality-detail-template");
+        const toolTemplate = document.getElementById("tool-detail-template");
+        const defaultScreen = document.querySelector(".lob-info-screen");
 
-                if (card.classList.contains("active-card")) {
-                    card.classList.remove("active-card");
-                    if (detailTemplate) detailTemplate.style.display = "none";
-                    if (defaultScreen) defaultScreen.style.display = "flex";
-                } else {
-                    document.querySelectorAll(".abnormality-card").forEach(c => c.classList.remove("active-card"));
-                    card.classList.add("active-card");
-                    fillDataToDetailTemplate(item);
-                }
-            });
+        if (card.classList.contains("active-card")) {
+            card.classList.remove("active-card");
+            if (abnormalityTemplate) abnormalityTemplate.style.display = "none";
+            if (toolTemplate) toolTemplate.style.display = "none";
+            if (defaultScreen) defaultScreen.style.display = "flex";
+        } else {
+            document.querySelectorAll(".abnormality-card").forEach(c => c.classList.remove("active-card"));
+            card.classList.add("active-card");
+            if (defaultScreen) defaultScreen.style.display = "none";
+            if (dataType === "tool") {
+                if (abnormalityTemplate) abnormalityTemplate.style.display = "none";
+                if (toolTemplate) toolTemplate.style.display = "block";
+                fillDataToToolTemplate(item);
+            } else {
+                if (toolTemplate) toolTemplate.style.display = "none";
+                if (abnormalityTemplate) abnormalityTemplate.style.display = "block";
+                fillDataToDetailTemplate(item);
+            }
+        }
+    });
 
-            listContainer.appendChild(card);
-        });
+    listContainer.appendChild(card);
+});
       
     } catch (error) {
         console.error("Lỗi khi tải dữ liệu từ Firebase:", error);
@@ -324,6 +336,90 @@ function fillDataToDetailTemplate(item) {
             }
         }
     });
+}
+
+function fillDataToToolTemplate(item) {
+    const info = item.baseInfo || {};
+    safeSetText('out-id', info.id);
+    safeSetText('out-name', info.name);
+    safeSetText('out-type', info.type);
+    safeSetText('out-des', info.description);
+
+    const quoteEl = document.getElementById('out-quote');
+    if (quoteEl) {
+        quoteEl.textContent = info.quote ? `"${info.quote}"` : "";
+        quoteEl.style.fontStyle = "italic";
+    }
+
+    const detailImg = document.getElementById('out-image');
+    if (detailImg) {
+        detailImg.src = info.image || DEFAULT_IMAGE;
+    }
+
+    const riskImg = document.getElementById('out-risk');
+    if (riskImg) {
+        const type = clean(info.risk).toUpperCase();
+        riskImg.innerHTML = riskIconsMap[type] || info.risk || "";
+    }
+    const logsArr = item.logs || [];
+    for (let level = 1; level <= 7; level++) {
+        const logData = logsArr[level - 1] || {};
+        
+        const outputLog = document.getElementById(`out-log-${level}`);
+        if (outputLog) {
+            outputLog.innerHTML = parseCustomEmojis(logData.text || "");
+        }
+
+        const outputLogTime = document.getElementById(`out-logtime-${level}`);
+        if (outputLogTime) {
+            outputLogTime.innerHTML = parseCustomEmojis(logData.time || "");
+        }
+        const logItemParent = outputLog ? outputLog.closest('.log-item') : null;
+        if (logItemParent) {
+            const hasText = (logData.text || "").trim() !== "";
+            const hasTime = (logData.time || "").trim() !== "";
+            logItemParent.style.display = (!hasText && !hasTime) ? 'none' : 'block';
+        }
+    }
+    const methodsArr = item.methods || [];
+    for (let level = 1; level <= 7; level++) {
+        const methodData = methodsArr[level - 1] || {};
+        const outputMethod = document.getElementById(`out-method-${level}`);
+        
+        if (outputMethod) {
+            outputMethod.innerHTML = parseCustomEmojis(methodData.content || "");
+            const parentMethodItem = outputMethod.closest('.method-item');
+            if (parentMethodItem) {
+                parentMethodItem.style.display = !methodData.content ? 'none' : 'block';
+            }
+        }
+    }
+    const appendixArr = item.appendix || [];
+    for (let level = 1; level <= 7; level++) {
+        const appData = appendixArr[level - 1] || {};
+        
+        const outputAppendix = document.getElementById(`out-appendix-${level}`);
+        if (outputAppendix) {
+            const rawVal = appData.content || "";
+            outputAppendix.innerHTML = parseCustomEmojis(rawVal);
+            const parentItem = outputAppendix.closest('.dynamic-appendix, .dynamic-text');
+            if (parentItem) {
+                const cleanTxt = clean(rawVal.trim());
+                parentItem.style.display = (!cleanTxt || rawVal.includes("{$")) ? 'none' : 'block';
+            }
+        }
+
+        const outputTitleAppendix = document.getElementById(`out-titleappendix-${level}`);
+        if (outputTitleAppendix) {
+            const rawTitleVal = appData.title || "";
+            outputTitleAppendix.innerHTML = parseCustomEmojis(rawTitleVal);
+            const parentItem = outputTitleAppendix.closest('.dynamic-appendix, .dynamic-text');
+            if (parentItem) {
+                const cleanTxt = clean(rawTitleVal.trim());
+                parentItem.style.display = (!cleanTxt || rawTitleVal.includes("{$")) ? 'none' : 'block';
+            }
+        }
+    }
 }
 
 function parseCustomEmojis(text) {

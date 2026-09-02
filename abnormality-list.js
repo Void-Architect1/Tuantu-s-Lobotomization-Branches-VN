@@ -418,3 +418,40 @@ function parseCustomEmojis(text) {
   const observer = new MutationObserver(() => scanAndApply());
   observer.observe(document.body, { childList: true, subtree: true });
 })();
+
+document.querySelectorAll('.Modal-Toggle').forEach(toggle => {
+  toggle.addEventListener('change', function() {
+    const modalId = 'modal-' + this.id.replace('toggle-', '');
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      if (this.checked) {
+        document.querySelectorAll('.Overlay-Modal').forEach(m => {
+          if(m !== modal) m.classList.remove('active', 'closing');
+        });
+        modal.classList.remove('closing');
+        modal.classList.add('active');
+      } else {
+        closeModal(modal);
+      }
+    }
+  });
+});
+
+document.querySelectorAll('.Btn-Leave-Corner').forEach(button => {
+  button.addEventListener('click', function(e) {
+    e.preventDefault();
+    const modal = this.closest('.Overlay-Modal');
+    if (modal) closeModal(modal);
+  });
+});
+
+function closeModal(modal) {
+  modal.classList.remove('active');
+  modal.classList.add('closing');
+  setTimeout(() => {
+    modal.classList.remove('closing');
+    const id = modal.id.replace('modal-', 'toggle-');
+    const checkbox = document.getElementById(id);
+    if(checkbox) checkbox.checked = false;
+  }, 350);
+}

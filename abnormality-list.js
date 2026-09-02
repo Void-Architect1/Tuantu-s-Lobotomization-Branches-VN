@@ -324,39 +324,6 @@ function fillDataToDetailTemplate(item) {
     });
 }
 
-function openModalById(modalId) {
-    document.querySelectorAll('.Overlay-Modal').forEach(m => {
-        m.classList.remove('active', 'closing');
-    });
-
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.classList.remove('closing');
-        modal.classList.add('active');
-    }
-}
-
-document.addEventListener('click', function(e) {
-    const leaveBtn = e.target.closest('.Btn-Leave-Corner');
-    if (leaveBtn) {
-        if (leaveBtn.id === 'closeChoiceModal') return; 
-
-        e.preventDefault();
-        const modal = leaveBtn.closest('.Overlay-Modal');
-        if (modal) {
-            closeModalWithAnimation(modal);
-        }
-    }
-});
-
-function closeModalWithAnimation(modal) {
-    modal.classList.remove('active');
-    modal.classList.add('closing');
-    setTimeout(() => {
-        modal.classList.remove('closing');
-    }, 350);
-}
-
 function parseCustomEmojis(text) {
     if (!text) return "";
     const emojiMap = {
@@ -419,39 +386,36 @@ function parseCustomEmojis(text) {
   observer.observe(document.body, { childList: true, subtree: true });
 })();
 
-document.querySelectorAll('.Modal-Toggle').forEach(toggle => {
-  toggle.addEventListener('change', function() {
-    const modalId = 'modal-' + this.id.replace('toggle-', '');
+function openModalById(modalId) {
+    document.querySelectorAll('.Overlay-Modal').forEach(m => {
+        m.classList.remove('active', 'closing');
+    });
+
     const modal = document.getElementById(modalId);
     if (modal) {
-      if (this.checked) {
-        document.querySelectorAll('.Overlay-Modal').forEach(m => {
-          if(m !== modal) m.classList.remove('active', 'closing');
-        });
         modal.classList.remove('closing');
         modal.classList.add('active');
-      } else {
-        closeModal(modal);
-      }
     }
-  });
+}
+
+document.addEventListener('click', function(e) {
+    const leaveBtn = e.target.closest('.Btn-Leave-Corner');
+    if (leaveBtn) {
+        // Bỏ qua nút đóng modal tạo dị thể chính (nếu có id riêng)
+        if (leaveBtn.id === 'closeChoiceModal') return; 
+
+        e.preventDefault();
+        const modal = leaveBtn.closest('.Overlay-Modal');
+        if (modal) {
+            closeModalWithAnimation(modal);
+        }
+    }
 });
 
-document.querySelectorAll('.Btn-Leave-Corner').forEach(button => {
-  button.addEventListener('click', function(e) {
-    e.preventDefault();
-    const modal = this.closest('.Overlay-Modal');
-    if (modal) closeModal(modal);
-  });
-});
-
-function closeModal(modal) {
-  modal.classList.remove('active');
-  modal.classList.add('closing');
-  setTimeout(() => {
-    modal.classList.remove('closing');
-    const id = modal.id.replace('modal-', 'toggle-');
-    const checkbox = document.getElementById(id);
-    if(checkbox) checkbox.checked = false;
-  }, 350);
+function closeModalWithAnimation(modal) {
+    modal.classList.remove('active');
+    modal.classList.add('closing');
+    setTimeout(() => {
+        modal.classList.remove('closing');
+    }, 350);
 }

@@ -567,20 +567,15 @@ window.closeModal = function(modalId) {
 };
 
 window.togglePanel = function(panelId) {
+    console.log("Đã click vào panel với ID truyền vào là:", panelId);
+    
     let panelBorder = document.getElementById(panelId);
-    if (panelBorder && !panelBorder.classList.contains('panel-log-border') && !panelBorder.classList.contains('panel-method-border')) {
-        panelBorder = panelBorder.closest('.panel-log-border, .panel-method-border');
-    }
+    console.log("Tìm thấy phần tử border tương ứng:", panelBorder);
 
     if (panelBorder) {
         panelBorder.classList.toggle('active');
-        const content = panelBorder.querySelector('.panel-content');
-        if (content) {
-            if (panelBorder.classList.contains('active')) {
-                content.style.display = "block";
-            } else {
-                content.style.display = ""; 
-            }
-        }
+        console.log("Trạng thái active hiện tại của panel:", panelBorder.classList.contains('active'));
+    } else {
+        console.error("LỖI: Không tìm thấy thẻ HTML nào có ID là:", panelId);
     }
 };

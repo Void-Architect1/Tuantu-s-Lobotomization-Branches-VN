@@ -87,7 +87,7 @@ async function loadAllAbnormalitiesFromFirebase() {
             return;
         }
 
-        querySnapshot.forEach(docSnap => {
+querySnapshot.forEach(docSnap => {
             const row = docSnap.data();
             const item = row.data; // Lấy cục JSON gốc bên trong thuộc tính data
             if (!item) return;
@@ -98,11 +98,13 @@ async function loadAllAbnormalitiesFromFirebase() {
             const abvImage = info.image || DEFAULT_IMAGE;
 
             const card = document.createElement("div");
+            // Thêm class risk-<level> để CSS nhận diện màu sắc
             card.className = `abnormality-card risk-${abvRisk}`;
             
+            // Đảo vị trí: card-id lên trước, img xuống sau
             card.innerHTML = `
-                <img src="${abvImage}" alt="${abvId}" onerror="this.src='${DEFAULT_IMAGE}'">
                 <div class="card-id">${abvId}</div>
+                <img src="${abvImage}" alt="${abvId}" onerror="this.src='${DEFAULT_IMAGE}'">
             `;
             
             card.addEventListener("click", () => {
@@ -122,7 +124,7 @@ async function loadAllAbnormalitiesFromFirebase() {
 
             listContainer.appendChild(card);
         });
-
+      
     } catch (error) {
         console.error("Lỗi khi tải dữ liệu từ Firebase:", error);
         listContainer.innerHTML = "<div style='color: #ff1a1a; font-size: 11px; padding: 10px;'>Lỗi kết nối database!</div>";

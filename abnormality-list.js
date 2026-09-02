@@ -552,3 +552,32 @@ function togglePanel(panelId) {
         }
     }
 }
+window.openModal = function(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('closing');
+        modal.classList.add('active');
+    }
+};
+
+window.closeModal = function(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('active');
+        modal.classList.add('closing');
+        setTimeout(() => {
+            modal.classList.remove('closing');
+        }, 350);
+    }
+};
+
+window.togglePanel = function(panelId) {
+    const panelBorder = document.getElementById(panelId);
+    if (panelBorder) {
+        panelBorder.classList.toggle('collapsed');
+        const content = panelBorder.querySelector('.panel-content');
+        if (content) {
+            content.style.display = (content.style.display === 'none') ? 'block' : 'none';
+        }
+    }
+};

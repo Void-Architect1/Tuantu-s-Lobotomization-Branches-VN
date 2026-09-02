@@ -383,9 +383,9 @@ html, body {
 }
 
 .abnormality-card.risk-aleph {
-    border-color: #ef4444;
+    border-color: #ff0004;
 }
 .abnormality-card.risk-aleph .card-id {
-    background-color: #ef4444;
+    background-color: #ff0004;
     color: #fff;
 }

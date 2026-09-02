@@ -340,23 +340,24 @@ function fillDataToDetailTemplate(item) {
 
 function fillDataToToolTemplate(item) {
     const info = item.baseInfo || {};
-    safeSetText('out-id', info.id);
-    safeSetText('out-name', info.name);
-    safeSetText('out-type', info.type);
-    safeSetText('out-des', info.description);
+    
+    safeSetText('tool-out-id', info.id);
+    safeSetText('tool-out-name', info.name);
+    safeSetText('tool-out-type', info.type);
+    safeSetText('tool-out-des', info.description);
 
-    const quoteEl = document.getElementById('out-quote');
+    const quoteEl = document.getElementById('tool-out-quote');
     if (quoteEl) {
         quoteEl.textContent = info.quote ? `"${info.quote}"` : "";
         quoteEl.style.fontStyle = "italic";
     }
 
-    const detailImg = document.getElementById('out-image');
+    const detailImg = document.getElementById('tool-out-image');
     if (detailImg) {
         detailImg.src = info.image || DEFAULT_IMAGE;
     }
 
-    const riskImg = document.getElementById('out-risk');
+    const riskImg = document.getElementById('tool-out-risk');
     if (riskImg) {
         const type = clean(info.risk).toUpperCase();
         riskImg.innerHTML = riskIconsMap[type] || info.risk || "";
@@ -365,26 +366,27 @@ function fillDataToToolTemplate(item) {
     for (let level = 1; level <= 7; level++) {
         const logData = logsArr[level - 1] || {};
         
-        const outputLog = document.getElementById(`out-log-${level}`);
+        const outputLog = document.getElementById(`tool-out-log-${level}`);
         if (outputLog) {
             outputLog.innerHTML = parseCustomEmojis(logData.text || "");
         }
 
-        const outputLogTime = document.getElementById(`out-logtime-${level}`);
+        const outputLogTime = document.getElementById(`tool-out-logtime-${level}`);
         if (outputLogTime) {
             outputLogTime.innerHTML = parseCustomEmojis(logData.time || "");
         }
+        
         const logItemParent = outputLog ? outputLog.closest('.log-item') : null;
         if (logItemParent) {
             const hasText = (logData.text || "").trim() !== "";
             const hasTime = (logData.time || "").trim() !== "";
-            logItemParent.style.display = (!hasText && !hasTime) ? 'none' : 'block';
+            logItemParent.style.display = (!hasText && !hasTime) ? 'none' : 'flex';
         }
     }
     const methodsArr = item.methods || [];
     for (let level = 1; level <= 7; level++) {
         const methodData = methodsArr[level - 1] || {};
-        const outputMethod = document.getElementById(`out-method-${level}`);
+        const outputMethod = document.getElementById(`tool-out-method-${level}`);
         
         if (outputMethod) {
             outputMethod.innerHTML = parseCustomEmojis(methodData.content || "");
@@ -398,7 +400,7 @@ function fillDataToToolTemplate(item) {
     for (let level = 1; level <= 7; level++) {
         const appData = appendixArr[level - 1] || {};
         
-        const outputAppendix = document.getElementById(`out-appendix-${level}`);
+        const outputAppendix = document.getElementById(`tool-out-appendix-${level}`);
         if (outputAppendix) {
             const rawVal = appData.content || "";
             outputAppendix.innerHTML = parseCustomEmojis(rawVal);
@@ -409,7 +411,7 @@ function fillDataToToolTemplate(item) {
             }
         }
 
-        const outputTitleAppendix = document.getElementById(`out-titleappendix-${level}`);
+        const outputTitleAppendix = document.getElementById(`tool-out-titleappendix-${level}`);
         if (outputTitleAppendix) {
             const rawTitleVal = appData.title || "";
             outputTitleAppendix.innerHTML = parseCustomEmojis(rawTitleVal);

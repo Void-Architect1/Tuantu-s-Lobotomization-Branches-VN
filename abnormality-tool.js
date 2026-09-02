@@ -1,3 +1,19 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBLHdA1sxx3iO4hg2SGfFK7qpMzh5CpzIE",
+  authDomain: "tlb-vn-database.firebaseapp.com",
+  projectId: "tlb-vn-database",
+  storageBucket: "tlb-vn-database.firebasestorage.app",
+  messagingSenderId: "161263399284",
+  appId: "1:161263399284:web:0d6163d072aad937df3c21",
+  measurementId: "G-GRT1ZMCTYL"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 function parseCustomEmojis(text) {
     if (!text) return "";
     const emojiMap = {
@@ -18,7 +34,7 @@ function parseCustomEmojis(text) {
         ":black:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Black.webp?raw=true" class="inline-icon" alt="black">',
         ":pale:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Pale.webp?raw=true" class="inline-icon" alt="pale">',
         ":hp:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/HP.webp?raw=true" class="inline-icon" alt="hp">',
-        ":sp:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/SP.webp?raw=true" class="inline-icon" alt="hp">'
+        ":sp:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/SP.webp?raw=true" class="inline-icon" alt="sp">'
     };
     return text.replace(/:([a-zA-Z0-9_-]+):/g, (match) => {
         return emojiMap[match] || match; 
@@ -267,22 +283,6 @@ document.addEventListener("DOMContentLoaded", function() {
   observer.observe(document.body, { childList: true, subtree: true });
 })();
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBLHdA1sxx3iO4hg2SGfFK7qpMzh5CpzIE",
-  authDomain: "tlb-vn-database.firebaseapp.com",
-  projectId: "tlb-vn-database",
-  storageBucket: "tlb-vn-database.firebasestorage.app",
-  messagingSenderId: "161263399284",
-  appId: "1:161263399284:web:0d6163d072aad937df3c21",
-  measurementId: "G-GRT1ZMCTYL"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
 document.getElementById("btn-save").addEventListener("click", async function() {
     const currentTool = {
         baseInfo: {
@@ -324,7 +324,7 @@ document.getElementById("btn-save").addEventListener("click", async function() {
         id: docId,
         name: currentTool.baseInfo.name || "Unnamed",
         risk: currentTool.baseInfo.risk || "ZAYIN",
-        type: "tool", // Gắn id type cứng là tool thay vì abnormality
+        type: "tool", 
         image: currentTool.baseInfo.image || "",
         data: currentTool,
         updatedAt: new Date().toISOString()

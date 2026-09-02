@@ -559,11 +559,11 @@ button:hover { background: #c9302c; }
 }
 
 .custom-modal-overlay.open .custom-modal-box {
-    animation: slideUp 1.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: slideUp 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .custom-modal-box {
-    animation: slideDown 1.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: slideDown 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .log-item p, 

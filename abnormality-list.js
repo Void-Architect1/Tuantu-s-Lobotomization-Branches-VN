@@ -72,14 +72,12 @@ function clean(str) {
     return str.replace(/[{}$]/g, '').trim();
 }
 
-// HÀM TẢI DỮ LIỆU TỪ FIREBASE FIRESTORE
 async function loadAllAbnormalitiesFromFirebase() {
     const listContainer = document.getElementById("abnormality-list");
     if (!listContainer) return;
     listContainer.innerHTML = "<div style='color: #777; font-size: 11px; padding: 10px;'>Đang tải dữ liệu từ Firebase...</div>";
 
     try {
-        // Lấy toàn bộ document trong collection 'abnormalities'
         const querySnapshot = await getDocs(collection(db, "abnormalities"));
         
         listContainer.innerHTML = "";
@@ -128,6 +126,13 @@ async function loadAllAbnormalitiesFromFirebase() {
     } catch (error) {
         console.error("Lỗi khi tải dữ liệu từ Firebase:", error);
         listContainer.innerHTML = "<div style='color: #ff1a1a; font-size: 11px; padding: 10px;'>Lỗi kết nối database!</div>";
+    }
+}
+
+function safeSetText(elementId, text) {
+    const el = document.getElementById(elementId);
+    if (el) {
+        el.textContent = text || "";
     }
 }
 

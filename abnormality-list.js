@@ -1,7 +1,18 @@
-const SUPABASE_URL = "https://tlgbnahlzsvwxsydnjpo.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_VHq3KL7PZbSHtCDYZQ061w_CIVWJFeI";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const firebaseConfig = {
+  apiKey: "AIzaSyBLHdA1sxx3iO4hg2SGfFK7qpMzh5CpzIE",
+  authDomain: "tlb-vn-database.firebaseapp.com",
+  projectId: "tlb-vn-database",
+  storageBucket: "tlb-vn-database.firebasestorage.app",
+  messagingSenderId: "161263399284",
+  appId: "1:161263399284:web:0d6163d072aad937df3c21",
+  measurementId: "G-GRT1ZMCTYL"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 document.addEventListener("DOMContentLoaded", () => {
     const openBtn = document.getElementById("openCreateModalBtn");
@@ -29,8 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Tự động tải danh sách dị thể từ Supabase khi mở trang
-    loadAllAbnormalitiesFromSupabase();
+    loadAllAbnormalitiesFromFirebase();
 });
 
 var DEFAULT_IMAGE = "https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/placeholder.webp?raw=true";
@@ -62,34 +72,30 @@ function clean(str) {
     return str.replace(/[{}$]/g, '').trim();
 }
 
-// HÀM TẢI DỮ LIỆU THAY THẾ CHO JSONBIN SHARDING
-async function loadAllAbnormalitiesFromSupabase() {
+// HÀM TẢI DỮ LIỆU TỪ FIREBASE FIRESTORE
+async function loadAllAbnormalitiesFromFirebase() {
     const listContainer = document.getElementById("abnormality-list");
     if (!listContainer) return;
-    listContainer.innerHTML = "<div style='color: #777; font-size: 11px; padding: 10px;'>Đang tải dữ liệu từ Supabase...</div>";
+    listContainer.innerHTML = "<div style='color: #777; font-size: 11px; padding: 10px;'>Đang tải dữ liệu từ Firebase...</div>";
 
     try {
-        // Truy vấn thẳng vào bảng abnormalities, lấy cột data chứa toàn bộ object JSON
-        const { data, error } = await supabaseClient
-            .from('abnormalities')
-            .select('data');
-
-        if (error) {
-            throw error;
-        }
-
+        // Lấy toàn bộ document trong collection 'abnormalities'
+        const querySnapshot = await getDocs(collection(db, "abnormalities"));
+        
         listContainer.innerHTML = "";
 
-        if (!data || data.length === 0) {
+        if (querySnapshot.empty) {
             listContainer.innerHTML = "<div style='color: #777; font-size: 11px; padding: 10px;'>Chưa có dị thể nào.</div>";
             return;
         }
 
-        // data trả về dạng [{ data: {...}, data: {...} }]
-        data.forEach(row => {
-            const item = row.data; // Lấy cục JSON gốc bên trong cột data
+        querySnapshot.forEach(docSnap => {
+            const row = docSnap.data();
+            const item = row.data; // Lấy cục JSON gốc bên trong thuộc tính data
+            if (!item) return;
+
             const info = item.baseInfo || {};
-            const abvId = info.id || "Unknown";
+            const abvId = info.id || docSnap.id;
             const abvRisk = (info.risk || "zayin").toLowerCase(); 
             const abvImage = info.image || DEFAULT_IMAGE;
 
@@ -120,7 +126,7 @@ async function loadAllAbnormalitiesFromSupabase() {
         });
 
     } catch (error) {
-        console.error("Lỗi khi tải dữ liệu từ Supabase:", error);
+        console.error("Lỗi khi tải dữ liệu từ Firebase:", error);
         listContainer.innerHTML = "<div style='color: #ff1a1a; font-size: 11px; padding: 10px;'>Lỗi kết nối database!</div>";
     }
 }
@@ -245,7 +251,7 @@ function fillDataToDetailTemplate(item) {
             const parentItem = outputTitleAppendix.closest('.dynamic-appendix, .dynamic-text');
             if (parentItem) {
                 const cleanTxt = clean(rawTitleVal.trim());
-                parentItem.style.display = (!cleanTxt || rawTitleVal.includes("{$") || cleanTitleVal.startsWith("APPENDIX_TEXT_")) ? 'none' : 'block';
+                parentItem.style.display = (!cleanTxt || rawTitleVal.includes("{$") || rawTitleVal.startsWith("APPENDIX_TEXT_")) ? 'none' : 'block';
             }
         }
     }

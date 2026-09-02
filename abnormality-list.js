@@ -539,7 +539,6 @@ function closeModal(modalId) {
         modal.classList.add('closing');
         setTimeout(() => {
             modal.classList.remove('closing');
-            // modal.style.display = "none";
         }, 350);
     }
 }

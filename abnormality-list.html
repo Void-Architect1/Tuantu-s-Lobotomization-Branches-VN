@@ -388,35 +388,35 @@
 
     <div class="tool-sidebar">
         <div class="tool-img-box">
-            <img src="" id="out-image" alt="Tool Abnormality">
+            <img src="" id="tool-out-image" alt="Tool Abnormality">
         </div>
         <div class="tool-header-info">
-            <h2 id="out-name"></h2>
+            <h2 id="tool-out-name"></h2>
             <div class="tool-sub-info">
-                <span id="out-id"></span>
-                <span id="out-risk" class="dynamic-risk"></span>
+                <span id="tool-out-id"></span>
+                <span id="tool-out-risk" class="dynamic-risk"></span>
             </div>
         </div>
-        <div class="tool-quote" id="out-quote"></div>
+        <div class="tool-quote" id="tool-out-quote"></div>
         <fieldset class="tool-classification">
             <legend>Type of Abnormality</legend>
-            <span class="class-tag" id="out-type"></span>
+            <span class="class-tag" id="tool-out-type"></span>
         </fieldset>
 
-        <div class="modal-trigger-btn-border" onclick="openModal('desc-modal')">
+        <div class="modal-trigger-btn-border" onclick="openModal('tool-desc-modal')">
             <div class="modal-trigger-btn">
                 <span>DESCRIPTION</span>
             </div>
         </div>
 
-        <div class="modal-trigger-btn-border" onclick="openModal('appendix-modal')">
+        <div class="modal-trigger-btn-border" onclick="openModal('tool-appendix-modal')">
             <div class="modal-trigger-btn">
                 <span>APPENDIX</span>
             </div>
         </div>
     </div>
 
-    <div class="panel-log-border" id="log-panel">
+    <div class="panel-log-border" id="tool-log-panel">
         <div class="panel-log">
             <div class="panel-header" onclick="togglePanel('log-panel')">
                 <span>LOG</span>
@@ -424,52 +424,52 @@
             <div class="panel-content">
                 <div class="log-list">
                     <div class="log-item">
-                        <p id="out-log-1"></p>
-                        <span class="log-time" id="out-logtime-1"></span>
+                        <p id="tool-out-log-1"></p>
+                        <span class="log-time" id="tool-out-logtime-1"></span>
                     </div>
                     <div class="log-item">
-                        <p id="out-log-2"></p>
-                        <span class="log-time" id="out-logtime-2"></span>
+                        <p id="tool-out-log-2"></p>
+                        <span class="log-time" id="tool-out-logtime-2"></span>
                     </div>
                     <div class="log-item">
-                        <p id="out-log-3"></p>
-                        <span class="log-time" id="out-logtime-3"></span>
+                        <p id="tool-out-log-3"></p>
+                        <span class="log-time" id="tool-out-logtime-3"></span>
                     </div>
                     <div class="log-item">
-                        <p id="out-log-4"></p>
-                        <span class="log-time" id="out-logtime-4"></span>
+                        <p id="tool-out-log-4"></p>
+                        <span class="log-time" id="tool-out-logtime-4"></span>
                     </div>
                     <div class="log-item">
-                        <p id="out-log-5"></p>
-                        <span class="log-time" id="out-logtime-5"></span>
+                        <p id="tool-out-log-5"></p>
+                        <span class="log-time" id="tool-out-logtime-5"></span>
                     </div>
                     <div class="log-item">
-                        <p id="out-log-6"></p>
-                        <span class="log-time" id="out-logtime-6"></span>
+                        <p id="tool-out-log-6"></p>
+                        <span class="log-time" id="tool-out-logtime-6"></span>
                     </div>
                     <div class="log-item">
-                        <p id="out-log-7"></p>
-                        <span class="log-time" id="out-logtime-7"></span>
+                        <p id="tool-out-log-7"></p>
+                        <span class="log-time" id="tool-out-logtime-7"></span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="panel-method-border" id="method-panel">
+    <div class="panel-method-border" id="tool-method-panel">
         <div class="panel-method">
             <div class="panel-header" onclick="togglePanel('method-panel')">
                 <span>METHOD</span>
             </div>
             <div class="panel-content">
                 <div class="method-list">
-                    <div class="method-item"><p id="out-method-1"></p></div>
-                    <div class="method-item"><p id="out-method-2"></p></div>
-                    <div class="method-item"><p id="out-method-3"></p></div>
-                    <div class="method-item"><p id="out-method-4"></p></div>
-                    <div class="method-item"><p id="out-method-5"></p></div>
-                    <div class="method-item"><p id="out-method-6"></p></div>
-                    <div class="method-item"><p id="out-method-7"></p></div>
+                    <div class="method-item"><p id="tool-out-method-1"></p></div>
+                    <div class="method-item"><p id="tool-out-method-2"></p></div>
+                    <div class="method-item"><p id="tool-out-method-3"></p></div>
+                    <div class="method-item"><p id="tool-out-method-4"></p></div>
+                    <div class="method-item"><p id="tool-out-method-5"></p></div>
+                    <div class="method-item"><p id="tool-out-method-6"></p></div>
+                    <div class="method-item"><p id="tool-out-method-7"></p></div>
                 </div>
             </div>
         </div>
@@ -478,12 +478,12 @@
 </div>
 </div>
 
-<div class="custom-modal-overlay" id="desc-modal">
+<div class="custom-modal-overlay" id="tool-desc-modal">
     <div class="custom-modal-box" style="background: none; border: none; box-shadow: none; max-width: 650px; position: relative;">
         <div class="appendix-wrapper" style="position: relative; width: 100%;">
             <div class="desc-container-border">
                 <div class="desc-container" style="position: relative;">
-                    <div class="Btn-Leave-Corner" onclick="closeModal('desc-modal')">
+                    <div class="Btn-Leave-Corner" onclick="closeModal('tool-desc-modal')">
                         <span>LEAVE</span>
                     </div>
 
@@ -492,7 +492,7 @@
                     </div>
 
                     <div class="desc-content-body">
-                        <p style="color: #ffffa1; font-size: 14px; line-height: 1.6; margin-bottom: 12px;" id="out-des">
+                        <p style="color: #ffffa1; font-size: 14px; line-height: 1.6; margin-bottom: 12px;" id="tool-out-des">
                             Mô tả
                         </p>
                     </div>
@@ -503,12 +503,12 @@
     </div>
 </div>
 
-<div class="custom-modal-overlay" id="appendix-modal">
+<div class="custom-modal-overlay" id="tool-appendix-modal">
     <div class="custom-modal-box" style="background: none; border: none; box-shadow: none; max-width: 650px; position: relative;">
         <div class="appendix-wrapper" style="position: relative; width: 100%;">
             <div class="appendix-container-border">
                 <div class="appendix-container" style="position: relative;">
-                    <div class="Btn-Leave-Corner" onclick="closeModal('appendix-modal')">
+                    <div class="Btn-Leave-Corner" onclick="closeModal('tool-appendix-modal')">
                         <span>LEAVE</span>
                     </div>
 
@@ -517,38 +517,38 @@
                     </div>
 
                     <div class="appendix-item dynamic-appendix">
-                        <span class="appendix-title" id="out-titleappendix-1"></span>
-                        <div class="appendix-text" id="out-appendix-1"></div>
+                        <span class="appendix-title" id="tool-out-titleappendix-1"></span>
+                        <div class="appendix-text" id="tool-out-appendix-1"></div>
                     </div>
 
                     <div class="appendix-item dynamic-appendix">
-                        <span class="appendix-title" id="out-titleappendix-2"></span>
-                        <div class="appendix-text" id="out-appendix-2"></div>
+                        <span class="appendix-title" id="tool-out-titleappendix-2"></span>
+                        <div class="appendix-text" id="tool-out-appendix-2"></div>
                     </div>
 
                     <div class="appendix-item dynamic-appendix">
-                        <span class="appendix-title" id="out-titleappendix-3"></span>
-                        <div class="appendix-text" id="out-appendix-3"></div>
+                        <span class="appendix-title" id="tool-out-titleappendix-3"></span>
+                        <div class="appendix-text" id="tool-out-appendix-3"></div>
                     </div>
 
                     <div class="appendix-item dynamic-appendix">
-                        <span class="appendix-title" id="out-titleappendix-4"></span>
-                        <div class="appendix-text" id="out-appendix-4"></div>
+                        <span class="appendix-title" id="tool-out-titleappendix-4"></span>
+                        <div class="appendix-text" id="tool-out-appendix-4"></div>
                     </div>
 
                     <div class="appendix-item dynamic-appendix">
-                        <span class="appendix-title" id="out-titleappendix-5"></span>
-                        <div class="appendix-text" id="out-appendix-5"></div>
+                        <span class="appendix-title" id="tool-out-titleappendix-5"></span>
+                        <div class="appendix-text" id="tool-out-appendix-5"></div>
                     </div>
 
                     <div class="appendix-item dynamic-appendix">
-                        <span class="appendix-title" id="out-titleappendix-6"></span>
-                        <div class="appendix-text" id="out-appendix-6"></div>
+                        <span class="appendix-title" id="tool-out-titleappendix-6"></span>
+                        <div class="appendix-text" id="tool-out-appendix-6"></div>
                     </div>
 
                     <div class="appendix-item dynamic-appendix">
-                        <span class="appendix-title" id="out-titleappendix-7"></span>
-                        <div class="appendix-text" id="out-appendix-7"></div>
+                        <span class="appendix-title" id="tool-out-titleappendix-7"></span>
+                        <div class="appendix-text" id="tool-out-appendix-7"></div>
                     </div>
 
                 </div>

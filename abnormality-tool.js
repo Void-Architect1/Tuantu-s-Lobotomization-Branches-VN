@@ -75,6 +75,10 @@ window.onclick = function(event) {
     }
 }
 
+window.togglePanel = togglePanel;
+window.openModal = openModal;
+window.closeModal = closeModal;
+
 document.addEventListener("DOMContentLoaded", function() {
   var DEFAULT_IMAGE = "https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/placeholder.webp?raw=true";
   var riskIconsMap = {

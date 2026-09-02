@@ -463,10 +463,21 @@ function parseCustomEmojis(text) {
   observer.observe(document.body, { childList: true, subtree: true });
 })();
 
-const SUPABASE_URL = "https://tlgbnahlzsvwxsydnjpo.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_VHq3KL7PZbSHtCDYZQ061w_CIVwJFeI";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const firebaseConfig = {
+  apiKey: "AIzaSyBLHdA1sxx3iO4hg2SGfFK7qpMzh5CpzIE",
+  authDomain: "tlb-vn-database.firebaseapp.com",
+  projectId: "tlb-vn-database",
+  storageBucket: "tlb-vn-database.firebasestorage.app",
+  messagingSenderId: "161263399284",
+  appId: "1:161263399284:web:0d6163d072aad937df3c21",
+  measurementId: "G-GRT1ZMCTYL"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 document.getElementById("btn-save").addEventListener("click", async function() {
     const currentAbnormality = {
@@ -536,28 +547,22 @@ document.getElementById("btn-save").addEventListener("click", async function() {
         });
     }
 
+    const docId = currentAbnormality.baseInfo.id || "unknown_abnormality";
     const recordToSave = {
-        id: currentAbnormality.baseInfo.id,
+        id: docId,
         name: currentAbnormality.baseInfo.name || "Unnamed",
         risk: currentAbnormality.baseInfo.risk || "ZAYIN",
         type: "abnormality",
         image: currentAbnormality.baseInfo.image || "",
-        data: currentAbnormality
+        data: currentAbnormality,
+        updatedAt: new Date().toISOString()
     };
 
     try {
-        const { error } = await supabaseClient
-            .from('abnormalities')
-            .upsert([recordToSave]);
-
-        if (error) {
-            throw error;
-        }
-
-        alert("Lưu dữ liệu lên Supabase thành công!");
-
+        await setDoc(doc(db, "abnormalities", docId), recordToSave);
+        alert("Lưu dữ liệu lên Firebase Firestore thành công!");
     } catch (error) {
-        console.error("Lỗi lưu Supabase:", error);
+        console.error("Lỗi lưu Firebase:", error);
         alert("Có lỗi xảy ra khi lưu vào database: " + error.message);
     }
 });

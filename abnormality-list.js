@@ -506,7 +506,6 @@ document.querySelectorAll('.sidebar-menu .skeleton').forEach(label => {
         }
     });
 });
-
 document.addEventListener('click', function(e) {
     const leaveBtn = e.target.closest('.Btn-Leave-Corner');
     if (leaveBtn) {
@@ -519,12 +518,38 @@ document.addEventListener('click', function(e) {
         }
     }
 });
-
-// 4. Hiệu ứng đóng modal
 function closeModalWithAnimation(modal) {
     modal.classList.remove('active');
     modal.classList.add('closing');
     setTimeout(() => {
         modal.classList.remove('closing');
     }, 350);
+}
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('closing');
+        modal.classList.add('active');
+    }
+}
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('active');
+        modal.classList.add('closing');
+        setTimeout(() => {
+            modal.classList.remove('closing');
+            // modal.style.display = "none";
+        }, 350);
+    }
+}
+function togglePanel(panelId) {
+    const panelBorder = document.getElementById(panelId);
+    if (panelBorder) {
+        panelBorder.classList.toggle('collapsed');
+        const content = panelBorder.querySelector('.panel-content');
+        if (content) {
+            content.style.display = (content.style.display === 'none') ? 'block' : 'none';
+        }
+    }
 }

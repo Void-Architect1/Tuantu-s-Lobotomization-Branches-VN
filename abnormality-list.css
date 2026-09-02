@@ -316,28 +316,76 @@ html, body {
     border: 1px solid #333;
     cursor: pointer;
     text-align: center;
-    padding: 5px;
+    padding: 4px;
     transition: 0.2s;
+    display: flex;
+    flex-direction: column;
 }
 
 .abnormality-card:hover {
-    border-color: #ff3333;
     transform: scale(1.05);
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+}
+
+/* Phần hiển thị Mã ID lên trên đầu */
+.abnormality-card .card-id {
+    font-size: 11px;
+    font-weight: bold;
+    padding: 3px 0;
+    margin-bottom: 4px;
+    text-align: center;
+    letter-spacing: 0.5px;
 }
 
 .abnormality-card img {
     width: 100%;
-    height: 50px;
+    height: 55px;
     object-fit: cover;
+    background: #000;
+    display: block;
 }
 
-.abnormality-card .card-id {
-    color: #ffffa1;
-    font-size: 11px;
-    margin-top: 4px;
-}
 .abnormality-card.active-card {
-    border: 2px solid #ffcc00;
-    background-color: rgba(255, 204, 0, 0.15);
     transform: scale(1.02);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+.abnormality-card.risk-zayin {
+    border-color: #3b82f6;
+}
+.abnormality-card.risk-zayin .card-id {
+    background-color: #3b82f6;
+    color: #000;
+}
+
+.abnormality-card.risk-teth {
+    border-color: #10b981;
+}
+.abnormality-card.risk-teth .card-id {
+    background-color: #10b981;
+    color: #000;
+}
+
+.abnormality-card.risk-he {
+    border-color: #eab308;
+}
+.abnormality-card.risk-he .card-id {
+    background-color: #eab308;
+    color: #000;
+}
+
+.abnormality-card.risk-waw {
+    border-color: #a855f7;
+}
+.abnormality-card.risk-waw .card-id {
+    background-color: #a855f7;
+    color: #fff;
+}
+
+.abnormality-card.risk-aleph {
+    border-color: #ef4444;
+}
+.abnormality-card.risk-aleph .card-id {
+    background-color: #ef4444;
+    color: #fff;
 }

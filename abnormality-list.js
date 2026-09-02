@@ -398,10 +398,18 @@ function openModalById(modalId) {
     }
 }
 
+document.querySelectorAll('.sidebar-menu .skeleton').forEach(label => {
+    label.addEventListener('click', () => {
+        const modalId = label.getAttribute('data-modal');
+        if (modalId) {
+            openModalById(modalId);
+        }
+    });
+});
+
 document.addEventListener('click', function(e) {
     const leaveBtn = e.target.closest('.Btn-Leave-Corner');
     if (leaveBtn) {
-        // Bỏ qua nút đóng modal tạo dị thể chính (nếu có id riêng)
         if (leaveBtn.id === 'closeChoiceModal') return; 
 
         e.preventDefault();
@@ -412,6 +420,7 @@ document.addEventListener('click', function(e) {
     }
 });
 
+// 4. Hiệu ứng đóng modal
 function closeModalWithAnimation(modal) {
     modal.classList.remove('active');
     modal.classList.add('closing');

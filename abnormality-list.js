@@ -567,8 +567,20 @@ window.closeModal = function(modalId) {
 };
 
 window.togglePanel = function(panelId) {
-    const panelBorder = document.getElementById(panelId);
+    let panelBorder = document.getElementById(panelId);
+    if (panelBorder && !panelBorder.classList.contains('panel-log-border') && !panelBorder.classList.contains('panel-method-border')) {
+        panelBorder = panelBorder.closest('.panel-log-border, .panel-method-border');
+    }
+
     if (panelBorder) {
         panelBorder.classList.toggle('active');
+        const content = panelBorder.querySelector('.panel-content');
+        if (content) {
+            if (panelBorder.classList.contains('active')) {
+                content.style.display = "block";
+            } else {
+                content.style.display = ""; 
+            }
+        }
     }
 };

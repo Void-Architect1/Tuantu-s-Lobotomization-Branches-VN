@@ -89,7 +89,7 @@ button:hover { background: #c9302c; }
     color: #ffffa1;
     padding: 0 6px;
     font-style: italic;
-    font-family: Roboto Condensed, monospace;
+    font-family: 'Railway', monospace;
 }
 
 .tool-classification .class-tag {
@@ -187,6 +187,7 @@ button:hover { background: #c9302c; }
     justify-content: space-between;
     align-items: center;
     transition: background 0.3s;
+    font-family: 'Railway', sans-sref;
 }
 
 .panel-header:hover {
@@ -245,6 +246,7 @@ button:hover { background: #c9302c; }
     display: flex;
     flex-direction: column;
     gap: 4px;
+    font-family: 'Railway', sans-sref;
 }
 
 .method-item {
@@ -253,11 +255,13 @@ button:hover { background: #c9302c; }
     padding: 8px 10px;
     font-size: 0.8rem;
     color: #ff9441;
+    font-family: 'Railway', sans-sref;
 }
 
 .log-item p {
     margin: 0;
     color: #ffffa1;
+    word-break: break-word;
 }
 
 .method-item p {
@@ -328,7 +332,7 @@ button:hover { background: #c9302c; }
   background-color: #12110c;
   padding: 15px 20px;
   box-sizing: border-box;
-  font-family: "Roboto Condensed", sans-serif;
+  font-family: 'Gill sans', sans-serif;
   color: #FF9441;
   clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
   max-height: 80vh;

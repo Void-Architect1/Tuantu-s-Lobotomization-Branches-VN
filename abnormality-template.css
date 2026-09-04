@@ -197,7 +197,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
   background-color: #12110c;
   padding: 15px 20px;
   box-sizing: border-box;
-  font-family: "Railway", sans-serif;
+  font-family: 'Railway', sans-serif;
   color: #ffffa1;
   clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
 }
@@ -325,7 +325,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
   background-color: #12110c;
   padding: 15px 20px;
   box-sizing: border-box;
-  font-family: "Railway", sans-serif;
+  font-family: 'Railway', sans-serif;
   color: #FF9441;
   clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
   max-height: 80vh;
@@ -371,7 +371,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
   padding: 1px 6px;
   margin-top: 2px;
   letter-spacing: 0.5px;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+  font-family: 'Gill Sans', sans-serif;
 }
 
 .tips-text {
@@ -380,7 +380,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
   line-height: 1.4;
   margin-top: 8px;
   text-align: left;
-  font-family: Gill Sans, Gill Sans MT, Calibri, sans-serif;
+  font-family: 'Gill Sans', sans-serif;
 }
 
 .ego-tab-buttons {
@@ -527,7 +527,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
 
 .ego-desc-text {
   font-size: 12px;
-  font-family: Gill Sans, Gill Sans MT, Calibri, sans-serif;
+  font-family: 'Railway', sans-serif;
   line-height: 1.3;
   white-space: pre-line;
 }
@@ -575,7 +575,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
   background-color: #12110c;
   padding: 15px 20px;
   box-sizing: border-box;
-  font-family: "Gill sans", sans-serif;
+  font-family: 'Gill sans', sans-serif;
   color: #FF9441;
   clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
   max-height: 80vh;
@@ -613,7 +613,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
   line-height: 1.4;
   margin-top: 5px;
   text-align: left;
-  font-family: Gill Sans, Gill Sans MT, Calibri, sans-serif;
+  font-family: 'Gill Sans', sans-serif;
 }
 
 #modal-ego details.Description-Box summary.Description-Title::after {
@@ -681,7 +681,6 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
     background-size: 200% 100%;
     background-position: 0 0;
     transition: background-position 1s ease;
-    
     z-index: -1;
 }
 
@@ -797,11 +796,9 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
 .obs-container-wrapper::after {
   content: "" !important;
   position: absolute !important;
-  
   bottom: -5px !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
-  
   width: 0 !important;
   height: 0 !important;
   border-left: 7px solid transparent !important;
@@ -825,7 +822,6 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
 .obs-container-wrapper::before {
   content: "" !important;
   position: absolute !important;
-  
   top: -5px !important;
   left: 50% !important;
   transform: translateX(-50%) !important;

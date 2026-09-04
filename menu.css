@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Cabin:wght@600;700&display=swap');
-
+@font-face {
+    font-family: 'Railway';
+    src: url('Railway.woff2') format('woff2'),
+         url('Railway.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 body {
     background-color: #0d0d0d !original;
     margin: 0 !important;
@@ -65,7 +71,7 @@ html, body {
 
 .button-inner {
     color: #000000;
-    font-family: 'Cabin', 'Gill sans', sans-serif !important;
+    font-family: 'Railway', sans-serif !important;
     font-size: clamp(8px, 1vw, 16px);
     font-weight: 600;
     letter-spacing: 0.5px;

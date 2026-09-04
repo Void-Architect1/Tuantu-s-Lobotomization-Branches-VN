@@ -580,3 +580,32 @@ button:hover { background: #c9302c; }
     font-size: 13px;
     line-height: 1.4;
 }
+.discord-spoiler {
+    background-color: #444444;
+    color: transparent !important;
+    border-radius: 4px;
+    padding: 0 4px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+    display: inline-block;
+}
+
+.discord-spoiler .spoiler-content {
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.discord-spoiler:hover {
+    background-color: #ADADAD;
+}
+
+.discord-spoiler.revealed {
+    background-color: #444444;
+}
+
+.discord-spoiler.revealed .spoiler-content {
+    opacity: 1;
+    color: inherit !important;
+    user-select: text;
+}

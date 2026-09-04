@@ -575,7 +575,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
   background-color: #12110c;
   padding: 15px 20px;
   box-sizing: border-box;
-  font-family: "Roboto Condensed", sans-serif;
+  font-family: "Gill sans", sans-serif;
   color: #FF9441;
   clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
   max-height: 80vh;

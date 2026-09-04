@@ -567,18 +567,15 @@ window.closeModal = function(modalId) {
 
 window.togglePanel = function(panelId) {
     let panelBorder = document.getElementById(panelId);
-    if (panelBorder && !panelBorder.classList.contains('panel-log-border') && !panelBorder.classList.contains('panel-method-border')) {
-        panelBorder = panelBorder.closest('.panel-log-border, .panel-method-border');
-    }
-
     if (panelBorder) {
-        panelBorder.classList.toggle('active');
+        panelBorder.classList.toggle('collapsed');
+        
         const content = panelBorder.querySelector('.panel-content');
         if (content) {
-            if (panelBorder.classList.contains('active')) {
-                content.style.display = "block";
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
             } else {
-                content.style.display = ""; 
+                content.style.display = 'block';
             }
         }
     }

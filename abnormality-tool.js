@@ -36,16 +36,23 @@ function parseCustomEmojis(text) {
         ":hp:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/HP.webp?raw=true" class="inline-icon" alt="hp">',
         ":sp:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/SP.webp?raw=true" class="inline-icon" alt="sp">'
     };
-    return text.replace(/:([a-zA-Z0-9_-]+):/g, (match) => {
+    let parsed = text.replace(/:([a-zA-Z0-9_-]+):/g, (match) => {
         return emojiMap[match] || match; 
     });
+    parsed = parsed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    parsed = parsed.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    parsed = parsed.replace(/__(.*?)__/g, '<span style="text-decoration: underline;">$1</span>');
+    parsed = parsed.replace(/\[color:\s*([#a-zA-Z0-9]+)\](.*?)\[\/color\]/g, '<span style="color: $1;">$2</span>');
+    parsed = parsed.replace(/\[left\](.*?)\[\/left\]/gs, '<div style="text-align: left;">$1</div>');
+    parsed = parsed.replace(/\[center\](.*?)\[\/center\]/gs, '<div style="text-align: center;">$1</div>');
+    parsed = parsed.replace(/\[right\](.*?)\[\/right\]/gs, '<div style="text-align: right;">$1</div>');
+    parsed = parsed.replace(/\[box\](.*?)\[\/box\]/gs, '<div class="custom-formatting-box">$1</div>');
+    return parsed;
 }
 
 function togglePanel(panelId) {
     const panel = document.getElementById(panelId);
-    if (panel) {
-        panel.classList.toggle("active");
-    }
+    if (panel) panel.classList.toggle("active");
 }
 
 function openModal(modalId) {
@@ -78,6 +85,227 @@ window.onclick = function(event) {
 window.togglePanel = togglePanel;
 window.openModal = openModal;
 window.closeModal = closeModal;
+function initLogModule() {
+    let logCount = 0;
+    const containerInputs = document.getElementById("log-inputs-container");
+    const containerPreview = document.getElementById("out-log-list");
+    const btnAdd = document.getElementById("btn-add-log");
+    if (!containerInputs || !containerPreview || !btnAdd) return;
+
+    function updateLogNumbers() {
+        const items = containerInputs.querySelectorAll(".log-input-item");
+        items.forEach((item, index) => {
+            const label = item.querySelector("label");
+            if (label) label.textContent = `Log ${index + 1}`;
+        });
+    }
+
+    function addLogItem(textVal = "", timeVal = "") {
+        logCount++;
+        const index = logCount;
+
+        const itemDiv = document.createElement("div");
+        itemDiv.className = "log-input-item";
+        itemDiv.style.cssText = "margin-bottom: 15px; border-bottom: 1px dashed #444; padding-bottom: 10px;";
+        itemDiv.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <label style="color: #ffffa1; font-weight: bold;">Log ${index}</label>
+                <button type="button" class="btn-remove-log" style="background: #333; color: #ff5555; border: 1px solid #ff5555; cursor: pointer; padding: 2px 6px; font-size: 10px;">Xóa</button>
+            </div>
+            <textarea class="in-log-text" rows="4" placeholder="Nhập nội dung log..." style="width: 100%; margin-bottom: 5px; box-sizing: border-box;">${textVal}</textarea>
+            <input type="text" class="in-log-time" placeholder="Thời gian (VD: 12:30)" value="${timeVal}" style="width: 100%; box-sizing: border-box;">
+        `;
+        containerInputs.appendChild(itemDiv);
+
+        const previewDiv = document.createElement("div");
+        previewDiv.className = "log-item";
+        previewDiv.innerHTML = `
+            <p class="out-log-text"></p>
+            <span class="log-time out-log-time"></span>
+        `;
+        containerPreview.appendChild(previewDiv);
+
+        const textInput = itemDiv.querySelector(".in-log-text");
+        const timeInput = itemDiv.querySelector(".in-log-time");
+        const textOut = previewDiv.querySelector(".out-log-text");
+        const timeOut = previewDiv.querySelector(".out-log-time");
+        const removeBtn = itemDiv.querySelector(".btn-remove-log");
+
+        function updateThisPreview() {
+            textOut.innerHTML = parseCustomEmojis(textInput.value);
+            timeOut.innerHTML = parseCustomEmojis(timeInput.value);
+            previewDiv.style.display = (!textInput.value.trim() && !timeInput.value.trim()) ? "none" : "block";
+        }
+        textInput.addEventListener("input", updateThisPreview);
+        timeInput.addEventListener("input", updateThisPreview);
+        updateThisPreview();
+
+        removeBtn.addEventListener("click", function() {
+            itemDiv.remove();
+            previewDiv.remove();
+            updateLogNumbers();
+        });
+    }
+
+    btnAdd.addEventListener("click", () => addLogItem());
+
+    window.getDynamicLogData = function() {
+        const items = containerInputs.querySelectorAll(".log-input-item");
+        let logArray = [];
+        items.forEach(item => {
+            logArray.push({
+                text: item.querySelector(".in-log-text").value,
+                time: item.querySelector(".in-log-time").value
+            });
+        });
+        return logArray;
+    };
+}
+
+function initMethodModule() {
+    let methodCount = 0;
+    const containerInputs = document.getElementById("method-inputs-container");
+    const containerPreview = document.getElementById("out-method-list");
+    const btnAdd = document.getElementById("btn-add-method");
+    if (!containerInputs || !containerPreview || !btnAdd) return;
+
+    function updateMethodNumbers() {
+        const items = containerInputs.querySelectorAll(".method-input-item");
+        items.forEach((item, index) => {
+            const label = item.querySelector("label");
+            if (label) label.textContent = `Method ${index + 1}`;
+        });
+    }
+
+    function addMethodItem(contentVal = "") {
+        methodCount++;
+        const index = methodCount;
+
+        const itemDiv = document.createElement("div");
+        itemDiv.className = "method-input-item";
+        itemDiv.style.cssText = "margin-bottom: 15px; border-bottom: 1px dashed #444; padding-bottom: 10px;";
+        itemDiv.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <label style="color: #ff9441; font-weight: bold;">Method ${index}</label>
+                <button type="button" class="btn-remove-method" style="background: #333; color: #ff5555; border: 1px solid #ff5555; cursor: pointer; padding: 2px 6px; font-size: 10px;">Xóa</button>
+            </div>
+            <textarea class="in-method-content" rows="4" placeholder="Nhập nội dung method..." style="width: 100%; box-sizing: border-box;">${contentVal}</textarea>
+        `;
+        containerInputs.appendChild(itemDiv);
+
+        const previewDiv = document.createElement("div");
+        previewDiv.className = "method-item";
+        previewDiv.innerHTML = `<p class="out-method-content"></p>`;
+        containerPreview.appendChild(previewDiv);
+
+        const contentInput = itemDiv.querySelector(".in-method-content");
+        const contentOut = previewDiv.querySelector(".out-method-content");
+        const removeBtn = itemDiv.querySelector(".btn-remove-method");
+
+        function updateThisPreview() {
+            contentOut.innerHTML = parseCustomEmojis(contentInput.value);
+            previewDiv.style.display = !contentInput.value.trim() ? "none" : "block";
+        }
+        contentInput.addEventListener("input", updateThisPreview);
+        updateThisPreview();
+
+        removeBtn.addEventListener("click", function() {
+            itemDiv.remove();
+            previewDiv.remove();
+            updateMethodNumbers();
+        });
+    }
+
+    btnAdd.addEventListener("click", () => addMethodItem());
+
+    window.getDynamicMethodData = function() {
+        const items = containerInputs.querySelectorAll(".method-input-item");
+        let methodArray = [];
+        items.forEach(item => {
+            methodArray.push({
+                content: item.querySelector(".in-method-content").value
+            });
+        });
+        return methodArray;
+    };
+}
+
+function initAppendixModule() {
+    let appendixCount = 0;
+    const containerInputs = document.getElementById("appendix-inputs-container");
+    const containerPreview = document.getElementById("out-appendix-container");
+    const btnAdd = document.getElementById("btn-add-appendix");
+    if (!containerInputs || !containerPreview || !btnAdd) return;
+
+    function updateAppendixNumbers() {
+        const items = containerInputs.querySelectorAll(".appendix-input-item");
+        items.forEach((item, index) => {
+            const label = item.querySelector("label");
+            if (label) label.textContent = `Appendix ${index + 1}`;
+        });
+    }
+
+    function addAppendixItem(titleVal = "", contentVal = "") {
+        appendixCount++;
+        const index = appendixCount;
+
+        const itemDiv = document.createElement("div");
+        itemDiv.className = "appendix-input-item";
+        itemDiv.style.cssText = "margin-bottom: 15px; border-bottom: 1px dashed #444; padding-bottom: 10px;";
+        itemDiv.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <label style="color: #FF9441; font-weight: bold;">Appendix ${index}</label>
+                <button type="button" class="btn-remove-app" style="background: #333; color: #ff5555; border: 1px solid #ff5555; cursor: pointer; padding: 2px 6px; font-size: 10px;">Xóa</button>
+            </div>
+            <input type="text" class="in-app-title" placeholder="Tiêu đề phụ lục" value="${titleVal}" style="width: 100%; margin-bottom: 5px; box-sizing: border-box;">
+            <textarea class="in-app-content" rows="4" placeholder="Nhập nội dung phụ lục..." style="width: 100%; box-sizing: border-box;">${contentVal}</textarea>
+        `;
+        containerInputs.appendChild(itemDiv);
+
+        const previewDiv = document.createElement("div");
+        previewDiv.className = "appendix-item dynamic-appendix";
+        previewDiv.innerHTML = `
+            <span class="appendix-title"></span>
+            <div class="appendix-text"></div>
+        `;
+        containerPreview.appendChild(previewDiv);
+
+        const titleInput = itemDiv.querySelector(".in-app-title");
+        const contentInput = itemDiv.querySelector(".in-app-content");
+        const titleOut = previewDiv.querySelector(".appendix-title");
+        const contentOut = previewDiv.querySelector(".appendix-text");
+        const removeBtn = itemDiv.querySelector(".btn-remove-app");
+
+        function updateThisPreview() {
+            titleOut.textContent = titleInput.value || "Untitled";
+            contentOut.innerHTML = parseCustomEmojis(contentInput.value);
+            previewDiv.style.display = (!titleInput.value && !contentInput.value) ? "none" : "block";
+        }
+        titleInput.addEventListener("input", updateThisPreview);
+        contentInput.addEventListener("input", updateThisPreview);
+        updateThisPreview();
+        
+        removeBtn.addEventListener("click", function() {
+            itemDiv.remove();
+            previewDiv.remove();
+            updateAppendixNumbers();
+        });
+    }
+
+    btnAdd.addEventListener("click", () => addAppendixItem());
+
+    window.getDynamicAppendixData = function() {
+        const items = containerInputs.querySelectorAll(".appendix-input-item");
+        let appendixArray = [];
+        items.forEach(item => {
+            appendixArray.push({
+                title: item.querySelector(".in-app-title").value,
+                content: item.querySelector(".in-app-content").value
+            });
+        });
+        return appendixArray;
+    };
+}
 
 document.addEventListener("DOMContentLoaded", function() {
   var DEFAULT_IMAGE = "https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/placeholder.webp?raw=true";
@@ -97,15 +325,11 @@ document.addEventListener("DOMContentLoaded", function() {
   function updatePreview() {
     var inputId = document.getElementById("in-id");
     var outputId = document.getElementById("out-id");
-    if (inputId && outputId) {
-        outputId.textContent = inputId.value;
-    }
+    if (inputId && outputId) outputId.textContent = inputId.value;
     
     var inputName = document.getElementById("in-name");
     var outputName = document.getElementById("out-name");
-    if (inputName && outputName) {
-        outputName.textContent = inputName.value;
-    }
+    if (inputName && outputName) outputName.textContent = inputName.value;
     
     var inputQuote = document.getElementById("in-quote");
     var outputQuote = document.getElementById("out-quote");
@@ -116,119 +340,29 @@ document.addEventListener("DOMContentLoaded", function() {
     
     var inputImage = document.getElementById("in-image");
     var outputImage = document.getElementById("out-image");
-    if (inputImage && outputImage) {
-        outputImage.src = inputImage.value;
-    }
+    if (inputImage && outputImage) outputImage.src = inputImage.value;
     
     var inputDes = document.getElementById("in-des");
     var outputDes = document.getElementById("out-des");
-    if (inputDes && outputDes) {
-        outputDes.textContent = inputDes.value;
-    }
+    if (inputDes && outputDes) outputDes.textContent = inputDes.value;
     
     var inputType = document.getElementById("in-type");
     var outputType = document.getElementById("out-type");
-    if (inputType && outputType) {
-        outputType.textContent = inputType.value;
-    }
+    if (inputType && outputType) outputType.textContent = inputType.value;
 
     var inputRiskEl = document.getElementById("in-risk");
     var outputRiskImg = document.getElementById("out-risk");
     if (inputRiskEl && outputRiskImg) {
         var type = clean(inputRiskEl.value).toUpperCase();
         var iconHtml = riskIconsMap[type];
-        
-        if (iconHtml) {
-            outputRiskImg.innerHTML = iconHtml;
-            outputRiskImg.style.display = "inline-block";
-        } else {
-            outputRiskImg.innerHTML = "";
-        }
-    }
-    
-    for (let level = 1; level <= 7; level++) {
-        const inputLog = document.getElementById(`in-log-${level}`);
-        const inputLogTime = document.getElementById(`in-logtime-${level}`);
-        const outputLog = document.getElementById(`out-log-${level}`);
-        const outputLogTime = document.getElementById(`out-logtime-${level}`);
-        
-        if (inputLog && outputLog) {
-            outputLog.innerHTML = parseCustomEmojis(inputLog.value);
-        }
-        
-        if (inputLogTime && outputLogTime) {
-            outputLogTime.innerHTML = parseCustomEmojis(inputLogTime.value);
-        }
-        
-        const logItemParent = outputLog ? outputLog.closest('.log-item') : null;
-        if (logItemParent) {
-            const hasLogText = inputLog && inputLog.value.trim() !== "";
-            const hasLogTime = inputLogTime && inputLogTime.value.trim() !== "";
-            if (!hasLogText && !hasLogTime) {
-                logItemParent.style.display = 'none';
-            } else {
-                logItemParent.style.display = 'block';
-            }
-        }
-        
-        const inputMethod = document.getElementById(`in-method-${level}`);
-        const outputMethod = document.getElementById(`out-method-${level}`);
-        
-        if (inputMethod && outputMethod) {
-            outputMethod.innerHTML = parseCustomEmojis(inputMethod.value);
-            const parentMethodItem = outputMethod.closest('.method-item');
-            if (parentMethodItem) {
-                if (!inputMethod.value.trim()) {
-                    parentMethodItem.style.display = 'none';
-                } else {
-                    parentMethodItem.style.display = 'block';
-                }
-            }
-        }
-    }
-    
-    for (let level = 1; level <= 7; level++) {
-        const inputAppendix = document.getElementById(`in-appendix-${level}`);
-        const outputAppendix = document.getElementById(`out-appendix-${level}`);
-        if (inputAppendix && outputAppendix) {
-            const updateAppendixState = () => {
-                const rawVal = inputAppendix.value;
-                outputAppendix.innerHTML = parseCustomEmojis(rawVal);
-                const parentItem = outputAppendix.closest('.dynamic-appendix, .dynamic-text');
-                if (parentItem) {
-                    const cleanTxt = clean(rawVal.trim());
-                    if (!cleanTxt || rawVal.includes("{$") || cleanTxt.startsWith("APPENDIX_TEXT_")) {
-                        parentItem.style.display = 'none';
-                    } else {
-                        parentItem.style.display = 'block';
-                    }
-                }
-            };
-            updateAppendixState();
-            inputAppendix.addEventListener("input", updateAppendixState);
-        }
-        
-        const inputTitleAppendix = document.getElementById(`in-titleappendix-${level}`);
-        const outputTitleAppendix = document.getElementById(`out-titleappendix-${level}`);
-        if (inputTitleAppendix && outputTitleAppendix) {
-            const updateTitleAppendixState = () => {
-                const rawVal = inputTitleAppendix.value;
-                outputTitleAppendix.innerHTML = parseCustomEmojis(rawVal);
-                const parentItem = outputTitleAppendix.closest('.dynamic-appendix, .dynamic-text');
-                if (parentItem) {
-                    const cleanTxt = clean(rawVal.trim());
-                    if (!cleanTxt || rawVal.includes("{$") || cleanTxt.startsWith("APPENDIX_TEXT_")) {
-                        parentItem.style.display = 'none';
-                    } else {
-                        parentItem.style.display = 'block';
-                    }
-                }
-            };
-            updateTitleAppendixState();
-            inputTitleAppendix.addEventListener("input", updateTitleAppendixState);
-        }
+        outputRiskImg.innerHTML = iconHtml ? iconHtml : "";
+        outputRiskImg.style.display = iconHtml ? "inline-block" : "none";
     }
   }
+
+  initLogModule();
+  initMethodModule();
+  initAppendixModule();
 
   document.querySelectorAll('.form-panel input, .form-panel select, .form-panel textarea').forEach(function(element) {
       element.addEventListener('input', updatePreview);
@@ -236,7 +370,6 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   updatePreview();
-  
   document.querySelectorAll('img').forEach(function(img) {
     if (img.getAttribute('data-ignore-placeholder') === "true") return;
     var src = img.getAttribute('src');
@@ -251,7 +384,6 @@ document.addEventListener("DOMContentLoaded", function() {
     };
   });
 });
-
 (function initScrollIndicators() {
   const SELECTORS = '.appendix-container, .tips-container, .Description-Content, .obs-container';
   function attachScrollListener(box) {
@@ -286,8 +418,11 @@ document.addEventListener("DOMContentLoaded", function() {
   const observer = new MutationObserver(() => scanAndApply());
   observer.observe(document.body, { childList: true, subtree: true });
 })();
-
 document.getElementById("btn-save").addEventListener("click", async function() {
+    const btnSave = this;
+    btnSave.disabled = true;
+    btnSave.textContent = "ĐANG LƯU...";
+
     const currentTool = {
         baseInfo: {
             id: document.getElementById('in-id').value || "Unknown",
@@ -298,32 +433,12 @@ document.getElementById("btn-save").addEventListener("click", async function() {
             image: document.getElementById('in-image').value,
             description: document.getElementById('in-des').value
         },
-        logs: [],
-        methods: [],
-        appendix: []
+        logs: window.getDynamicLogData ? window.getDynamicLogData() : [],
+        methods: window.getDynamicMethodData ? window.getDynamicMethodData() : [],
+        appendix: window.getDynamicAppendixData ? window.getDynamicAppendixData() : []
     };
 
-    for (let i = 1; i <= 7; i++) {
-        currentTool.logs.push({
-            text: document.getElementById(`in-log-${i}`).value,
-            time: document.getElementById(`in-logtime-${i}`).value
-        });
-    }
-
-    for (let i = 1; i <= 7; i++) {
-        currentTool.methods.push({
-            content: document.getElementById(`in-method-${i}`).value
-        });
-    }
-
-    for (let i = 1; i <= 7; i++) {
-        currentTool.appendix.push({
-            title: document.getElementById(`in-titleappendix-${i}`).value,
-            content: document.getElementById(`in-appendix-${i}`).value
-        });
-    }
-
-    const docId = currentTool.baseInfo.id || "unknown_tool";
+    const docId = currentTool.baseInfo.id.trim().toUpperCase() || "UNKNOWN_TOOL";
     const recordToSave = {
         id: docId,
         name: currentTool.baseInfo.name || "Unnamed",
@@ -340,5 +455,8 @@ document.getElementById("btn-save").addEventListener("click", async function() {
     } catch (error) {
         console.error("Lỗi lưu Firebase:", error);
         alert("Có lỗi xảy ra khi lưu vào database: " + error.message);
+    } finally {
+        btnSave.disabled = false;
+        btnSave.textContent = "SAVE";
     }
 });

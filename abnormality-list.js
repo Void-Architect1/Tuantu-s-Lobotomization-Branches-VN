@@ -150,7 +150,7 @@ function safeSetText(elementId, text) {
 }
 
 function renderAbnormalityDetails(item) {
-    const tipsContainer = document.getElementById("out-management-tips-container");
+    const tipsContainer = document.getElementById("out-management-tips-list");
     if (tipsContainer) {
         tipsContainer.innerHTML = "";
         const tipsArr = item.managementTips || [];

@@ -232,23 +232,23 @@ function renderToolDetails(item) {
         });
     }
 
-    const appendixContainer = document.getElementById("out-tool-appendix-container");
-    if (appendixContainer) {
-        appendixContainer.innerHTML = "";
-        const appendixArr = item.appendix || [];
+const appendixContainer = document.getElementById("out-tool-appendix-container");
+if (appendixContainer) {
+    appendixContainer.innerHTML = "";
+    const appendixArr = item.appendix || [];
+    
+    appendixArr.forEach((appData, index) => {
+        // Chỉ giữ lại 1 dòng định nghĩa rawText này thôi nhé
+        const rawText = appData.text || appData.content || (typeof appData === 'string' ? appData : "");
         
-        appendixArr.forEach((appData, index) => {
-            const rawText = appData.text || "";
-            const appDiv = document.createElement("div");
-            appDiv.className = "appendix-item dynamic-item";
-            const rawText = appData.text || appData.content || (typeof appData === 'string' ? appData : "");
-            appDiv.innerHTML = `
-                <div class="appendix-title">Appendix ${index + 1}</div>
-                <div class="appendix-text">${parseCustomEmojis(rawText)}</div>
-            `;
-            appendixContainer.appendChild(appDiv);
-        });
-    }
+        const appDiv = document.createElement("div");
+        appDiv.className = "appendix-item dynamic-item";
+        appDiv.innerHTML = `
+            <div class="appendix-title">Appendix ${index + 1}</div>
+            <div class="appendix-text">${parseCustomEmojis(rawText)}</div>
+        `;
+        appendixContainer.appendChild(appDiv);
+    });
 }
 
 function fillDataToDetailTemplate(item) {

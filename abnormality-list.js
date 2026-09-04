@@ -238,9 +238,7 @@ if (appendixContainer) {
     const appendixArr = item.appendix || [];
     
     appendixArr.forEach((appData, index) => {
-        // Chỉ giữ lại 1 dòng định nghĩa rawText này thôi nhé
         const rawText = appData.text || appData.content || (typeof appData === 'string' ? appData : "");
-        
         const appDiv = document.createElement("div");
         appDiv.className = "appendix-item dynamic-item";
         appDiv.innerHTML = `

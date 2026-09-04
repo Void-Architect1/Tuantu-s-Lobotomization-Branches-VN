@@ -929,7 +929,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
     color: #ffffa1;
     font-size: 13px;
     line-height: 1.4;
-    font-family: 'Railway', sans-sref;
+    font-family: 'Railway', sans-serif;
 }
 .discord-spoiler {
     background-color: #444444;

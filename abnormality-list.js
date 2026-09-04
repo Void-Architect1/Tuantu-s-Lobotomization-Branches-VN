@@ -231,7 +231,7 @@ function renderToolDetails(item) {
         });
     }
 
-    const appendixContainer = document.getElementById("out-appendix-container");
+    const appendixContainer = document.getElementById("out-tool-appendix-container");
     if (appendixContainer) {
         appendixContainer.innerHTML = "";
         const appendixArr = item.appendix || [];

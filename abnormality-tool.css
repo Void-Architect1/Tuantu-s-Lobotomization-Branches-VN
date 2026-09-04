@@ -333,6 +333,7 @@ button:hover { background: #c9302c; }
   clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
   max-height: 80vh;
   overflow-y: auto;
+  scrollbar-width: none
 }
 
 .appendix-item {
@@ -430,6 +431,7 @@ button:hover { background: #c9302c; }
   clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
   max-height: 80vh;
   overflow-y: auto;
+  scrollbar-width: none
 }
 
 @keyframes slideUp {
@@ -485,14 +487,6 @@ button:hover { background: #c9302c; }
 .appendix-wrapper {
         position: relative !important;
         overflow: visible !important;
-}
-
-.appendix-container, 
-.desc-container {
-        overflow-y: auto !important;
-        max-height: 400px;
-        height: 100%;
-        scrollbar-width: none !important;
 }
 
 .appendix-wrapper::after,

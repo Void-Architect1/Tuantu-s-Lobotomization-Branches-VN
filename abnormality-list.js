@@ -517,6 +517,7 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+
 function closeModalWithAnimation(modal) {
     modal.classList.remove('active');
     modal.classList.add('closing');
@@ -524,44 +525,26 @@ function closeModalWithAnimation(modal) {
         modal.classList.remove('closing');
     }, 350);
 }
-function openModal(modalId) {
+
+// Gom tất cả vào Global window để HTML onclick gọi được chính xác
+window.openModal = function(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.remove('closing');
         modal.classList.add('active');
-    }
-}
-function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.classList.remove('active');
-        modal.classList.add('closing');
-        setTimeout(() => {
-            modal.classList.remove('closing');
-        }, 350);
-    }
-}
-function togglePanel(panelId) {
-    const panelBorder = document.getElementById(panelId);
-    if (panelBorder) {
-        panelBorder.classList.toggle('collapsed');
-        const content = panelBorder.querySelector('.panel-content');
-        if (content) {
-            content.style.display = (content.style.display === 'none') ? 'block' : 'none';
-        }
-    }
-}
-window.openModal = function(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.classList.add('open');
+        // Nếu modal của tool dùng class 'open', thêm dòng dưới:
+        modal.classList.add('open'); 
     }
 };
 
 window.closeModal = function(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
-        modal.classList.remove('open');
+        modal.classList.remove('active', 'open');
+        modal.classList.add('closing');
+        setTimeout(() => {
+            modal.classList.remove('closing');
+        }, 350);
     }
 };
 

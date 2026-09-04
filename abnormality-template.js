@@ -69,6 +69,7 @@ function parseCustomEmojis(text) {
     parsed = parsed.replace(/\[center\](.*?)\[\/center\]/gs, '<div style="text-align: center;">$1</div>');
     parsed = parsed.replace(/\[right\](.*?)\[\/right\]/gs, '<div style="text-align: right;">$1</div>');
     parsed = parsed.replace(/\[box\](.*?)\[\/box\]/gs, '<div class="custom-formatting-box">$1</div>');
+    parsed = parsed.replace(/\|\|(.*?)\|\|/g, '<span class="discord-spoiler" onclick="this.classList.toggle(\'revealed\')"><span class="spoiler-content">$1</span></span>');
     return parsed;
 }
 

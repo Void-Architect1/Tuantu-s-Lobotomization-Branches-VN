@@ -610,3 +610,18 @@ button:hover { background: #c9302c; }
     color: inherit !important;
     user-select: text;
 }
+@font-face {
+    font-family: 'Railway';
+    src: url('Railway.woff2') format('woff2'),
+         url('Railway.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'GillSans';
+    src: url('SFUGillSans.woff2') format('woff2'),
+        url('SFUGillSans.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}

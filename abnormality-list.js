@@ -97,7 +97,6 @@ querySnapshot.forEach(docSnap => {
     const abvRisk = (info.risk || "zayin").toLowerCase(); 
     const abvImage = info.image || DEFAULT_IMAGE;
     
-    // Lấy kiểu loại từ row (nếu không có thì mặc định là abnormality)
     const dataType = row.type || "abnormality";
 
     const card = document.createElement("div");
@@ -147,6 +146,106 @@ function safeSetText(elementId, text) {
     const el = document.getElementById(elementId);
     if (el) {
         el.textContent = text || "";
+    }
+}
+
+function renderAbnormalityDetails(item) {
+    const tipsContainer = document.getElementById("out-management-tips-container");
+    if (tipsContainer) {
+        tipsContainer.innerHTML = "";
+        const tipsArr = item.managementTips || [];
+        
+        if (tipsArr.length === 0) {
+            tipsContainer.innerHTML = `<p class="no-data">Không có hướng dẫn quản lý nào.</p>`;
+        } else {
+            tipsArr.forEach((tipData, index) => {
+                const rawTip = tipData.tip || "";
+                const rawCost = tipData.cost || "";
+                
+                const tipDiv = document.createElement("div");
+                tipDiv.className = "tips-item dynamic-item";
+                tipDiv.innerHTML = `
+                    <div class="tips-header-box">
+                      <span class="tips-title">Managerial Guidelines ${index + 1}</span>
+                      <span class="tips-cost">PE-Boxes <span class="out-tipscost">${parseCustomEmojis(rawCost)}</span></span>
+                    </div>
+                    <div class="tips-text out-tips">${parseCustomEmojis(rawTip)}</div>
+                `;
+                tipsContainer.appendChild(tipDiv);
+            });
+        }
+    }
+
+    const appendixContainer = document.getElementById("out-appendix-container");
+    if (appendixContainer) {
+        appendixContainer.innerHTML = "";
+        const appendixArr = item.appendix || [];
+        
+        appendixArr.forEach((appData, index) => {
+            const rawText = appData.text || "";
+            const appDiv = document.createElement("div");
+            appDiv.className = "appendix-item dynamic-item";
+            appDiv.innerHTML = `
+                <div class="appendix-title">Appendix ${index + 1}</div>
+                <div class="appendix-text">${parseCustomEmojis(rawText)}</div>
+            `;
+            appendixContainer.appendChild(appDiv);
+        });
+    }
+}
+
+function renderToolDetails(item) {
+    const logListContainer = document.getElementById("out-log-list");
+    if (logListContainer) {
+        logListContainer.innerHTML = "";
+        const logsArr = item.logs || [];
+        
+        if (logsArr.length === 0) {
+            logListContainer.innerHTML = `<p class="no-data">Không có nhật ký ghi nhận.</p>`;
+        } else {
+            logsArr.forEach(logData => {
+                const logDiv = document.createElement("div");
+                logDiv.className = "log-item dynamic-item";
+                logDiv.innerHTML = `
+                    <p class="out-log-text">${parseCustomEmojis(logData.text || "")}</p>
+                    <span class="log-time out-log-time">${parseCustomEmojis(logData.time || "")}</span>
+                `;
+                logListContainer.appendChild(logDiv);
+            });
+        }
+    }
+
+    const methodContainer = document.getElementById("out-method-list");
+    if (methodContainer) {
+        methodContainer.innerHTML = "";
+        const methodsArr = item.methods || [];
+        
+        methodsArr.forEach((methodData, index) => {
+            const methodDiv = document.createElement("div");
+            methodDiv.className = "method-item dynamic-item";
+            methodDiv.innerHTML = `
+                <div class="method-title">Method ${index + 1}</div>
+                <div class="method-desc">${parseCustomEmojis(methodData.description || methodData)}</div>
+            `;
+            methodContainer.appendChild(methodDiv);
+        });
+    }
+
+    const appendixContainer = document.getElementById("out-appendix-container");
+    if (appendixContainer) {
+        appendixContainer.innerHTML = "";
+        const appendixArr = item.appendix || [];
+        
+        appendixArr.forEach((appData, index) => {
+            const rawText = appData.text || "";
+            const appDiv = document.createElement("div");
+            appDiv.className = "appendix-item dynamic-item";
+            appDiv.innerHTML = `
+                <div class="appendix-title">Appendix ${index + 1}</div>
+                <div class="appendix-text">${parseCustomEmojis(rawText)}</div>
+            `;
+            appendixContainer.appendChild(appDiv);
+        });
     }
 }
 
@@ -222,58 +321,8 @@ function fillDataToDetailTemplate(item) {
             }
         }
     }
-
-    const tipsArr = item.managementTips || [];
-    for (let level = 1; level <= 7; level++) {
-        const tipData = tipsArr[level - 1] || {};
-        const outputTips = document.getElementById(`out-tips-${level}`);
-        if (outputTips) {
-            const rawVal = tipData.tip || "";
-            outputTips.innerHTML = parseCustomEmojis(rawVal);
-            const parentItem = outputTips.closest('.dynamic-tip, .tips-item');
-            if (parentItem) {
-                const cleanTxt = clean(rawVal.trim());
-                parentItem.style.display = (!cleanTxt || rawVal.includes("{$") || cleanTxt.startsWith("MANAGEMENT_TIPS_")) ? 'none' : 'block';
-            }
-        }
-
-        const outputTipsCost = document.getElementById(`out-tipscost-${level}`);
-        if (outputTipsCost) {
-            const rawCostVal = tipData.cost || "";
-            outputTipsCost.innerHTML = parseCustomEmojis(rawCostVal);
-            const parentItem = outputTipsCost.closest('.dynamic-tip, .tips-item');
-            if (parentItem) {
-                const cleanTxt = clean(rawCostVal.trim());
-                parentItem.style.display = (!cleanTxt || rawCostVal.includes("{$") || rawCostVal.startsWith("MANAGEMENT_TIPS_")) ? 'none' : 'block';
-            }
-        }
-    }
-
-    const appendixArr = item.appendix || [];
-    for (let level = 1; level <= 7; level++) {
-        const appData = appendixArr[level - 1] || {};
-        const outputAppendix = document.getElementById(`out-appendix-${level}`);
-        if (outputAppendix) {
-            const rawVal = appData.content || "";
-            outputAppendix.innerHTML = parseCustomEmojis(rawVal);
-            const parentItem = outputAppendix.closest('.dynamic-appendix, .dynamic-text');
-            if (parentItem) {
-                const cleanTxt = clean(rawVal.trim());
-                parentItem.style.display = (!cleanTxt || rawVal.includes("{$") || cleanTxt.startsWith("APPENDIX_TEXT_")) ? 'none' : 'block';
-            }
-        }
-
-        const outputTitleAppendix = document.getElementById(`out-titleappendix-${level}`);
-        if (outputTitleAppendix) {
-            const rawTitleVal = appData.title || "";
-            outputTitleAppendix.innerHTML = parseCustomEmojis(rawTitleVal);
-            const parentItem = outputTitleAppendix.closest('.dynamic-appendix, .dynamic-text');
-            if (parentItem) {
-                const cleanTxt = clean(rawTitleVal.trim());
-                parentItem.style.display = (!cleanTxt || rawTitleVal.includes("{$") || rawTitleVal.startsWith("APPENDIX_TEXT_")) ? 'none' : 'block';
-            }
-        }
-    }
+    
+    renderAbnormalityDetails(item);
 
     const workTypes = ["instinct", "insight", "attachment", "repression"];
     workTypes.forEach(type => {
@@ -362,68 +411,9 @@ function fillDataToToolTemplate(item) {
         const type = clean(info.risk).toUpperCase();
         riskImg.innerHTML = riskIconsMap[type] || info.risk || "";
     }
-    const logsArr = item.logs || [];
-    for (let level = 1; level <= 7; level++) {
-        const logData = logsArr[level - 1] || {};
-        
-        const outputLog = document.getElementById(`tool-out-log-${level}`);
-        if (outputLog) {
-            outputLog.innerHTML = parseCustomEmojis(logData.text || "");
-        }
-
-        const outputLogTime = document.getElementById(`tool-out-logtime-${level}`);
-        if (outputLogTime) {
-            outputLogTime.innerHTML = parseCustomEmojis(logData.time || "");
-        }
-        
-        const logItemParent = outputLog ? outputLog.closest('.log-item') : null;
-        if (logItemParent) {
-            const hasText = (logData.text || "").trim() !== "";
-            const hasTime = (logData.time || "").trim() !== "";
-            logItemParent.style.display = (!hasText && !hasTime) ? 'none' : 'flex';
-        }
-    }
-    const methodsArr = item.methods || [];
-    for (let level = 1; level <= 7; level++) {
-        const methodData = methodsArr[level - 1] || {};
-        const outputMethod = document.getElementById(`tool-out-method-${level}`);
-        
-        if (outputMethod) {
-            outputMethod.innerHTML = parseCustomEmojis(methodData.content || "");
-            const parentMethodItem = outputMethod.closest('.method-item');
-            if (parentMethodItem) {
-                parentMethodItem.style.display = !methodData.content ? 'none' : 'block';
-            }
-        }
-    }
-    const appendixArr = item.appendix || [];
-    for (let level = 1; level <= 7; level++) {
-        const appData = appendixArr[level - 1] || {};
-        
-        const outputAppendix = document.getElementById(`tool-out-appendix-${level}`);
-        if (outputAppendix) {
-            const rawVal = appData.content || "";
-            outputAppendix.innerHTML = parseCustomEmojis(rawVal);
-            const parentItem = outputAppendix.closest('.dynamic-appendix, .dynamic-text');
-            if (parentItem) {
-                const cleanTxt = clean(rawVal.trim());
-                parentItem.style.display = (!cleanTxt || rawVal.includes("{$")) ? 'none' : 'block';
-            }
-        }
-
-        const outputTitleAppendix = document.getElementById(`tool-out-titleappendix-${level}`);
-        if (outputTitleAppendix) {
-            const rawTitleVal = appData.title || "";
-            outputTitleAppendix.innerHTML = parseCustomEmojis(rawTitleVal);
-            const parentItem = outputTitleAppendix.closest('.dynamic-appendix, .dynamic-text');
-            if (parentItem) {
-                const cleanTxt = clean(rawTitleVal.trim());
-                parentItem.style.display = (!cleanTxt || rawTitleVal.includes("{$")) ? 'none' : 'block';
-            }
-        }
-    }
+    
+    renderToolDetails(item);
 }
-
 function parseCustomEmojis(text) {
     if (!text) return "";
     const emojiMap = {
@@ -446,9 +436,18 @@ function parseCustomEmojis(text) {
         ":hp:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/HP.webp?raw=true" class="inline-icon" alt="hp">',
         ":sp:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/SP.webp?raw=true" class="inline-icon" alt="sp">'
     };
-    return text.replace(/:([a-zA-Z0-9_-]+):/g, (match) => {
+    let parsed = text.replace(/:([a-zA-Z0-9_-]+):/g, (match) => {
         return emojiMap[match] || match; 
     });
+    parsed = parsed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    parsed = parsed.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    parsed = parsed.replace(/__(.*?)__/g, '<span style="text-decoration: underline;">$1</span>');
+    parsed = parsed.replace(/\[color:\s*([#a-zA-Z0-9]+)\](.*?)\[\/color\]/g, '<span style="color: $1;">$2</span>');
+    parsed = parsed.replace(/\[left\](.*?)\[\/left\]/gs, '<div style="text-align: left;">$1</div>');
+    parsed = parsed.replace(/\[center\](.*?)\[\/center\]/gs, '<div style="text-align: center;">$1</div>');
+    parsed = parsed.replace(/\[right\](.*?)\[\/right\]/gs, '<div style="text-align: right;">$1</div>');
+    parsed = parsed.replace(/\[box\](.*?)\[\/box\]/gs, '<div class="custom-formatting-box">$1</div>');
+    return parsed;
 }
 
 (function initScrollIndicators() {

@@ -223,6 +223,7 @@ function renderToolDetails(item) {
         methodsArr.forEach((methodData, index) => {
             const methodDiv = document.createElement("div");
             methodDiv.className = "method-item dynamic-item";
+            const textContent = methodData.content || methodData.description || methodData;
             methodDiv.innerHTML = `
                 <div class="method-title">Method ${index + 1}</div>
                 <div class="method-desc">${parseCustomEmojis(methodData.description || methodData)}</div>

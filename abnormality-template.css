@@ -113,10 +113,10 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
 .Work-Row.Neutral { color: #FF9900; }
 .Work-Row.Bad { color: #FF0000; }
 
-.Work-Row.Good,
-.Work-Row.Neutral,
-.Work-Row.Bad {
-  font-family: 'Gill sans', sans-serif;
+#out-good,
+#out-normal,
+#out-bad {
+    font-family: 'Gill Sans', sans-serif;
 }
 
 .Work-Label {

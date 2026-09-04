@@ -355,12 +355,12 @@
                 <div class="Modal-Content">
                   <div class="appendix-wrapper">
                     <div class="appendix-container-border">
-                      <div class="appendix-container" id="out-appendix-container">
+                      <div class="appendix-container" style="position: relative;">
                         <label for="toggle-appendix" class="Btn-Leave-Corner" style="margin-left: 10px;"><span>LEAVE</span></label>
                         <div class="Info-Row" style="border-bottom: 2px solid #FF9441; margin-bottom: 15px; padding-bottom: 8px; padding-right: 110px;">
                           <span style="font-size: 18px; font-weight: bold; color: #FF9441;">ABNORMALITY APPENDIX</span>
                         </div>
-                        
+                        <div id="out-appendix-container"></div>
                       </div>
                     </div>
                   </div>
@@ -462,10 +462,14 @@
     <div class="custom-modal-box" style="background: none; border: none; box-shadow: none; max-width: 650px; position: relative;">
         <div class="appendix-wrapper" style="position: relative; width: 100%;">
             <div class="appendix-container-border">
-                <div class="appendix-container" id="out-appendix-container" style="position: relative;">
+                <div class="appendix-container" style="position: relative;">
                     <div class="Btn-Leave-Corner" onclick="closeModal('tool-appendix-modal')">
                         <span>LEAVE</span>
                     </div>
+                    <div class="Info-Row" style="border-bottom: 2px solid #FF9441; margin-bottom: 15px; padding-bottom: 8px; padding-right: 110px;">
+                        <span style="font-size: 18px; font-weight: bold; color: #FF9441;">APPENDIX</span>
+                    </div>
+                    <div id="out-tool-appendix-container"></div>
                 </div>
             </div>
         </div>

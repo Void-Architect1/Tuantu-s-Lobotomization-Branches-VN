@@ -583,6 +583,7 @@ button:hover { background: #c9302c; }
     color: #ffffa1;
     font-size: 13px;
     line-height: 1.4;
+    font-family: 'Railway', sans-sref;
 }
 .discord-spoiler {
     background-color: #444444;

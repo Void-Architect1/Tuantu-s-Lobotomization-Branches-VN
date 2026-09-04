@@ -226,7 +226,7 @@ function renderToolDetails(item) {
             const textContent = methodData.content || methodData.description || methodData;
             methodDiv.innerHTML = `
                 <div class="method-title">Method ${index + 1}</div>
-                <div class="method-desc">${parseCustomEmojis(methodData.description || methodData)}</div>
+                <div class="method-desc">${parseCustomEmojis(textContent)}</div>
             `;
             methodContainer.appendChild(methodDiv);
         });

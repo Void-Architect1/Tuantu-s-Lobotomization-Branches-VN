@@ -932,7 +932,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
 }
 .discord-spoiler {
     background-color: #444444;
-    color: transparent !important;
+    color: #ffffff;
     border-radius: 4px;
     padding: 0 4px;
     cursor: pointer;
@@ -944,6 +944,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
 .discord-spoiler .spoiler-content {
     opacity: 0;
     transition: opacity 0.2s;
+    color: transparent !important;
 }
 
 .discord-spoiler:hover {

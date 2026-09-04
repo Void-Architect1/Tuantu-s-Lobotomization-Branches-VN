@@ -248,6 +248,7 @@ if (appendixContainer) {
         appendixContainer.appendChild(appDiv);
     });
 }
+}
 
 function fillDataToDetailTemplate(item) {
     const defaultScreen = document.querySelector(".lob-info-screen");

@@ -968,7 +968,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
     font-style: normal;
 }
 @font-face {
-    font-family: 'SFU GillSans';
+    font-family: 'GillSans';
     src: url('SFUGillSans.woff2') format('woff2'),
         url('SFUGillSans.woff') format('woff');
     font-weight: normal;

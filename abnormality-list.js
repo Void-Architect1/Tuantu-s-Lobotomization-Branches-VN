@@ -415,7 +415,8 @@ function fillDataToToolTemplate(item) {
     renderToolDetails(item);
 }
 function parseCustomEmojis(text) {
-    if (!text) return "";
+    if (text === null || text === undefined) return "";
+    let str = typeof text === 'object' ? JSON.stringify(text) : String(text);
     const emojiMap = {
         ":speedrate:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/speed%20rate.webp?raw=true" class="inline-icon" alt="speed">',
         ":workrate:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/work%20rate.webp?raw=true" class="inline-icon" alt="work">',
@@ -436,7 +437,7 @@ function parseCustomEmojis(text) {
         ":hp:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/HP.webp?raw=true" class="inline-icon" alt="hp">',
         ":sp:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/SP.webp?raw=true" class="inline-icon" alt="sp">'
     };
-    let parsed = text.replace(/:([a-zA-Z0-9_-]+):/g, (match) => {
+    let parsed = str.replace(/:([a-zA-Z0-9_-]+):/g, (match) => {
         return emojiMap[match] || match; 
     });
     parsed = parsed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');

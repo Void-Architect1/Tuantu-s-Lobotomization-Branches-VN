@@ -920,3 +920,13 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
     vertical-align: middle;
     margin: 0 2px;
 }
+.custom-formatting-box {
+    background-color: #000000;
+    border: 2px solid #ff9441;
+    padding: 10px 12px;
+    margin: 8px 0;
+    border-radius: 2px;
+    color: #ffffa1;
+    font-size: 13px;
+    line-height: 1.4;
+}

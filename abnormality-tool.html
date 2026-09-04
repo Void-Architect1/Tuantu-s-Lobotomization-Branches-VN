@@ -46,28 +46,13 @@
             </div>
             <div class="form-group">
                 <label>LOG</label>
-                    <textarea id="in-log-1" rows="5" placeholder="log 1"></textarea>
-                    <input type="text" id="in-logtime-1" placeholder="log time 1">
-                    <textarea id="in-log-2" rows="5" placeholder="log 2"></textarea>
-                    <input type="text" id="in-logtime-2" placeholder="log time 2">
-                    <textarea id="in-log-3" rows="5" placeholder="log 3"></textarea>
-                    <input type="text" id="in-logtime-3" placeholder="log time 3">
-                    <textarea id="in-log-4" rows="5" placeholder="log 4"></textarea>
-                    <input type="text" id="in-logtime-4" placeholder="log time 4">
-                    <textarea id="in-log-5" rows="5" placeholder="log 5"></textarea>
-                    <input type="text" id="in-logtime-5" placeholder="log time 5">
-                    <textarea id="in-log-6" rows="5" placeholder="log 6"></textarea>
-                    <input type="text" id="in-logtime-6" placeholder="log time 6">
-                    <textarea id="in-log-7" rows="5" placeholder="log 7"></textarea>
-                    <input type="text" id="in-logtime-7" placeholder="log time 7">
+                <div id="log-inputs-container"></div>
+                <button type="button" id="btn-add-log">+ Thêm Log</button>
+            </div>
+            <div class="form-group">
                 <label>METHOD</label>
-                    <textarea id="in-method-1" rows="5" placeholder="method 1"></textarea>
-                    <textarea id="in-method-2" rows="5" placeholder="method 2"></textarea>
-                    <textarea id="in-method-3" rows="5" placeholder="method 3"></textarea>
-                    <textarea id="in-method-4" rows="5" placeholder="method 4"></textarea>
-                    <textarea id="in-method-5" rows="5" placeholder="method 5"></textarea>
-                    <textarea id="in-method-6" rows="5" placeholder="method 6"></textarea>
-                    <textarea id="in-method-7" rows="5" placeholder="method 7"></textarea>
+                <div id="method-inputs-container"></div>
+                <button type="button" id="btn-add-method">+ Thêm Method</button>
             </div>
             <div class="form-group">
                 <label>Description</label>
@@ -75,27 +60,8 @@
             </div>
             <div class="form-group">
                 <label>Appendix List</label>
-                    <label>Appendix 1</label>
-                    <input type="text" id="in-titleappendix-1" placeholder="tiêu đề phụ lục">
-                    <textarea id="in-appendix-1" rows="10" placeholder="Nhập nội dung phụ lục"></textarea>
-                    <label>Appendix 2</label>
-                    <input type="text" id="in-titleappendix-2" placeholder="tiêu đề phụ lục">
-                    <textarea id="in-appendix-2" rows="10" placeholder="Nhập nội dung phục lục"></textarea>
-                    <label>Appendix 3</label>
-                    <input type="text" id="in-titleappendix-3" placeholder="tiêu đề phụ lục">
-                    <textarea id="in-appendix-3" rows="10" placeholder="Nhập nội dung phụ lục"></textarea>
-                    <label>Appendix 4</label>
-                    <input type="text" id="in-titleappendix-4" placeholder="tiêu đề phụ lục">
-                    <textarea id="in-appendix-4" rows="10" placeholder="Nhập nội dung lục lục"></textarea>
-                    <label>Appendix 5</label>
-                    <input type="text" id="in-titleappendix-5" placeholder="tiêu đề phụ lục">
-                    <textarea id="in-appendix-5" rows="10" placeholder="Nhập nội dung phụ lục"></textarea>
-                    <label>Appendix 6</label>
-                    <input type="text" id="in-titleappendix-6" placeholder="tiêu đề phụ lục">
-                    <textarea id="in-appendix-6" rows="10" placeholder="Nhập nội dung phụ lục"></textarea>
-                    <label>Appendix 7</label>
-                    <input type="text" id="in-titleappendix-7" placeholder="tiêu đề phụ lục">
-                    <textarea id="in-appendix-7" rows="10" placeholder="Nhập nội dung phụ lục"></textarea>
+                <div id="appendix-inputs-container"></div>
+                <button type="button" id="btn-add-appendix">+ Thêm Appendix</button>
             </div>
             
             <button type="button" id="btn-save">SAVE</button>
@@ -145,33 +111,7 @@
             </div>
             <div class="panel-content">
                 <div class="log-list">
-                    <div class="log-item">
-                        <p id="out-log-1"></p>
-                        <span class="log-time" id="out-logtime-1"></span>
-                    </div>
-                    <div class="log-item">
-                        <p id="out-log-2"></p>
-                        <span class="log-time" id="out-logtime-2"></span>
-                    </div>
-                    <div class="log-item">
-                        <p id="out-log-3"></p>
-                        <span class="log-time" id="out-logtime-3"></span>
-                    </div>
-                    <div class="log-item">
-                        <p id="out-log-4"></p>
-                        <span class="log-time" id="out-logtime-4"></span>
-                    </div>
-                    <div class="log-item">
-                        <p id="out-log-5"></p>
-                        <span class="log-time" id="out-logtime-5"></span>
-                    </div>
-                    <div class="log-item">
-                        <p id="out-log-6"></p>
-                        <span class="log-time" id="out-logtime-6"></span>
-                    </div>
-                    <div class="log-item">
-                        <p id="out-log-7"></p>
-                        <span class="log-time" id="out-logtime-7"></span>
+                    <div class="log-list" id="out-log-list">
                     </div>
                 </div>
             </div>
@@ -184,14 +124,7 @@
                 <span>METHOD</span>
             </div>
             <div class="panel-content">
-                <div class="method-list">
-                    <div class="method-item"><p id="out-method-1"></p></div>
-                    <div class="method-item"><p id="out-method-2"></p></div>
-                    <div class="method-item"><p id="out-method-3"></p></div>
-                    <div class="method-item"><p id="out-method-4"></p></div>
-                    <div class="method-item"><p id="out-method-5"></p></div>
-                    <div class="method-item"><p id="out-method-6"></p></div>
-                    <div class="method-item"><p id="out-method-7"></p></div>
+                <div class="method-list" id="out-method-list">
                 </div>
             </div>
         </div>
@@ -229,50 +162,10 @@
     <div class="custom-modal-box" style="background: none; border: none; box-shadow: none; max-width: 650px; position: relative;">
         <div class="appendix-wrapper" style="position: relative; width: 100%;">
             <div class="appendix-container-border">
-                <div class="appendix-container" style="position: relative;">
+                <div class="appendix-container" id="out-appendix-container" style="position: relative;">
                     <div class="Btn-Leave-Corner" onclick="closeModal('appendix-modal')">
                         <span>LEAVE</span>
                     </div>
-
-                    <div class="Info-Row" style="border-bottom: 2px solid #FF9441; margin-bottom: 15px; padding-bottom: 8px; padding-right: 110px;">
-                        <span style="font-size: 18px; font-weight: bold; color: #FF9441;">ABNORMALITY APPENDIX</span>
-                    </div>
-
-                    <div class="appendix-item dynamic-appendix">
-                        <span class="appendix-title" id="out-titleappendix-1"></span>
-                        <div class="appendix-text" id="out-appendix-1"></div>
-                    </div>
-
-                    <div class="appendix-item dynamic-appendix">
-                        <span class="appendix-title" id="out-titleappendix-2"></span>
-                        <div class="appendix-text" id="out-appendix-2"></div>
-                    </div>
-
-                    <div class="appendix-item dynamic-appendix">
-                        <span class="appendix-title" id="out-titleappendix-3"></span>
-                        <div class="appendix-text" id="out-appendix-3"></div>
-                    </div>
-
-                    <div class="appendix-item dynamic-appendix">
-                        <span class="appendix-title" id="out-titleappendix-4"></span>
-                        <div class="appendix-text" id="out-appendix-4"></div>
-                    </div>
-
-                    <div class="appendix-item dynamic-appendix">
-                        <span class="appendix-title" id="out-titleappendix-5"></span>
-                        <div class="appendix-text" id="out-appendix-5"></div>
-                    </div>
-
-                    <div class="appendix-item dynamic-appendix">
-                        <span class="appendix-title" id="out-titleappendix-6"></span>
-                        <div class="appendix-text" id="out-appendix-6"></div>
-                    </div>
-
-                    <div class="appendix-item dynamic-appendix">
-                        <span class="appendix-title" id="out-titleappendix-7"></span>
-                        <div class="appendix-text" id="out-appendix-7"></div>
-                    </div>
-
                 </div>
             </div>
         </div>

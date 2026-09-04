@@ -552,15 +552,6 @@ window.closeModal = function(modalId) {
 window.togglePanel = function(panelId) {
     let panelBorder = document.getElementById(panelId);
     if (panelBorder) {
-        panelBorder.classList.toggle('collapsed');
-        
-        const content = panelBorder.querySelector('.panel-content');
-        if (content) {
-            if (content.style.display === 'block') {
-                content.style.display = 'none';
-            } else {
-                content.style.display = 'block';
-            }
-        }
+        panelBorder.classList.toggle('active');
     }
 };

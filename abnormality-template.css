@@ -660,7 +660,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
     padding-right: 15px;
     box-sizing: border-box;
     color: #ffffa1;
-    font-family: Arial, sans-serif;
+    font-family: 'Railway', sans-serif;
     font-size: 20px;
     font-weight: 500;
     transition: color 0.3s ease;

@@ -241,6 +241,7 @@ function renderToolDetails(item) {
             const rawText = appData.text || "";
             const appDiv = document.createElement("div");
             appDiv.className = "appendix-item dynamic-item";
+            const rawText = appData.text || appData.content || (typeof appData === 'string' ? appData : "");
             appDiv.innerHTML = `
                 <div class="appendix-title">Appendix ${index + 1}</div>
                 <div class="appendix-text">${parseCustomEmojis(rawText)}</div>

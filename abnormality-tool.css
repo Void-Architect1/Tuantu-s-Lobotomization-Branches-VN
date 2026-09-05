@@ -630,3 +630,68 @@ button:hover { background: #c9302c; }
     font-style: normal;
     font-display: swap;
 }
+
+.lobo-fold-container {
+    margin: 0px 0;
+}
+
+.lobo-fold-header {
+    color: #ff9441;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    user-select: none;
+    padding: 2px 0;
+    transition: opacity 0.2s;
+}
+
+.lobo-fold-header:hover {
+    opacity: 0.85;
+}
+
+.lobo-fold-toggle-icon {
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: inline-block;
+    transition: transform 0.15s ease;
+}
+
+.lobo-fold-toggle-icon.rotate {
+    transform: rotate(90deg);
+}
+
+.lobo-fold-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease;
+    background-color: #000000;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+.lobo-fold-container.open > .lobo-fold-content {
+    padding: 15px;
+    border: 2px dashed rgba(242, 242, 242, 0.6);
+    margin-top: 5px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow-y: auto;
+}
+
+
+.lobo-fold-container.open > .lobo-fold-content::-webkit-scrollbar {
+    display: none;
+    width: 0px;
+    background: transparent;
+}
+
+.lobo-fold-inner {
+    color: #ccc;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    white-space: pre-line;
+    overflow: hidden;
+    font-family: 'Railway', sans-serif;
+}

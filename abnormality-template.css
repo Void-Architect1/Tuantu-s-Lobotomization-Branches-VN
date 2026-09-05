@@ -984,6 +984,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
     font-style: normal;
     font-display: swap;
 }
+
 .lobo-fold-container {
     margin: 0px 0;
 }
@@ -1046,4 +1047,5 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
     font-size: 0.95rem;
     white-space: pre-line;
     overflow: hidden;
+    font-family: 'Railway', sans-serif;
 }

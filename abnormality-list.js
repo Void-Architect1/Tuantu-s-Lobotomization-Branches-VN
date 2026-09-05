@@ -182,7 +182,7 @@ function renderAbnormalityDetails(item) {
         const appendixArr = item.appendix || [];
         
         appendixArr.forEach((appData, index) => {
-            const rawText = appData.text || "";
+            const rawText = appData.text || appData.content || (typeof appData === 'string' ? appData : "");
             const appDiv = document.createElement("div");
             appDiv.className = "appendix-item dynamic-item";
             appDiv.innerHTML = `

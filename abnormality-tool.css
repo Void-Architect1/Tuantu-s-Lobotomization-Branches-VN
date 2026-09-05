@@ -632,7 +632,7 @@ button:hover { background: #c9302c; }
 }
 
 .lobo-fold-container {
-    margin: 0px 0;
+    margin: 0;
 }
 
 .lobo-fold-header {
@@ -669,6 +669,7 @@ button:hover { background: #c9302c; }
     background-color: #000000;
     padding: 0 15px;
     box-sizing: border-box;
+    margin: 0;
 }
 
 .lobo-fold-container.open > .lobo-fold-content {
@@ -689,7 +690,7 @@ button:hover { background: #c9302c; }
 
 .lobo-fold-inner {
     color: #ccc;
-    line-height: 1.6;
+    line-height: 1.1;
     font-size: 0.95rem;
     white-space: pre-line;
     overflow: hidden;

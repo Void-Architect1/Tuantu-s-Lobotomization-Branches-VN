@@ -524,11 +524,12 @@ function parseCustomEmojis(text) {
     return parsed;
 }
 
-function toggleLoboFold(headerElement) {
+window.toggleLoboFold = function(headerElement) {
     const foldContainer = headerElement.closest('.lobo-fold-container');
     const iconSpan = headerElement.querySelector('.lobo-fold-toggle-icon');
     const contentDiv = foldContainer.querySelector(':scope > .lobo-fold-content');
     const isOpen = foldContainer.classList.toggle('open');
+    
     if (isOpen) {
         contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
     } else {
@@ -546,7 +547,7 @@ function toggleLoboFold(headerElement) {
     setTimeout(() => {
         iconSpan.classList.remove('rotate');
     }, 150);
-}
+};
 
 (function initScrollIndicators() {
   const SELECTORS = '.appendix-container, .tips-container, .Description-Content, .obs-container';

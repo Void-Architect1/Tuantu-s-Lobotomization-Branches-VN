@@ -507,20 +507,9 @@ function parseCustomEmojis(text) {
     do {
         previousText = parsed;
         parsed = parsed.replace(/\[fold:\s*([^\]]+)\](((?!\[fold:|\[\/fold\])[\s\S])*?)\[\/fold\]/g, (match, title, content) => {
-            return `
-                <div class="lobo-fold-container">
-                    <div class="lobo-fold-header" onclick="toggleLoboFold(this)">
-                        <span class="lobo-fold-toggle-icon">+</span> 
-                        <span class="lobo-fold-title">${title.trim()}</span>
-                    </div>
-                    <div class="lobo-fold-content">
-                        <div class="lobo-fold-inner">${content.trim()}</div>
-                    </div>
-                </div>
-            `;
+            return `<div class="lobo-fold-container"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner">${content.trim()}</div></div></div>`;
         });
     } while (parsed !== previousText);
-
     return parsed;
 }
 

@@ -248,6 +248,14 @@ function initLogModule() {
         });
         return logArray;
     };
+    window.loadLog = function(logArray) {
+        containerInputs.innerHTML = '';
+        containerPreview.innerHTML = '';
+        logCount = 0;
+        logArray.forEach(item => {
+            addLogItem(item.text, item.time);
+        });
+    };
 }
 
 function initMethodModule() {
@@ -315,6 +323,14 @@ function initMethodModule() {
             });
         });
         return methodArray;
+    };
+    window.loadMethod = function(methodArray) {
+        containerInputs.innerHTML = '';
+        containerPreview.innerHTML = '';
+        methodCount = 0;
+        methodArray.forEach(item => {
+            addMethodItem(item.content);
+        });
     };
 }
 
@@ -392,6 +408,14 @@ function initAppendixModule() {
             });
         });
         return appendixArray;
+    };
+    window.loadAppendix = function(appArray) {
+        containerInputs.innerHTML = '';
+        containerPreview.innerHTML = '';
+        appendixCount = 0;
+        appArray.forEach(item => {
+            addAppendixItem(item.title, item.content);
+        });
     };
 }
 
@@ -507,85 +531,63 @@ document.addEventListener("DOMContentLoaded", function() {
   observer.observe(document.body, { childList: true, subtree: true });
 })();
 
-function saveToolDraft() {
-    const draftData = {
-        baseInfo: {
-            id: document.getElementById('in-id').value,
-            name: document.getElementById('in-name').value,
-            risk: document.getElementById('in-risk').value,
-            quote: document.getElementById('in-quote').value,
-            type: document.getElementById('in-type').value,
-            image: document.getElementById('in-image').value,
-            description: document.getElementById('in-des').value
-        },
-        logs: typeof window.getDynamicLogData === 'function' ? window.getDynamicLogData() : [],
-        methods: typeof window.getDynamicMethodData === 'function' ? window.getDynamicMethodData() : [],
-        appendix: typeof window.getDynamicAppendixData === 'function' ? window.getDynamicAppendixData() : []
-    };
+const btnSaveDraft = document.getElementById('btn-save-draft');
+const btnLoadDraft = document.getElementById('btn-load-draft');
 
-    localStorage.setItem('tool_abnormality_draft', JSON.stringify(draftData));
-    alert('Đã lưu nháp Tool (bao gồm Log, Method, Appendix) thành công!');
+if (btnSaveDraft) {
+    btnSaveDraft.addEventListener('click', () => {
+        const formData = {};
+        
+        document.querySelectorAll('.form-panel input, .form-panel textarea, .form-panel select').forEach(input => {
+            if (input.id) {
+                formData[input.id] = input.value;
+            }
+        });
+        if (typeof window.getDynamicLogData === 'function') {
+            formData['log_data'] = window.getDynamicLogData();
+        }
+        if (typeof window.getDynamicMethodData === 'function') {
+            formData['method_data'] = window.getDynamicMethodData();
+        }
+        if (typeof window.getDynamicAppendixData === 'function') {
+            formData['appendix_data'] = window.getDynamicAppendixData();
+        }
+        localStorage.setItem('tool_form_draft', JSON.stringify(formData));
+        alert('Đã lưu bản nháp thành công vào trình duyệt!');
+    });
 }
 
-function loadToolDraft() {
-    const savedData = localStorage.getItem('tool_abnormality_draft');
-    if (!savedData) {
-        alert('Không tìm thấy bản nháp Tool nào được lưu!');
-        return;
-    }
-
-    try {
-        const draftData = JSON.parse(savedData);
-        if (draftData.baseInfo) {
-            for (const key in draftData.baseInfo) {
-                const input = document.getElementById(`in-${key}`);
-                if (input) {
-                    input.value = draftData.baseInfo[key];
-                    input.dispatchEvent(new Event('input', { bubbles: true }));
-                    input.dispatchEvent(new Event('change', { bubbles: true }));
+if (btnLoadDraft) {
+    btnLoadDraft.addEventListener('click', () => {
+        const savedJson = localStorage.getItem('tool_form_draft');
+        if (!savedJson) {
+            alert('Không tìm thấy dữ liệu bản nháp nào!');
+            return;
+        }
+        const data = JSON.parse(savedJson);
+        for (const [id, value] of Object.entries(data)) {
+            if (id !== 'log_data' && id !== 'method_data' && id !== 'appendix_data') {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.value = value;
+                    el.dispatchEvent(new Event('input'));
+                    el.dispatchEvent(new Event('change'));
                 }
             }
         }
-        const logContainer = document.getElementById("log-inputs-container");
-        if (logContainer) logContainer.innerHTML = "";
-        
-        if (draftData.logs && Array.isArray(draftData.logs)) {
-            draftData.logs.forEach(item => {
-                if (typeof window.addLogItemByData === 'function') {
-                    window.addLogItemByData(item);
-                }
-            });
+        if (data['log_data'] && typeof window.loadLog === 'function') {
+            window.loadLog(data['log_data']);
         }
-        const methodContainer = document.getElementById("method-inputs-container");
-        if (methodContainer) methodContainer.innerHTML = "";
-        
-        if (draftData.methods && Array.isArray(draftData.methods)) {
-            draftData.methods.forEach(item => {
-                if (typeof window.addMethodItemByData === 'function') {
-                    window.addMethodItemByData(item);
-                }
-            });
+        if (data['method_data'] && typeof window.loadMethod === 'function') {
+            window.loadMethod(data['method_data']);
+        }
+        if (data['appendix_data'] && typeof window.loadAppendix === 'function') {
+            window.loadAppendix(data['appendix_data']);
         }
 
-        // D. Khôi phục phần APPENDIX
-        const appendixContainer = document.getElementById("appendix-inputs-container");
-        if (appendixContainer) appendixContainer.innerHTML = "";
-        
-        if (draftData.appendix && Array.isArray(draftData.appendix)) {
-            draftData.appendix.forEach(item => {
-                if (typeof window.addAppendixItemByData === 'function') {
-                    window.addAppendixItemByData(item);
-                }
-            });
-        }
-        alert('Đã tải nháp và khôi phục thành công toàn bộ dữ liệu!');
-    } catch (e) {
-        console.error('Lỗi khi tải nháp Tool:', e);
-        alert('Đã xảy ra lỗi khi khôi phục bản nháp.');
-    }
+        alert('Đã tải bản nháp lên thành công!');
+    });
 }
-document.getElementById("btn-save-draft").addEventListener("click", saveToolDraft);
-document.getElementById("btn-load-draft").addEventListener("click", loadToolDraft);
 
 document.getElementById("btn-save").addEventListener("click", async function() {
     const btnSave = this;

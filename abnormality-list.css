@@ -389,3 +389,74 @@ html, body {
     background-color: #ff0004;
     color: #fff;
 }
+
+@media screen and (max-width: 768px) {
+  
+  .lobotomy-ui {
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow-y: auto !important;
+  }
+
+  .lob-left-panel {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    border-right: none !important;
+    border-bottom: 4px solid #ff1a1a !important;
+  }
+
+  #abnormality-list {
+    grid-template-columns: repeat(3, 1fr) !important;
+    max-height: 250px !important;
+  }
+
+  .hide-scrollbar[style*="flex: 1"] {
+    padding: 10px !important;
+    overflow-y: visible !important;
+  }
+
+  .Main-Content, 
+  .ego-grid {
+    flex-direction: column !important;
+    gap: 15px !important;
+  }
+
+  .Left-Column, 
+  .Right-Column, 
+  .ego-left, 
+  .ego-right {
+    width: 100% !important;
+  }
+
+  .Modal-Content, 
+  .lob-modal-box {
+    width: 95% !important;
+    max-width: 100% !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    padding: 12px !important;
+    box-sizing: border-box;
+  }
+
+  .favour-grid {
+    grid-template-columns: repeat(2, 1fr) !important; /* Chia 2 cột cho phần work favour */
+    gap: 8px !important;
+  }
+
+  .Btn-Home-Corner {
+    width: 85px;
+    height: 35px;
+    padding-right: 5px;
+    padding-top: 5px;
+  }
+  
+  .Btn-Home-Corner span {
+    font-size: 12px !important;
+  }
+
+  .Btn-Leave-Corner {
+    transform: scale(0.9);
+  }
+}

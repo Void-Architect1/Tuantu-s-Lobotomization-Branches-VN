@@ -351,42 +351,42 @@ html, body {
 }
 
 .abnormality-card.risk-zayin {
-    border-color: #3b82f6;
+    border-color: #00ff00;
 }
 .abnormality-card.risk-zayin .card-id {
-    background-color: #3b82f6;
+    background-color: #00ff00;
     color: #000;
 }
 
 .abnormality-card.risk-teth {
-    border-color: #10b981;
+    border-color: #a4c2f4;
 }
 .abnormality-card.risk-teth .card-id {
-    background-color: #10b981;
+    background-color: #a4c2f4;
     color: #000;
 }
 
 .abnormality-card.risk-he {
-    border-color: #eab308;
+    border-color: #ffff00;
 }
 .abnormality-card.risk-he .card-id {
-    background-color: #eab308;
+    background-color: #ffff00;
     color: #000;
 }
 
 .abnormality-card.risk-waw {
-    border-color: #a855f7;
+    border-color: #9900ff;
 }
 .abnormality-card.risk-waw .card-id {
-    background-color: #a855f7;
+    background-color: #9900ff;
     color: #fff;
 }
 
 .abnormality-card.risk-aleph {
-    border-color: #ff0004;
+    border-color: #ff0000;
 }
 .abnormality-card.risk-aleph .card-id {
-    background-color: #ff0004;
+    background-color: #ff0000;
     color: #fff;
 }
 

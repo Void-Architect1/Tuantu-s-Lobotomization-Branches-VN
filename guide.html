@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tuantu's Lobotomization Branches VN Guide</title>
+    <link rel="icon" type="image/png" href="TLB.VN.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="guide.css">
+</head>
+<body>
+<div class="main-ui-wrapper">
+    <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/TLB.VN%20corp.png?raw=true" class="ui-background" alt="UI Background">
+    
+    <nav class="sidebar-menu" id="mainMenu">
+        <button class="button-skeleton" onclick="openSubMenu('riskPanel')"><span class="button-inner">RISK LEVEL</span></button>
+        <button class="button-skeleton" onclick="openSubMenu('subjectPanel')"><span class="button-inner">SUBJECT CLASSIFICATION</span></button>
+        <button class="button-skeleton" onclick="openSubMenu('guidePanel')"><span class="button-inner">Guide</span></button>
+    </nav>
+
+    <div class="sub-menu-panel-border" id="riskPanel">
+        <div class="sub-menu-panel">
+            <label class="back-btn" onclick="closeSubMenu('riskPanel')"><span>LEAVE</span></label>
+            <div class="sub-panel-title">RISK LEVEL</div>
+    
+            <div class="risk-levels-row">
+                <div class="risk-btn-border border-zayin" id="btn-zayin" onclick="toggleRiskPanel('zayin')">
+                    <div class="risk-btn btn-zayin">
+                        <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Zayin.webp?raw=true" class="risk-icon" alt="Zayin Icon">
+                        <span>ZAYIN</span>
+                    </div>
+                </div>
+                <div class="risk-btn-border border-teth" id="btn-teth" onclick="toggleRiskPanel('teth')">
+                    <div class="risk-btn btn-teth">
+                        <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Teth.webp?raw=true" class="risk-icon" alt="Teth Icon">
+                        <span>TETH</span>
+                    </div>
+                </div>
+                <div class="risk-btn-border border-he" id="btn-he" onclick="toggleRiskPanel('he')">
+                    <div class="risk-btn btn-he">
+                        <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_He.webp?raw=true" class="risk-icon" alt="He Icon">
+                        <span>HE</span>
+                    </div>
+                </div>
+                <div class="risk-btn-border border-waw" id="btn-waw" onclick="toggleRiskPanel('waw')">
+                    <div class="risk-btn btn-waw">
+                        <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Waw.webp?raw=true" class="risk-icon" alt="Waw Icon">
+                        <span>WAW</span>
+                    </div>
+                </div>
+                <div class="risk-btn-border border-aleph" id="btn-aleph" onclick="toggleRiskPanel('aleph')">
+                    <div class="risk-btn btn-aleph">
+                        <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Aleph.webp?raw=true" class="risk-icon" alt="Aleph Icon">
+                        <span>ALEPH</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shared-content-panel" id="sharedContentPanel">
+                <div class="risk-content-item" id="content-zayin">
+                    <h4 style="color: #00ff00; margin-top: 0;">[icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Zayin.webp?raw=true][color:#00ff00]ZAYIN[/color] Level Information</h4>
+                    <p><strong>Mô tả:</strong> Đây là những dị thể không thể “xổng” được. Chúng thường chỉ có một loại điều kiện duy nhất. Mức độ nguy hiểm của dị thể đó gây ra luôn là rất nhỏ. Trong trường hợp xấu nhất, hậu quả chúng gây ra được ghi nhận cũng chỉ là “1 mạng”. Đôi khi còn mang lại lợi ích cho cơ sở</p>
+                     <p><strong>Thông tin cơ bản:</strong></p>
+                     <ul style="color: #ddd; line-height: 1.6; margin-top: 5px; padding-left: 20px;">
+                        <li>Không thể vi phạm quản thúc</li>
+                        <li>Lượng PE-Boxes tối đa đạt 3-10</li>
+                        <li>1-2 Max Work Damage</li>
+                        <li>Giá mở khoá thông tin cơ bản: 8-10 PE</li>
+                        <li>Giá mở khoá Tip làm việc: 9-10 PE / (Số lượng) Tips (TỔNG số hộp PE chia cho số Tips)</li>
+                        <li>Giá mở khoá Work Type: 1-2 PE</li>
+                        <li>Tổng giá: 25-30 PE</li>
+                     </ul>
+                </div>
+                <div class="risk-content-item" id="content-teth">
+                    <h4 style="color: #a4c2f4; margin-top: 0;">[icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Teth.webp?raw=true][color:#a4c2f4]TETH[/color] Level Information</h4>
+                    <p><strong>Mô tả:</strong> Từ cấp độ này trở đi, Các dị thể giờ sẽ có khả năng (thường là) “vi phạm quản thúc”. Các dị thể cấp độ này cũng có khả năng gây hại cho nhiều người hơn khác với cấp độ trên.</p>
+                     <p><strong>Thông tin cơ bản:</strong></p>
+                     <ul style="color: #ddd; line-height: 1.6; margin-top: 5px; padding-left: 20px;">
+                        <li>Lượng PE-Boxes tối đa đạt 10-14</li>
+                        <li>1-4 Max Work Damage</li>
+                        <li>Giá mở khoá thông tin cơ bản: 8-12 PE</li>
+                        <li>Giá mở khoá Tip làm việc: 12-15 PE / (Số lượng) Tips</li>
+                        <li>Giá mở khoá Work Type: 4-6 PE</li>
+                        <li>Tổng giá: 35-50 PE</li>
+                     </ul>
+                </div>
+                <div class="risk-content-item" id="content-he">
+                    <h4 style="color: #ffd966; margin-top: 0;">[icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_He.webp?raw=true][color:#ffd966]HE[/color] Level Information</h4>
+                    <p><strong>Mô tả:</strong> Những đối tượng ở cấp độ này trở lên sẽ cần được chú ý nhiều hơn các đối tượng [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Zayin.webp?raw=true][color:#00ff00]ZAYIN[/color] và [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Teth.webp?raw=true][color:#a4c2f4]TETH[/color]. Những đối tượng này cũng bắt đầu có nhiều hơn 1 điều kiện quản thúc, và cũng sẽ bắt đầu đặt điều kiện không phụ thuộc vào “kết quả công việc” hay “yêu cầu đầu việc” hay “yêu cầu chỉ số”, mặc dù không phải lúc nào cũng vậy.</p>
+                     <p><strong>Thông tin cơ bản:</strong></p>
+                     <ul style="color: #ddd; line-height: 1.6; margin-top: 5px; padding-left: 20px;">
+                        <li>Lượng PE-Boxes tối đa đạt 15-18</li>
+                        <li>1-6 Max Work Damage</li>
+                        <li>Giá mở khoá thông tin cơ bản: 16 PE</li>
+                        <li>Giá mở khoá Tip làm việc: 18-25 PE / (Số lượng) Tips</li>
+                        <li>Giá mở khoá Work Type: 5-6 PE</li>
+                        <li>Tổng giá: 50-70 PE</li>
+                     </ul>
+                </div>
+                <div class="risk-content-item" id="content-waw">
+                    <h4 style="color: #9900ff; margin-top: 0;">[icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Waw.webp?raw=true][color:#9900ff]WAW[/color] Level Information</h4>
+                    <p><strong>Mô tả:</strong> Dù giống như những đối tượng cấp [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_He.webp?raw=true][color:#ffd966]HE[/color], nhưng những đối tượng cấp [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Waw.webp?raw=true][color:#9900ff]WAW[/color] khác biệt về việc nó có một điều kiện không phải thuộc “kết quả công việc” hay “yêu cầu đầu việc” hay “yêu cầu chỉ số” và một cơ chế đặc biệt khi “xổng”. Một số đối tượng cấp [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Waw.webp?raw=true][color:#9900ff]WAW[/color] khi “vi phạm quản thúc” có thể giết bất kì đặc vụ nào nếu điều kiện được kích hoạt (VD: Big Bird với cơ chế “thôi miên”, Burrowing Heaven khi không được nhìn).</p>
+                     <p><strong>Thông tin cơ bản:</strong></p>
+                     <ul style="color: #ddd; line-height: 1.6; margin-top: 5px; padding-left: 20px;">
+                        <li>Lượng PE-Boxes tối đa đạt 19-24</li>
+                        <li>2-7 Max Work Damage</li>
+                        <li>Giá mở khoá thông tin cơ bản: 20 PE</li>
+                        <li>Giá mở khoá Tip làm việc: 30-45 PE / (Số lượng) Tips</li>
+                        <li>Giá mở khoá Work Type: 6-7 PE</li>
+                        <li>Tổng giá: 70-90 PE</li>
+                     </ul>
+                </div>
+                <div class="risk-content-item" id="content-aleph">
+                    <h4 style="color: #ff0000; margin-top: 0;">[icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Aleph.webp?raw=true][color:#ff0000]ALEPH[/color] Level Information</h4>
+                    <p>**Mô tả:** Những dị thể ở đây thuộc dạng “nguy hiểm nhất” trong game, và không được xem thường nó vì một sai số nào trong quản lý cũng có thể tạo tiền lệ cho đối tượng có cơ hội “phá banh cơ sở” dưới bất kì hình thức nào. Các đối tượng [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Aleph.webp?raw=true][color:#ff0000]ALEPH[/color] cũng có thể giết bất kì đặc vụ mà không cần điều kiện, mặc dù không phải đối tượng nào cũng có.</p>
+                     <p><strong>Thông tin cơ bản:</strong></p>
+                     <ul style="color: #ddd; line-height: 1.6; margin-top: 5px; padding-left: 20px;">
+                        <li>Lượng PE-Boxes tối đa đạt 28-40</li>
+                        <li>4-10 Max Work Damage</li>
+                        <li>Giá mở khoá thông tin cơ bản: 30 PE</li>
+                        <li>Giá mở khoá Tip làm việc: 40-50 PE / (Số lượng) Tips</li>
+                        <li>Giá mở khoá Work Type: 10 PE</li>
+                        <li>Tổng giá: 110-120 PE</li>
+                     </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="sub-menu-panel-border" id="subjectPanel">
+    <div class="sub-menu-panel">
+        <label class="back-btn" onclick="closeSubMenu('subjectPanel')"><span>LEAVE</span></label>
+        <div class="sub-panel-title">SUBJECT CLASSIFICATION</div>
+        
+        <div class="modal-tabs">
+            <button class="tab-btn active" onclick="switchSubjectTab(event, 'sub-letters')">CHỮ</button>
+            <button class="tab-btn" onclick="switchSubjectTab(event, 'sub-numbers')">XX</button>
+        </div>
+        <div class="subject-tab-pane active" id="sub-letters">
+            <div class="content-container">
+            <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 10px;">Chọn ký tự phân loại dị thể:</p>
+            <div class="risk-levels-row">
+                <div class="risk-btn-border border-he" id="btn-letter-a" onclick="toggleSubjectItem('letter-a')">
+                    <div class="risk-btn btn-he"><span>O (Original)</span></div>
+                </div>
+                <div class="risk-btn-border border-zayin" id="btn-letter-b" onclick="toggleSubjectItem('letter-b')">
+                    <div class="risk-btn btn-zayin"><span>F (Fairy)</span></div>
+                </div>
+                <div class="risk-btn-border border-waw" id="btn-letter-c" onclick="toggleSubjectItem('letter-c')">
+                    <div class="risk-btn btn-waw"><span>T (Trauma)</span></div>
+                </div>
+                <div class="risk-btn-border border-teth" id="btn-letter-d" onclick="toggleSubjectItem('letter-d')">
+                    <div class="risk-btn btn-teth"><span>R (Reference)</span></div>
+                </div>
+                <div class="risk-btn-border border-aleph" id="btn-letter-e" onclick="toggleSubjectItem('letter-e')">
+                    <div class="risk-btn btn-aleph"><span>M (Mythical)</span></div>
+                </div>
+            </div>
+            </div>
+            <div class="shared-content-panel" id="sharedContentLetters">
+                <div class="risk-content-item" id="content-letter-a">
+                    <h4 style="color: #ffd966; margin-top: 0;">Phân loại ký tự O:</h4>
+                    <p>Original (Tuỳ chọn mặc định; nếu dị thể bạn không phù hợp với bất kì chữ nào dưới đây, thì hãy chọn O)</p>
+                </div>
+                <div class="risk-content-item" id="content-letter-b">
+                    <h4 style="color: #00ff00; margin-top: 0;">Phân loại ký tự F:</h4>
+                    <p>Fairytale; Truyện cổ tích, Những câu chuyện bị lãng quên, và truyền thuyết đô thị.</p>
+                </div>
+                <div class="risk-content-item" id="content-letter-c">
+                    <h4 style="color: #9900ff; margin-top: 0;">Phân loại ký tự T:</h4>
+                    <p>Trauma, các trải nghiệm “đau buồn”, “gây ám ảnh”, hoặc từ các cảm xúc mãnh liệt.</p>
+                </div>
+                <div class="risk-content-item" id="content-letter-d">
+                    <h4 style="color: #a4c2f4; margin-top: 0;">Phân loại ký tự R:</h4>
+                    <p>Reference, dùng để chỉ dị thể của bạn lấy từ nguồn nào đó không phải của bạn.</p>
+                </div>
+                <div class="risk-content-item" id="content-letter-e">
+                    <h4 style="color: #ff0000; margin-top: 0;">Phân loại ký tự M:</h4>
+                    <p>Mythical, dùng để chỉ dị thể bạn bắt nguồn từ câu chuyện thần thoại. Tuy nhiên do thiếu lời giải thích rõ ràng về ý nghĩa thực sự của nó, chúng tôi khuyến khích dùng F để thay thế.
+</p>
+                </div>
+            </div>
+        </div>
+        <div class="subject-tab-pane" id="sub-numbers">
+            <div class="content-container">
+            <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 10px;">Chọn mã số định danh phân loại:</p>
+            <div class="risk-levels-row">
+                <div class="risk-btn-border border-he" id="btn-num-01" onclick="toggleSubjectItem('num-01')">
+                    <div class="risk-btn btn-he"><span>01</span></div>
+                </div>
+                <div class="risk-btn-border border-he" id="btn-num-02" onclick="toggleSubjectItem('num-02')">
+                    <div class="risk-btn btn-he"><span>02</span></div>
+                </div>
+                <div class="risk-btn-border border-he" id="btn-num-03" onclick="toggleSubjectItem('num-03')">
+                    <div class="risk-btn btn-he"><span>03</span></div>
+                </div>
+                <div class="risk-btn-border border-he" id="btn-num-04" onclick="toggleSubjectItem('num-04')">
+                    <div class="risk-btn btn-he"><span>04</span></div>
+                </div>
+                <div class="risk-btn-border border-he" id="btn-num-05" onclick="toggleSubjectItem('num-05')">
+                    <div class="risk-btn btn-he"><span>05</span></div>
+                </div>
+                <div class="risk-btn-border border-he" id="btn-num-06" onclick="toggleSubjectItem('num-06')">
+                    <div class="risk-btn btn-he"><span>06</span></div>
+                </div>
+                <div class="risk-btn-border border-he" id="btn-num-07" onclick="toggleSubjectItem('num-07')">
+                    <div class="risk-btn btn-he"><span>07</span></div>
+                </div>
+                <div class="risk-btn-border border-he" id="btn-num-08" onclick="toggleSubjectItem('num-08')">
+                    <div class="risk-btn btn-he"><span>08</span></div>
+                </div>
+                <div class="risk-btn-border border-he" id="btn-num-09" onclick="toggleSubjectItem('num-09')">
+                    <div class="risk-btn btn-he"><span>09</span></div>
+                </div>
+            </div>
+            </div>
+            <div class="shared-content-panel" id="sharedContentNumbers">
+                <div class="risk-content-item" id="content-num-01">
+                    <h4 style="color: #ffd966; margin-top: 0;">Mã định danh 01:</h4>
+                    <p><strong>Có hình dáng hoặc đặc điểm giống con người.</strong></p>
+                    <ul style="color: #ddd; line-height: 1.6; margin-top: 5px; padding-left: 20px;">
+                      <li>Thường dùng để chỉ dị thể có đặc điểm giống con người</li>
+                    </ul>
+                </div>
+                <div class="risk-content-item" id="content-num-02">
+                    <h4 style="color: #ffd966; margin-top: 0;">Mã định danh 02:</h4>
+                    <p><strong>Giống động vật.</strong></p>
+                    <ul style="color: #ddd; line-height: 1.6; margin-top: 5px; padding-left: 20px;">
+                      <li>Thường dùng để chỉ dị thể có dạng như động vật hay quái vật</li>
+                    </ul>
+                </div>
+                <div class="risk-content-item" id="content-num-03">
+                    <h4 style="color: #ffd966; margin-top: 0;">Mã định danh 03:</h4>
+                    <p><strong>Mang tính tôn giáo hay siêu nhiên.</strong></p>
+                    <ul style="color: #ddd; line-height: 1.6; margin-top: 5px; padding-left: 20px;">
+                      <li>Thường dùng để chỉ dị thể dựa trên những thứ không tồn tại ở The CIty của PM hoặc trong tôn giáo</li>
+                    </ul>
+                </div>
+                <div class="risk-content-item" id="content-num-04">
+                    <h4 style="color: #ffd966; margin-top: 0;">Mã định danh 04:</h4>
+                    <p><strong>Những vật vô tri hay bất động.</strong></p>
+                    <ul style="color: #ddd; line-height: 1.6; margin-top: 5px; padding-left: 20px;">
+                      <li>Thường dùng để chỉ dị thể không thuộc bất kì loại nào trên đây. Những dị thể này không thể di chuyển bất kỳ bộ phận nào mà phải dựa vào những cách dị chuyển khác như “dịch chuyển tức thời”</li>
+                    </ul>
+                </div>
+                <div class="risk-content-item" id="content-num-05">
+                    <h4 style="color: #ffd966; margin-top: 0;">Mã định danh 05:</h4>
+                    <p><strong>Máy móc hoặc hiện vật.</strong></p>
+                    <ul style="color: #ddd; line-height: 1.6; margin-top: 5px; padding-left: 20px;">
+                      <li>Thường dùng để chỉ dị thể giống như loại 04, nhưng có thể di chuyển bằng bộ phận cơ thể được</li>
+                    </ul>
+                </div>
+                <div class="risk-content-item" id="content-num-06">
+                    <h4 style="color: #ffd966; margin-top: 0;">Mã định danh 06:</h4>
+                    <p><strong>Trừu tượng.</strong></p>
+                    <ul style="color: #ddd; line-height: 1.6; margin-top: 5px; padding-left: 20px;">
+                      <li>Thường dùng để chỉ các dị thể cũng không thuộc bất kì loại nào trên đây. Những dị thể đó có thể sẽ là một “khái niệm” vô hình hay một thứ thiếu đi hình hài xác dịnh do bản chất biến đổi không ngừng.</li>
+                    </ul>
+                </div>
+                <div class="risk-content-item" id="content-num-07">
+                    <h4 style="color: #ffd966; margin-top: 0;">Mã định danh 07:</h4>
+                    <p><strong>Dị thể dạng sử dụng có thể xổng được.</strong></p>
+                    <ul style="color: #ddd; line-height: 1.6; margin-top: 5px; padding-left: 20px;">
+                      <li>Thường dùng để chỉ dị thể dạng sử dụng có khả năng xổng được.</li>
+                    </ul>
+                </div>
+                <div class="risk-content-item" id="content-num-08">
+                    <h4 style="color: #ffd966; margin-top: 0;">Mã định danh 08:</h4>
+                    <p><strong>Sin.</strong></p>
+                    <ul style="color: #ddd; line-height: 1.6; margin-top: 5px; padding-left: 20px;">
+                      <li>Thường dùng để chỉ các con “Peccatula” của Limbus Company, nên không được sử dụng trong này.</li>
+                    </ul>
+                </div>
+                <div class="risk-content-item" id="content-num-09">
+                    <h4 style="color: #ffd966; margin-top: 0;">Mã định danh 09:</h4>
+                    <p><strong>Dị thể dạng sử dụng.</strong></p>
+                    <ul style="color: #ddd; line-height: 1.6; margin-top: 5px; padding-left: 20px;">
+                      <li>Thường dùng để chỉ các dị thể dạng sử dụng KHÔNG thể xổng được.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    <div class="sub-menu-panel-border" id="guidePanel">
+        <div class="sub-menu-panel">
+            <label class="back-btn" onclick="closeSubMenu('guidePanel')"><span>LEAVE</span></label>
+            <div class="sub-panel-title">Guide</div>
+            <div class="modal-tabs">
+                <button class="tab-btn active" onclick="switchSubjectTab(event, 'sub-managerial')">MANAGERIAL TIPS</button>
+                <button class="tab-btn" onclick="switchSubjectTab(event, 'sub-work')">Work Types And Creating Work Rates</button>
+                <button class="tab-btn" onclick="switchSubjectTab(event, 'sub-balance')">Balancing Your Abnormality Towards Their Respective Agents</button>
+            </div>
+            <div class="subject-tab-pane active" id="sub-managerial">
+            <div class="content-container">
+                <p>
+                Khi viết Tips, bạn có thể đặt tên là “name” hoặc dùng tên của ai đó cũng được.
+                
+                Khi xem Tip quản lý dị thể, bạn thường sẽ thấy các điều kiện ràng buộc khi dị thể vẫn ở trong buồng. Những điều kiện này xuất hiện ở hầu hết (hay “tất cả”) dị thể. Chúng đóng vai trò “trừng phạt” đặc vụ khi không đáp ứng được nhu cầu của dị thể, và đồng thời tạo rủi ro mà dị thể đó chủ động gây ra trong quá trình quản thúc.
+                </p>
+                [li]
+                Điều kiện “Kết quả công việc”: Phổ biến nhất và ở trong “hầu hết” dị thể. Và đây thường là cách các dị thể trừng phạt đặc vụ nếu đạt kết quả không mong muốn. Ví dụ như đạt kết quả Tệ bộ đếm sẽ giảm. (Còn có một số con không thích kết quả [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Good.webp?raw=true][color:#00ff00]Good[/color]).
+                Điều kiện “Yêu cầu đầu việc”: Điều kiện này phổ biến hơn ở những con không thể “xổng” được như Spider Bud và The Lady Facing The Wall, Một số con ngoại lệ như Sickler cũng có điều kiện này để tăng thêm độ phức tạp khi quản thúc.
+                Điều kiện “Yêu cầu chỉ số”: Đây là cách để những con cấp cao hơn ngăn cản những đặc vụ cấp thấp vô làm. Một số con như Funeral Of The Dead Butterflies hay The Singing Machine “đảo ngược yêu cầu” để trừng phạt những đặc vụ có chỉ số cao hơn.
+                [/li]
+                <p>
+                Những con dị thể đòi hỏi quản lý tích cực hơn thường có thêm điều kiện đặc biệt hơn, những điều kiện này có thể kích hoạt ngay cả khi nó bị “bỏ mặc”. Dù những điều kiện này thường gắn liền hơn với những con [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Waw.webp?raw=true][color:#9900ff]WAW[/color] và [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Aleph.webp?raw=true][color:#ff0000]ALEPH[/color] để tăng thêm độ phức tạp khi quản thúc, nhưng những điều kiện này sẽ không chỉ xuất hiện ở hai cấp độ này.
+                </p>
+                [li]
+                Điều kiện “Công việc bên ngoài”: Những dị thể này sẽ “kích động” nếu đặc vụ làm với con dị thể khác. Điều này rất khó để tránh khỏi, nên những tác động mà dị thể gây ra thường có thể bỏ qua (VD: Old Lady, Punishing Bird), chỉ có ngoại lệ duy nhất là Parasite Tree.
+                Điều kiện “Kiểm soát cái chết”: Phổ biến nhất ở các con [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Waw.webp?raw=true][color:#9900ff]WAW[/color] và [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Aleph.webp?raw=true][color:#ff0000]ALEPH[/color], thường dùng để “trừng phạt” cơ sở vì để nhân viên chết. Nó gần như “bất khả thi” để tránh khỏi vì Ordeals, nên để khắc phục điều này thì những dị thể đó thường khá dễ “xử lí” hoặc có cơ chế tăng bộ đếm.
+                Điều kiện “Kiểm soát Trumpet”: Một số dị thể xổng khi tới mức Trumpet nhất định để “trừng phạt” cơ sở vì không “xử lí” được những dị thể khác. Rất hữu ích nếu dị thể được xây dựng để “đấu tranh” với dị thể khác.
+                Điều kiện “Kiểm soát vi phạm quản thúc”: Giống với việc “Kiểm soát Trumpet”, nhưng ít phổ biến hơn vì yêu cầu một con dị thể khác (LIÊN QUAN mật thiết đến dị thể đó) xổng cùng, như Yin và Yang hoặc “Chim dài” (Judgement Bird).
+                Điều kiện “Kiểm soát Meltdown”: Những con cần mức độ “chú ý” cao như Queenie (of Hatred) hay The World Machine sẽ tự động giảm bộ đếm mỗi Meltdown nếu không đáp ứng được một số điều kiện. Đặc vụ PHẢI làm được gì đó để có thể ngăn bộ đếm giảm, nếu không thì nó sẽ rất “mất cân bằng”.
+                Điều kiện “Chạy đua thời gian”: Dành cho những dị thể “quan trọng” và cần được chú ý nhất. Dị thể nào mà có điều kiện này phải tích cực “khen thưởng” đặc vụ vì ngăn cản nó “xổng chuồng”.
+                [/li]
+                <p>
+                Nếu bạn muốn làm cho dị thể có điều kiện “độc nhất” không thuộc bất kì mục nào ở trên, chỉ cần nó không làm “mất cân bằng”. Đặc vụ phải mắc một sai lầm nào đó trong quản thúc trước khi dị thể có thể “trừng phạt” họ. (Tôi khá là khuyến khích dị thể của bạn có điều kiện “độc nhất” đấy)
+                
+                Khi làm những điều kiện “độc nhất” như này, có thể bạn sẽ gặp khó khăn tìm kiếm những gì phù hợp với dị thể để bắt đầu. Một cái tip hữu ích khi làm những thứ như này là “hãy thử nghĩ xem ý tưởng cốt lõi của dị thể là gì và đưa ra lời khuyên dựa trên nó”
+                
+                VD: Dị thể “The Burrowing Heaven” là một con dị thể dựa trên “sự chú ý tới chính con dị thể đó”. Chính vì thế, Tip Quản lý của nó phản ánh điều này bằng cách giảm bộ đếm khi quản lý rời mắt tới nó.
+                </p>
+            </div>
+            </div>
+            <div class="subject-tab-pane" id="sub-work">
+            <div class="content-container">
+                <p>Ở trong TLB và Lob Crop, có 4 loại đầu việc trong game: [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Instinct.webp?raw=true][color:#ff0000]__Instinct__[/color], [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Insight.webp?raw=true][color:#f1eabe]__Insight__[/color], [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Attachment.webp?raw=true][color:#824a84]__Attachment__[/color], và [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Repression.webp?raw=true][color:#3bcfbf]__Repression__[/color]. Mỗi loại đầu việc đại diện cho cách tương tác khác nhau giữa đặc vụ và dị thể.
+                
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Instinct.webp?raw=true][color:#ff0000]__Instinct__[/color]: Công việc phục vụ nhu cầu hoặc bản năng cơ bản của dị thể. Điều này có thể là cho dị thể “ăn uống".
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Insight.webp?raw=true][color:#f1eabe]__Insight__[/color]: Công việc “dọn dẹp” buồng quản thúc cho nó phù hợp với sở thích của dị thể. Có thể là tăng nhiệt độ buồng lên nếu dị thể dựa trên “hệ lửa”.
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Attachment.webp?raw=true][color:#824a84]__Attachment__[/color]: Công việc “hoà nhập” với dị thể. Có thể giống như bạn chơi với chó hay trò chuyện với bạn thân.
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Repression.webp?raw=true][color:#3bcfbf]__Repression__[/color]: Công việc phủ nhận sự tồn tại, mục đích sống của dị thể. Có thể là lấy đồ ăn của nó khi nó bắt đầu ăn.
+                Tỉ lệ công việc được chia thành 5 bậc dưới đây. Giới hạn phù hợp cho từng cấp độ nguy hiểm có thể được tìm thấy ở mục tiếp theo:
+                
+                [color:#ff0000]Very low[/color]: 0-19%
+                [color:#ff9900]Low[/color]: 20-39%
+                [color:#ffd966]Common[/color]: 40-59%
+                [color:#93c47d]High[/color]: 60-79%
+                [color:#00ff00]Very High[/color]: 80-100%
+                
+                (thông số % này có thể xuống âm , như -20% sẽ thuộc hạng mức Very Low)
+                
+                Khi tạo Work Rates, Nên có ít nhất hai loại công việc tốt và:
+                </p>
+                [li]
+                Thêm 1 loại tốt và 1 loại xấu
+                1 loại trung bình và 1 loại xấu
+                2 loại xấu
+                [/li]
+                Chúng cũng xuất hiện theo 4 kiểu khác nhau dựa trên cấp độ đặc vụ là:
+                [li]
+                Tăng dần: 30, 40, 50, 60, 70
+                Giảm dần: 70, 60, 50, 40, 30
+                Ngang: 50, 50, 50, 50, 50
+                Đường cong: 30, 40, 50, 40, 30
+                [/li]
+                <p>
+                Cũng muốn [color:#ff0000]***__LƯU Ý__***[/color] rằng, thiết lập Work Rate sao cho “mạch lạc”. Dù không có bắt buộc nhưng nếu bạn làm như thế này:
+                
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Repression.webp?raw=true][color:#3bcfbf]__Repression__[/color] Work Rates:
+                </p>
+                [num]
+                Very Low (5%)
+                Very Low (5%)
+                Very Low (10%)
+                Very Low (5%)
+                Very Low (15%)
+                [/num]
+                <p>
+                Nó sẽ chẳng mạch lạc chút nào đâu, và cũng sẽ là “cơn ác mộng” cho những người “cố” tìm hiểu con dị thể đó vì nó sẽ trông như thể chỉ có “Very Low” ở cả 5 cấp độ vậy, và tỉ lệ cũng rất là “không đồng nhất”.
+                
+                Một điều quan trọng nữa trước khi đưa ra một ví dụ về Work Rate tốt
+                Làm ơn hãy đảm bảo rằng Work Rate của bạn có thể hiểu được.
+                Tôi sẽ đưa cho bạn một ví dụ về Work Rate “khó hiểu” là như thế nào:
+                [img:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/workfavour2.PNG?raw=true, height: 200px, width: 210px, left]
+                (Dream of The Black Swan Work Rates)
+                
+                Trong bức hình này, liệu bạn có thể đoán xem đâu là loại công việc tốt nhất cho dị thể này?
+                Nếu bạn đoán là [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Instinct.webp?raw=true][color:#ff0000]__Instinct__[/color] và [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Repression.webp?raw=true][color:#3bcfbf]__Repression__[/color] thì đúng rồi đấy. Vì đầu việc [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Insight.webp?raw=true][color:#f1eabe]__Insight__[/color] chỉ kém 2 đầu việc này 5% thôi, mặc dù được liệt kê là “Common” cùng với nhau.
+                Do đó, để tránh vấn đề này, đây là một ví dụ tốt về Work Rate “mạch lạc”:
+                
+                [img:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/work%20favour.PNG?raw=true, height: 400px, width: 350px, left]
+                Trong ví dụ này, Nó không phải là một mớ số liệu ngẫu nhiên, chúng được sắp xếp tăng giảm theo bội số của 5, với tỉ lệ % tương đương ở các cấp I/II, III và IV/V. Thêm vào đó, phần chữ “Low/Common” cho biết đầu việc [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Attachment.webp?raw=true][color:#824a84]__Attachment__[/color] sẽ là lựa chọn tối ưu hơn, xét đến việc “Common” ở đầu việc kia chiếm tỷ trọng cao hơn đầu việc [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Instinct.webp?raw=true][color:#ff0000]__Instinct__[/color].
+                
+                Ngoài ra, vui lòng ghi rõ % cụ thể của mỗi loại và cấp độ cho Work Rate của bạn.
+                </p>
+            </div>
+            </div>
+            <div class="subject-tab-pane" id="sub-balance">
+            <div class="content-container">
+                <p>
+                **Đây là một biểu đồ nhỏ mà chúng tôi nghĩ ở từng cấp độ nguy hiểm của dị thể sẽ gặp các đặc vụ tương ứng sau:**
+                
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Zayin.webp?raw=true][color:#00ff00]ZAYIN[/color]: Work Rate quan trọng nhất phải ở cấp I làm với tỉ lệ thành công tối đa là 70%. Đặc vụ sẽ có 25HP/SP và giáp kháng [color:#ff0000]0.9[/color]/[color:#ffffa1]0.9[/color]/[color:#9900ff]0.9[/color]/[color:#00ffff]2.0[/color] khi làm với dị thể cấp này.
+                
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Teth.webp?raw=true][color:#a4c2f4]TETH[/color]: Work Rate quan trọng nhất phải ở cấp II làm với tỉ lệ thành công tối đa là 65%. Đặc vụ sẽ có 38HP/SP và giáp kháng [color:#ff0000]0.8[/color]/[color:#ffffa1]0.8[/color]/[color:#9900ff]0.8[/color]/[color:#00ffff]2.0[/color] khi làm với dị thể cấp này.
+                
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_He.webp?raw=true][color:#ffd966]HE[/color]: Work Rate quan trọng nhất phải ở cấp III làm với tỉ lệ thành công tối đa là 60%. Đặc vụ sẽ có 55HP/SP và giáp kháng [color:#ff0000]0.7[/color]/[color:#ffffa1]0.7[/color]/[color:#9900ff]0.7[/color]/[color:#00ffff]1.5[/color] khi làm với dị thể cấp này.
+                
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Waw.webp?raw=true][color:#9900ff]WAW[/color]: Work Rate quan trọng nhất phải ở cấp IV làm với tỉ lệ thành công tối đa là 55%. Đặc vụ sẽ có 75HP/SP và giáp kháng [color:#ff0000]0.6[/color]/[color:#ffffa1]0.6[/color]/[color:#9900ff]0.6[/color]/[color:#00ffff]1.5[/color] khi làm với dị thể cấp này.
+                
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Aleph.webp?raw=true][color:#ff0000]ALEPH[/color]: Work Rate quan trọng nhất phải ở cấp V làm với tỉ lệ thành công tối đa là 50%. Đặc vụ sẽ có 100HP/SP và giáp kháng [color:#ff0000]0.5[/color]/[color:#ffffa1]0.5[/color]/[color:#9900ff]0.5[/color]/[color:#00ffff]1.0[/color] khi làm với dị thể cấp này.
+                
+                Những điều này **không** cần phải tuân thủ một cách “tuyệt đối” mà có thể điều chỉnh cho phù hợp với mánh khóe/chiêu trò của dị thể bạn.
+                </p>
+                [li]
+                VD: Dị thể “The Lady Facing The Wall” có một điều kiện đặc biệt khi làm đầu việc [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Attachment.webp?raw=true][color:#824a84]__Attachment__[/color] bộ đếm [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Qliphoth.webp?raw=true] sẽ giảm 1[icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Qliphoth.webp?raw=true]. Do đó, tỉ lệ thành công của đầu việc này là 95% ở cả 5 cấp, không như các con cùng cấp khác để “khuyến khích” các đặc vụ làm nó.
+                [/li]
+                
+                [fold: EGO Gear Balancing]
+                [size:32px]**EGO Gear Balancing**[/size]
+                Khi tạo E.G.O Gear, điều đầu tiên là cần xác định nó sẽ vào cấp độ nguy hiểm nào. Thông thường, nó sẽ cùng thuộc mức nguy hiểm với dị thể, nhưng đôi khi nó có thể cao hơn hoặc thấp hơn 1 bậc. Sau đó, bạn sẽ phải tìm hiểu E.G.O Gear mà bạn làm có Gimmick/Passive gì không. Tuỳ vào cái đó mà bạn sẽ phải cân nhắc tăng hay giảm “sức mạnh” của nó để cân bằng tổng thể. Dưới đây là những Gimmick/Passive phổ biến mà bạn có thể dùng:
+                [li]
+                Passive “Tăng cường”: Những loại này ban đầu yếu hơn mức trung bình, khi nó bắt đầu “mạnh lên” nhờ bạn hoàn thành điều kiện của nó, lúc đã đến “hết mức” thì nó sẽ mạnh hơn các loại cùng cấp rất nhiều.
+                o Những thứ như hiệu ứng “lúc tiêu diệt” cũng được tính là passive này.
+                
+                Tài nguyên “có hạn” không thể phục hồi - Được tăng “sức mạnh” vì phải quản lý nguồn tài nguyên “có hạn”.
+                o Nó có thể là một khẩu súng với số lượng đạn “có hạn”
+                
+                Passive “Có lợi”: Bị giảm “sức mạnh” vì passive có lợi cho người dùng
+                o Có thể là cây Mimicry đổi 25% sát thương của nó thành “Hút máu”
+                
+                Passive “Có hại”: Được tăng “sức mạnh” để khuyến khích người chơi dùng nó dù nó gây hại cho người dùng
+                o Cây Cane từ dị thể Dr.House có một điểm yếu làm cho người dùng chậm hơn và dash gây ragdoll người dùng. Nhưng sức mạnh của nó được tăng lên rất nhiều để bù trừ nó.
+                
+                Vũ khí tầm xa: Bị giảm “sức mạnh” vì nó có lợi thế chiến đấu hơn những vũ khí Melee
+                
+                Vũ khí có “Tuyệt chiêu”: Bị giảm “sức mạnh” để bù trừ việc có “tuyệt chiêu”
+                [/li]
+                Nhưng vì nó có “tuyệt chiêu” thì không có lí do gì mà bạn phải nâng cấp nguy hiểm của nó cả.
+                Việc có “chiêu” đối với E.G.O Gear là hoàn toàn bình thường cho mọi cấp mà nó ở.
+                Điều tiếp theo cần phải xem xét là mức giá để lấy E.G.O Gear, chúng khác nhau tuỳ theo cấp độ nhưng phạm vi giá của mỗi cấp như sau:
+                [li]
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Zayin.webp?raw=true][color:#00ff00]ZAYIN[/color]: 20-40 [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/EBoxIcon.webp?raw=true]
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Teth.webp?raw=true][color:#a4c2f4]TETH[/color]: 50-80 [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/EBoxIcon.webp?raw=true]
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_He.webp?raw=true][color:#ffd966]HE[/color]: 90-120 [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/EBoxIcon.webp?raw=true]
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Waw.webp?raw=true][color:#9900ff]WAW[/color]: 130-160 [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/EBoxIcon.webp?raw=true]
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Aleph.webp?raw=true][color:#ff0000]ALEPH[/color]: 180-250 [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/EBoxIcon.webp?raw=true]
+                [/li]
+                [/fold]
+                [fold: Weapon Balancing]
+                [size:32px]**Weapon Balancing**[/size]
+                Khi tạo bất kì vũ khí nào, có 4 yếu tố quan trọng mà bạn cần phải biết. Bao gồm:
+                [li]
+                Tầm sát thương: Nó thường sẽ có giá trị min-max (vd như 12-15). Điều này cho biết sát thương vũ khí có thể lên cao hoặc thấp đến mức nào.
+                Tốc độ đánh: Cho biết vũ khí đánh nhanh như thế nào.
+                Tầm đánh: Cho biết vũ khí đánh xa như thế nào.
+                Skills/Passives: Cho biết những chức năng đặc biệt của vũ khí như thế nào.
+                [/li]
+                [fold: DPS Section Disclaimer]
+                [size:24px]DPS Section Disclaimer[/size]
+                Đây sẽ là phần **KHÓ NHẤT** khi bạn làm dị thể. vì **RẤT CÓ THỂ** vũ khí bạn làm sẽ không được cân bằng hợp lí theo cấp độ và Gimmick/Passive mà nó thể hiện. Vì thế chúng tôi không mong chờ nó sẽ được thực hiện đúng và điều đó không sao cả. Nếu bạn quyết định không theo làm bất kì việc này, điều đó hoàn toàn ổn và bạn có thể hoàn toàn skip cái phần này cũng được. Nhưng nếu bạn muốn “thử sức” ở cái phần này, hãy tiếp tục đọc và cảm ơn bạn đã cố gắng ngay cả khi nó “không hoàn hảo”.
+                [li]
+                Xin hãy lưu ý rằng phần sau đây sẽ chỉ được áp dụng cho các vũ khí chỉ có spam M1 để có DPS và khả năng dùng Skill (nếu có). Nếu vũ khí của bạn có một số gimmick như tài nguyên “có hạn”, thay đổi kiểu đánh hay triệu hồi “đệ” thì phần này có thể không giúp bạn trong việc cân bằng được nhưng có thể cung cấp một số thông tin và chỉnh sửa hữu ích mà bạn có thể thực hiện.
+                Như đã nói ở trên, chúng tôi không mong chờ gì bạn có thể tính toán DPS được. Vì nó hoàn toàn ổn để bạn có thể “nhét” một con số nào đó trên một số lượng đòn không xác định được và chúng tôi không bận tâm điều đó cả.
+                [/li]
+                [/fold]
+                [fold: DPS Section]
+                [size:24px]DPS Section[/size]
+                DPS dự kiến của một vũ khí nên gấp 5-6 lần mức độ rủi ro của nó:
+                [li]
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Zayin.webp?raw=true][color:#00ff00]ZAYIN[/color]: 5-6
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Teth.webp?raw=true][color:#a4c2f4]TETH[/color]: 10-12
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_He.webp?raw=true][color:#ffd966]HE[/color]: 15-18 
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Waw.webp?raw=true][color:#9900ff]WAW[/color]: 20-24
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Aleph.webp?raw=true][color:#ff0000]ALEPH[/color]: 25-30
+                [/li]
+                (Đơn vị: DPS)
+                Dưới đây là các thuật ngữ tôi sẽ sử dụng ở phần sắp tới:
+                [li]
+                M1: Đây là đòn đánh cơ bản, hầu hết vũ khí đều có nó.
+                M1 string: lượng M1 có thể đánh được trước khi reset lại (để lặp lại hoạt ảnh M1 hay nạp đạn)
+                o VD: Twilight có chuỗi M1 = 4 trước khi lặp lại hoạt ảnh M1
+                A: Độ trễ của vũ khí hoặc thời gian nạp đạn
+                B: Thời gian hoạt ảnh chuẩn bị tung chiêu
+                C: Độ trễ kết thúc chiêu vũ khí
+                D: Thời gian hồi chiêu
+                V: Sát thương trung bình của chuỗi M1
+                o Có thể xác định giá trị V bằng cộng tất cả sát thương M1 với nhau
+                W: Thời gian thực hiện chuỗi M1
+                o Có thể xác định giá trị W bằng cách cộng tất cả thời gian Swingspeed/Firerate lại với nhau.
+                [/li]
+                (Swingspeed/Firerate: Thời gian M1 tiếp theo sẽ tới sau M1 đầu tiên)
+                [li]
+                X: Sát thương trung bình mỗi M1
+                Y: Swingspeed/Firerate của vũ khí
+                Z: Sát thương trung bình khi tung chiêu của vũ khí.
+                [/li]
+                
+                (nếu vũ khí có mỗi lần M1 là min-max thì sát thương trung bình sẽ là (min+max)/2)
+                
+                [size:18px]DPS sẽ được tính theo lượng DMG gây theo thời gian. Trong đa số trường hợp thường là M1, nó sẽ được tính bằng công thức X/Y[/size]
+                
+                [size:18px]Đối với những vũ khí có độ trễ/thời gian nạp đạn[/size]
+                Xin đừng dùng công thức này nếu vũ khí bạn không có ý thêm độ trễ hay nạp đạn gì cả, chỉ đơn giản là không phù hợp trong trường hợp đó.
+                Để tính DPS vũ khí có độ trễ hay thời gian nạp đạn, bạn sẽ phải cộng tất cả M1 được áp dụng trong chuỗi M1.
+                [center]V / ( A + W ) = M1 DPS[/center]
+                **Tôi sẽ lấy Twilight làm ví dụ:** (Giả sử ATK SPD của đặc vụ là 1.00x, không tính kháng)
+                
+                [num]
+                Twilight có DMG M1 trung bình là 11 ở mỗi loại. Nó chém 4 lần mỗi chuỗi M1 và mỗi lần chém mất 0.75s. Sau đó là 1s độ trễ sau chuỗi M1.
+                Bạn lấy 11 (sát thương trung bình mỗi M1) nhân với 4 (tổng 4 loại sát thương gây lên) để có tổng DMG M1 = 44.
+                Sau đó lấy 44 (Tổng DMG M1) nhân cho 4 (chuỗi M1) cho ra 176 DMG và đó = V.
+                Sau đó, bạn lấy 0.75 (Tốc độ vung) và nhân với 4 (chuỗi M1) cho ra 3 và đó là W.
+                Lấy công thức V / ( A + W) ta sẽ có được DPS vũ khí. ( 176 / ( 1 + 3 ) = 44 (DPS) )
+                [/num]
+                
+                Vậy DPS của Twilight là 44 (khi đặc vụ có ATK SPD là 1.00x và không tính kháng).
+                
+                **Đối với cho những vũ khí có chiêu**
+                Tuỳ vào các chiêu hoạt động thế nào thì công thức có thể sẽ thay đổi.
+                
+                **Trường hợp 1:** Nếu bạn có thể M1 trong khi dùng chiêu, thì dùng công thức sau đây:
+                
+                [li]
+                (Z / (B + C + D)) + M1 DPS = Tổng DPS
+                [/li]
+                
+                **Trường hợp 2:** Nếu bạn không thể M1 khi dùng chiêu, bạn trước tiên phải xác định liệu chiêu của bạn có đáng sử dụng không. Có thể xác định điều này bằng công thức sau:
+                
+                [li]
+                Z / ( B + C ) và sau đó so sánh với DMG M1 trong cùng khoảng thời gian.
+                [/li]
+                
+                Sau đó, nếu chiêu đó có lượng DPS cao hơn M1 DPS trong cùng khoảng thời gian đó, thì có thể đến với công thức tiếp theo.
+                
+                [li]
+                ((M1 DPS x D) + Z) / ((B + C) + D) = Tổng DPS
+                [/li]
+                
+                Tôi sẽ lấy Mimicry làm ví dụ cho trường hợp 2 (cùng giả sử với ví dụ trước):
+                
+                [num]
+                Mimicry có 12 DMG M1 trung bình mỗi 0.4s, vì không có độ trễ nên chúng ta dùng công thức tính ra M1 DPS của Mimicry là 30.
+                
+                Chiêu của Mimicry (Downslam) gây 105 DMG trung bình với 8s hồi chiêu. Nó cũng tốn 1s để tung chiêu và có độ trễ kết thúc chiêu là 2s.
+                
+                Nghĩa là chiêu Downslam gây 105 DMG trung bình trong vòng 3s. Đưa ra con số 35 DPS chiêu so với 30 M1 DPS. Điều đó làm chiêu Downslam đáng để dùng hơn thay vì cứ tiếp tục M1.
+                
+                Sau đó, lấy 30 (M1 DPS) nhân với 8 (thời gian hồi chiêu Downslam cũng là lúc bạn có thể dùng M1) để lấy được 240 DMG.
+                
+                Sau đó lấy 240 hồi nãy và thêm 105 nữa (Downslam DMG) và 345 sẽ là tổng số DMG mà bạn gây ra.
+                
+                Sau đó, thêm độ trễ và thời gian chuẩn bị để có được 3s.
+                
+                Và cộng con số đó vào thời gian hồi chiêu. Đây sẽ là tổng thời gian để bạn làm tất cả điều này. (11s)
+                
+                Cuối cùng, bạn lấy tổng số DMG chia cho tổng thời gian làm điều này để có được tổng DPS. Trong ví dụ, nó sẽ là 345 / 11 = 31.36 Tổng DPS (làm tròn đến 2 chữ số thập phân)
+                [/num]
+                
+                Theo công thức: (( 30 x 8 ) + 105) / (( 1 + 2 ) + 8) = 31.36 Tổng DPS.
+                
+                Vậy DPS của Mimicry là 31.36 (cùng giả sử với ví dụ trước)
+                
+                Lời kết: Các công thức tính DPS này là mức DPS tối ưu nhất mà bạn có thể đạt được, Rất có thể một người chơi bình thường sẽ không bao giờ đạt được mức DPS này vì có thể nó đang parry, dùng chiêu không tối ưu, hay vì những lí do khác. Mục đích của việc này là nhằm duy trì sự cân bằng tương đối, sao cho nó phù hợp với cấp độ nguy hiểm của nó. Để sao cho mọi loại vũ khí đều là lựa chọn khả thi, bất kể là vì sát thương gây ra cao hay vì một gimmick/passive giúp vũ khí đó hiệu quả.
+                [/fold]
+                [/fold]
+                [fold: Suit Balancing]
+                [size:32px]Suit Balancing[/size]
+                Chỉ số kháng trong Lob Crop hoạt động như hệ số nhân. Thế nên chỉ số thấp sẽ tốt hơn chỉ số cao, vì nhận vào 10 DMG nhân 2 sẽ thành 20 DMG trong khi 10 DMG nhân 0.5 sẽ thành 5 DMG. Việc cân bằng yếu tố này dễ hơn nhiều, nên chúng tôi kỳ vọng bạn có thể cân bằng nó một cách hợp lí không như vũ khí E.G.O.
+                
+                Khi nói về chỉ số kháng của Suit, một thuật ngữ sẽ được dùng tại đây mang tên “tổng phân bố”. Thuật ngữ này dùng để chỉ tổng các chỉ số kháng được thêm vào của Suit.
+                [li]
+                VD: Mimicry có chỉ số kháng là [color:#ff0000]0.2[/color]/[color:#ffffa1]0.5[/color]/[color:#9900ff]0.5[/color]/[color:#00ffff]1.0[/color]. Nên chúng ta sẽ cộng tổng các chỉ số kháng lại với nhau như 0.2+0.5+0.5+1.0. Điều đó cho chúng ta “tổng phân bố” Suit đó là 2.2.
+                [/li]
+                Dưới đây là “tổng phân bố” Suit của Lob Crop hiện tại:
+                [li]
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Zayin.webp?raw=true][color:#00ff00]ZAYIN[/color]: 4.6 - 4.9
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Teth.webp?raw=true][color:#a4c2f4]TETH[/color]: 4.4 - 5.1
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_He.webp?raw=true][color:#ffd966]HE[/color]: 3.4 - 4.3 
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Waw.webp?raw=true][color:#9900ff]WAW[/color]: 3.2 - 4.5
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Aleph.webp?raw=true][color:#ff0000]ALEPH[/color]: 2 - 2.7
+                [/li]
+                (Những Suit từ Superboss như Apoc và WN có thể xuống thấp hơn 2)
+                
+                Các con số dưới đây là phạm vi kháng được khuyến nghị của từng cấp độ:
+                [num]
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Zayin.webp?raw=true][color:#00ff00]ZAYIN[/color]: [color:#ff0000]__R__[/color],[color:#ffffa1]__W__[/color],[color:#9900ff]__B__[/color] 0.7-1.3, [color:#00ffff]__P__[/color] 2.0
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Teth.webp?raw=true][color:#a4c2f4]TETH[/color]: [color:#ff0000]__R__[/color],[color:#ffffa1]__W__[/color],[color:#9900ff]__B__[/color] 0.5-1.5, [color:#00ffff]__P__[/color] 2.0
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_He.webp?raw=true][color:#ffd966]HE[/color]: [color:#ff0000]__R__[/color],[color:#ffffa1]__W__[/color],[color:#9900ff]__B__[/color] 0.4-2.0, [color:#00ffff]__P__[/color] 1.5-2.0
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Waw.webp?raw=true][color:#9900ff]WAW[/color]: [color:#ff0000]__R__[/color],[color:#ffffa1]__W__[/color],[color:#9900ff]__B__[/color] 0.3-1.5, [color:#00ffff]__P__[/color] 0.7-2.0
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Aleph.webp?raw=true][color:#ff0000]ALEPH[/color]: [color:#ff0000]__R__[/color],[color:#ffffa1]__W__[/color],[color:#9900ff]__B__[/color] (-1.0)-1.2, [color:#00ffff]__P__[/color] 0.3-1.5
+                [/num]
+                Một vài thứ cần lưu ý:
+                [li]
+                Không được phép làm bộ giáp có chỉ số kháng nào mà vượt lên 2.0 và nó sẽ bị yêu cầu thay đổi dù bất kì lí do nào.
+                Bạn có thể “phá vỡ” quy định “tổng phân bố” và “phạm vi kháng” nhưng bạn phải có giải thích chính đáng cho việc đó.
+                Tính đến ngày 5/9/2026, chúng ta không có quá nhiều nguồn DMG [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Pale.webp?raw=true][color:#00ffff]__PALE__[/color] Trong TLB, nhưng không đồng nghĩa là các Dev TLB sẽ không còn thêm vũ khí và nguồn [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Pale.webp?raw=true][color:#00ffff]__PALE__[/color] nữa trong tương lai. Xin đừng có cộng thêm kháng [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Pale.webp?raw=true][color:#00ffff]__PALE__[/color] để lấy chỉ số kháng tốt hơn cho 3 loại [color:#ff0000]__D__[/color],[color:#ffffa1]__M__[/color],[color:#9900ff]__G__[/color] còn lại vì có thể bạn sẽ “tự bắn vào chân mình” đấy. (hoặc không)
+                [/li]
+                [/fold]
+                [fold: Gift Balancing]
+                [size: 32px]Gift Balancing[/size]
+                
+                Thông thường thì Gift sẽ buff chỉ số gấp 2 lần so với cấp độ của nó, nhưng nếu muốn gift của bạn thực sự “toả sáng”, thì điều quan trọng là cho thêm một loại buff không phải “buff chỉ số”. Nếu bạn quyết định thêm một loại “bonus” đặc biệt nào đó, có thể giảm một chút “buff chỉ số” nếu loại buff của bạn khá là “lớn”.
+                [/fold]
+                [fold:Non-Breaching Abnormality Balancing]
+                [size: 32px]Non-Breaching Abnormality Balancing[/size]
+                
+                **Một dị thể không vi phạm quản thúc** không thể nào vi phạm quản thúc được, ngay cả khi Bộ đếm đã xuống 0 hay điều kiện đặc biệt được kích hoạt. Thay vì xổng như hầu hết dị thể, nó tác động cơ sở qua các hiệu ứng gián tiếp, như việc triệu hồi “đệ”, gây hiệu ứng lên cơ sở, kích hoạt sự kiện đặc biệt, hoặc chỉ tác động lên đặc vụ trong buồng quản thúc.
+                
+                Một ví dụ tốt là dị thể **Husk** (Skinwalker cũ). Thay vì xổng trực tiếp, Husk tạo nhiều thực thể để “truy đuổi” những mục tiêu cụ thể. Các thực thể này sẽ là “mối nguy hiểm” chính cùng với sự hỗn loạn nó gây ra, trong khi dị thể gốc vẫn còn ở trong buồng.
+                (Một trong những con dị thể tôi thấy là “sáng tạo” nhất TLB dù không có original)
+                [size: 18px]**Cân bằng**[/size]
+                
+                Nếu dị thể bạn không xổng được, nó phải có khả năng gây thiệt hại cho cơ sở ở một mức nhất định. Mức độ nghiêm trọng của thiệt hại chủ yếu phụ thuộc vào cấp độ. Trong cùng một cấp độ, Mức độ nghiêm trọng của thiệt hại cũng dựa vào việc kích hoạt chúng dễ hay khó nữa.
+                
+                Dị thể của bạn có thể sẽ không có Bộ đếm. Nếu nó có Bộ đếm, các hiệu ứng của nó phải gắn liền với Bộ đếm theo một cách nào đó. Nếu nó không có, các hiệu ứng đó sẽ phải liên quan đến Work Result hay cơ chế đặc biệt của dị thể
+                
+                Nếu dị thể có khả năng triệu hồi “đệ” có thể tính là “xổng được” theo chủ đích, hãy xem mục tiếp theo.
+                [/fold]
+                [fold:Breaching Abnormality Balancing]
+                [size: 32px]Breaching Abnormality Balancing[/size]
+                
+                Khi làm một dị thể xổng được, điều quan trọng là phải xác định dị thể bạn sẽ cần phải đối đầu với đặc vụ mạnh như thế nào. Điều tiếp theo cần xác định là số HP và chỉ số kháng của dị thể, dưới đây là danh sách cho điều đó:
+                [li]
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Zayin.webp?raw=true][color:#00ff00]ZAYIN[/color]: Không xổng được nên bỏ qua
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Teth.webp?raw=true][color:#a4c2f4]TETH[/color]: 150-250 [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/HP.webp?raw=true" class="inline-icon] với “tổng phân bố” khoảng 4-4.5
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_He.webp?raw=true][color:#ffd966]HE[/color]: 300-600 [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/HP.webp?raw=true" class="inline-icon] với “tổng phân bố” khoảng 3.5-4
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Waw.webp?raw=true][color:#9900ff]WAW[/color]: 750-1200 [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/HP.webp?raw=true" class="inline-icon] với “tổng phân bố” khoảng 3.5-4
+                [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Aleph.webp?raw=true][color:#ff0000]ALEPH[/color]: 1500-2500 [icon:https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/HP.webp?raw=true" class="inline-icon] với “tổng phân bố” khoảng 2.5-3.5
+                [/li]
+                Sau đó, điều tiếp theo cần xác định là passive và những hành động đặc biệt khi xổng của dị thể. Vi dụ cho điều này là “anh tài smile đen” (Mountain of Smiling Bodies), con này tập trung đi tìm những cái xác và ăn để “chuyển dạng” mạnh hơn và “khó nuốt” hơn, từ đó “phá banh” cái cơ sở luôn.
+                
+                Cuối cùng, Dị thể phải có ít nhất hai đòn tấn công hoàn toàn khác nhau và có cơ chế hoạt động khác nhau. Một số kiểu đòn đánh có thể cho phép bao gồm: one hit, multi hit, tầm gần, tầm xa, hoặc bất kì thứ gì bạn có thể nghĩ tới (miễn là không mất cân bằng). Nếu bạn tự hỏi rằng dị thể của bạn có thể có tối đa bao nhiêu “hành động”, một tip hữu ích là giới hạn số hành động bằng “2 + cấp độ nguy hiểm”. Nhưng bạn có thể thay đổi linh hoạt cái tip này nếu nó giúp dị thể bạn thú vị hơn.
+                [li]
+                VD: một con WAW sẽ có tổi thiểu 2 hành động và tối đa 6 hành động.
+                [/li]
+                [/fold]
+            </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="guide.js"></script>
+</body>
+</html>

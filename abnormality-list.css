@@ -455,8 +455,4 @@ html, body {
   .Btn-Home-Corner span {
     font-size: 12px !important;
   }
-
-  .Btn-Leave-Corner {
-    transform: scale(0.9);
-  }
 }

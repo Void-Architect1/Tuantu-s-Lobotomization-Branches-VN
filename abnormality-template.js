@@ -493,6 +493,14 @@ function initManagementTipsModule() {
         });
         return tipsArray;
     };
+    window.loadManagementTips = function(tipsArray) {
+        containerInputs.innerHTML = '';
+        containerPreview.innerHTML = '';
+        tipCount = 0;
+        tipsArray.forEach(item => {
+            addTipItem(item.tip, item.cost);
+        });
+    };
 }
 
 initManagementTipsModule();
@@ -576,100 +584,62 @@ function initAppendixModule() {
         });
         return appendixArray;
     };
+    window.loadAppendix = function(appArray) {
+        containerInputs.innerHTML = '';
+        containerPreview.innerHTML = '';
+        appendixCount = 0;
+        appArray.forEach(item => {
+            addAppendixItem(item.title, item.content);
+        });
+    };
 }
 initAppendixModule();
 
 const btnSaveDraft = document.getElementById('btn-save-draft');
 const btnLoadDraft = document.getElementById('btn-load-draft');
 
-function gatherFormData() {
-    const formData = {};
-    const inputs = document.querySelectorAll('.form-panel input, .form-panel textarea, .form-panel select');
-    inputs.forEach(input => {
-        if (input.id) {
-            formData[input.id] = input.value;
-        }
-    });
-    const managementTips = [];
-    const tipInputs = document.querySelectorAll('#management-tips-inputs-container input, #management-tips-inputs-container textarea');
-    tipInputs.forEach(input => {
-        managementTips.push(input.value);
-    });
-    formData['dynamic_management_tips'] = managementTips;
-    const appendixData = [];
-    const appendixInputs = document.querySelectorAll('#appendix-inputs-container input, #appendix-inputs-container textarea');
-    appendixInputs.forEach(input => {
-        appendixData.push(input.value);
-    });
-    formData['dynamic_appendix'] = appendixData;
-
-    return formData;
-}
-
 if (btnSaveDraft) {
     btnSaveDraft.addEventListener('click', () => {
-        const data = gatherFormData();
-        localStorage.setItem('abnormality_draft', JSON.stringify(data));
-        alert('Đã lưu bản nháp thành công vào trình duyệt!');
+        const formData = {};
+        document.querySelectorAll('.form-panel input, .form-panel textarea, .form-panel select').forEach(input => {
+            if (input.id) {
+                formData[input.id] = input.value;
+            }
+        });
+        if (typeof window.getDynamicManagementTipsData === 'function') {
+            formData['management_tips_data'] = window.getDynamicManagementTipsData();
+        }
+        if (typeof window.getDynamicAppendixData === 'function') {
+            formData['appendix_data'] = window.getDynamicAppendixData();
+        }
+        localStorage.setItem('app_form_draft', JSON.stringify(formData));
+        alert('Đã lưu bản nháp thành công!');
     });
 }
 
 if (btnLoadDraft) {
     btnLoadDraft.addEventListener('click', () => {
-        const savedDataJson = localStorage.getItem('abnormality_draft');
-        if (!savedDataJson) {
+        const savedJson = localStorage.getItem('app_form_draft');
+        if (!savedJson) {
             alert('Không tìm thấy dữ liệu bản nháp nào!');
             return;
         }
-        const data = JSON.parse(savedDataJson);
+        const data = JSON.parse(savedJson);
         for (const [id, value] of Object.entries(data)) {
-            if (id !== 'dynamic_management_tips' && id !== 'dynamic_appendix') {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.value = value;
-                    element.dispatchEvent(new Event('input'));
-                    element.dispatchEvent(new Event('change'));
+            if (id !== 'management_tips_data' && id !== 'appendix_data') {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.value = value;
+                    el.dispatchEvent(new Event('input'));
+                    el.dispatchEvent(new Event('change'));
                 }
             }
         }
-        if (data['dynamic_management_tips'] && Array.isArray(data['dynamic_management_tips'])) {
-            const container = document.getElementById('management-tips-inputs-container');
-            const addTipBtn = document.getElementById('btn-add-management-tip');
-            if (container) {
-                container.innerHTML = '';
-                data['dynamic_management_tips'].forEach(val => {
-                    if (addTipBtn) {
-                        addTipBtn.click();
-                    }
-                });
-                const newTipInputs = container.querySelectorAll('input, textarea');
-                newTipInputs.forEach((input, index) => {
-                    if (data['dynamic_management_tips'][index] !== undefined) {
-                        input.value = data['dynamic_management_tips'][index];
-                        input.dispatchEvent(new Event('input'));
-                    }
-                });
-            }
+        if (data['management_tips_data'] && typeof window.loadManagementTips === 'function') {
+            window.loadManagementTips(data['management_tips_data']);
         }
-
-        if (data['dynamic_appendix'] && Array.isArray(data['dynamic_appendix'])) {
-            const appContainer = document.getElementById('appendix-inputs-container');
-            const addAppBtn = document.getElementById('btn-add-appendix');
-            if (appContainer) {
-                appContainer.innerHTML = '';
-                data['dynamic_appendix'].forEach(val => {
-                    if (addAppBtn) {
-                        addAppBtn.click();
-                    }
-                });
-                const newAppInputs = appContainer.querySelectorAll('input, textarea');
-                newAppInputs.forEach((input, index) => {
-                    if (data['dynamic_appendix'][index] !== undefined) {
-                        input.value = data['dynamic_appendix'][index];
-                        input.dispatchEvent(new Event('input'));
-                    }
-                });
-            }
+        if (data['appendix_data'] && typeof window.loadAppendix === 'function') {
+            window.loadAppendix(data['appendix_data']);
         }
 
         alert('Đã tải bản nháp lên thành công!');

@@ -506,6 +506,61 @@ document.addEventListener("DOMContentLoaded", function() {
   const observer = new MutationObserver(() => scanAndApply());
   observer.observe(document.body, { childList: true, subtree: true });
 })();
+
+function saveToolDraft() {
+    const draftData = {
+        baseInfo: {
+            id: document.getElementById('in-id').value,
+            name: document.getElementById('in-name').value,
+            risk: document.getElementById('in-risk').value,
+            quote: document.getElementById('in-quote').value,
+            type: document.getElementById('in-type').value,
+            image: document.getElementById('in-image').value,
+            description: document.getElementById('in-des').value
+        },
+        logs: window.getDynamicLogData ? window.getDynamicLogData() : [],
+        methods: window.getDynamicMethodData ? window.getDynamicMethodData() : [],
+        appendix: window.getDynamicAppendixData ? window.getDynamicAppendixData() : []
+    };
+
+    localStorage.setItem('tool_abnormality_draft', JSON.stringify(draftData));
+    alert('Đã lưu nháp Tool thành công vào trình duyệt!');
+}
+
+function loadToolDraft() {
+    const savedData = localStorage.getItem('tool_abnormality_draft');
+    if (!savedData) {
+        alert('Không tìm thấy bản nháp Tool nào được lưu!');
+        return;
+    }
+
+    try {
+        const draftData = JSON.parse(savedData);
+        if (draftData.baseInfo) {
+            for (const key in draftData.baseInfo) {
+                const input = document.getElementById(`in-${key}`);
+                if (input) {
+                    input.value = draftData.baseInfo[key];
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                    input.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            }
+        }
+        const logContainerInputs = document.getElementById("log-inputs-container");
+        const logContainerPreview = document.getElementById("out-log-list");
+        if (logContainerInputs && logContainerPreview && draftData.logs) {
+            logContainerInputs.innerHTML = "";
+            logContainerPreview.innerHTML = "";
+        }
+        alert('Đã khôi phục thông tin cơ bản của bản nháp!');
+    } catch (e) {
+        console.error('Lỗi khi tải nháp Tool:', e);
+        alert('Đã xảy ra lỗi khi khôi phục bản nháp.');
+    }
+}
+document.getElementById("btn-save-draft").addEventListener("click", saveToolDraft);
+document.getElementById("btn-load-draft").addEventListener("click", loadToolDraft);
+
 document.getElementById("btn-save").addEventListener("click", async function() {
     const btnSave = this;
     btnSave.disabled = true;

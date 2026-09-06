@@ -579,65 +579,102 @@ function initAppendixModule() {
 }
 initAppendixModule();
 
-function saveDraft() {
+const btnSaveDraft = document.getElementById('btn-save-draft');
+const btnLoadDraft = document.getElementById('btn-load-draft');
+
+function gatherFormData() {
     const formData = {};
     const inputs = document.querySelectorAll('.form-panel input, .form-panel textarea, .form-panel select');
-    
     inputs.forEach(input => {
-        const key = input.id || input.name;
-        if (key) {
-            if (input.type === 'checkbox' || input.type === 'radio') {
-                formData[key] = input.checked;
-            } else {
-                formData[key] = input.value;
-            }
+        if (input.id) {
+            formData[input.id] = input.value;
         }
     });
+    const managementTips = [];
+    const tipInputs = document.querySelectorAll('#management-tips-inputs-container input, #management-tips-inputs-container textarea');
+    tipInputs.forEach(input => {
+        managementTips.push(input.value);
+    });
+    formData['dynamic_management_tips'] = managementTips;
+    const appendixData = [];
+    const appendixInputs = document.querySelectorAll('#appendix-inputs-container input, #appendix-inputs-container textarea');
+    appendixInputs.forEach(input => {
+        appendixData.push(input.value);
+    });
+    formData['dynamic_appendix'] = appendixData;
 
-    localStorage.setItem('abnormality_draft', JSON.stringify(formData));
-    alert('Đã lưu nháp thành công vào trình duyệt!');
+    return formData;
 }
 
-function loadDraft() {
-    const savedData = localStorage.getItem('abnormality_draft');
-    if (!savedData) {
-        alert('Không tìm thấy bản nháp nào được lưu!');
-        return;
-    }
+if (btnSaveDraft) {
+    btnSaveDraft.addEventListener('click', () => {
+        const data = gatherFormData();
+        localStorage.setItem('abnormality_draft', JSON.stringify(data));
+        alert('Đã lưu bản nháp thành công vào trình duyệt!');
+    });
+}
 
-    try {
-        const formData = JSON.parse(savedData);
-        for (const key in formData) {
-            const input = document.getElementById(key) || document.querySelector(`[name="${key}"]`);
-            if (input) {
-                if (input.type === 'checkbox' || input.type === 'radio') {
-                    input.checked = formData[key];
-                } else {
-                    input.value = formData[key];
+if (btnLoadDraft) {
+    btnLoadDraft.addEventListener('click', () => {
+        const savedDataJson = localStorage.getItem('abnormality_draft');
+        if (!savedDataJson) {
+            alert('Không tìm thấy dữ liệu bản nháp nào!');
+            return;
+        }
+        const data = JSON.parse(savedDataJson);
+        for (const [id, value] of Object.entries(data)) {
+            if (id !== 'dynamic_management_tips' && id !== 'dynamic_appendix') {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.value = value;
+                    element.dispatchEvent(new Event('input'));
+                    element.dispatchEvent(new Event('change'));
                 }
-                input.dispatchEvent(new Event('input', { bubbles: true }));
-                input.dispatchEvent(new Event('change', { bubbles: true }));
             }
         }
-        alert('Đã khôi phục bản nháp thành công!');
-    } catch (e) {
-        console.error('Lỗi khi đọc bản nháp:', e);
-        alert('Đã xảy ra lỗi khi tải bản nháp.');
-    }
+        if (data['dynamic_management_tips'] && Array.isArray(data['dynamic_management_tips'])) {
+            const container = document.getElementById('management-tips-inputs-container');
+            const addTipBtn = document.getElementById('btn-add-management-tip');
+            if (container) {
+                container.innerHTML = '';
+                data['dynamic_management_tips'].forEach(val => {
+                    if (addTipBtn) {
+                        addTipBtn.click();
+                    }
+                });
+                const newTipInputs = container.querySelectorAll('input, textarea');
+                newTipInputs.forEach((input, index) => {
+                    if (data['dynamic_management_tips'][index] !== undefined) {
+                        input.value = data['dynamic_management_tips'][index];
+                        input.dispatchEvent(new Event('input'));
+                    }
+                });
+            }
+        }
+
+        if (data['dynamic_appendix'] && Array.isArray(data['dynamic_appendix'])) {
+            const appContainer = document.getElementById('appendix-inputs-container');
+            const addAppBtn = document.getElementById('btn-add-appendix');
+            if (appContainer) {
+                appContainer.innerHTML = '';
+                data['dynamic_appendix'].forEach(val => {
+                    if (addAppBtn) {
+                        addAppBtn.click();
+                    }
+                });
+                const newAppInputs = appContainer.querySelectorAll('input, textarea');
+                newAppInputs.forEach((input, index) => {
+                    if (data['dynamic_appendix'][index] !== undefined) {
+                        input.value = data['dynamic_appendix'][index];
+                        input.dispatchEvent(new Event('input'));
+                    }
+                });
+            }
+        }
+
+        alert('Đã tải bản nháp lên thành công!');
+    });
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    const btnSaveDraft = document.getElementById('btn-save-draft');
-    const btnLoadDraft = document.getElementById('btn-load-draft');
-
-    if (btnSaveDraft) {
-        btnSaveDraft.addEventListener('click', saveDraft);
-    }
-    
-    if (btnLoadDraft) {
-        btnLoadDraft.addEventListener('click', loadDraft);
-    }
-});
 
 const firebaseConfig = {
     apiKey: "AIzaSyBLHdA1sxx3iO4hg2SGfFK7qpMzh5CpzIE",

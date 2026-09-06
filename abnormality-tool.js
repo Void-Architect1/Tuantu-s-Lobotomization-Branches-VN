@@ -518,13 +518,13 @@ function saveToolDraft() {
             image: document.getElementById('in-image').value,
             description: document.getElementById('in-des').value
         },
-        logs: window.getDynamicLogData ? window.getDynamicLogData() : [],
-        methods: window.getDynamicMethodData ? window.getDynamicMethodData() : [],
-        appendix: window.getDynamicAppendixData ? window.getDynamicAppendixData() : []
+        logs: typeof window.getDynamicLogData === 'function' ? window.getDynamicLogData() : [],
+        methods: typeof window.getDynamicMethodData === 'function' ? window.getDynamicMethodData() : [],
+        appendix: typeof window.getDynamicAppendixData === 'function' ? window.getDynamicAppendixData() : []
     };
 
     localStorage.setItem('tool_abnormality_draft', JSON.stringify(draftData));
-    alert('Đã lưu nháp Tool thành công vào trình duyệt!');
+    alert('Đã lưu nháp Tool (bao gồm Log, Method, Appendix) thành công!');
 }
 
 function loadToolDraft() {
@@ -546,13 +546,39 @@ function loadToolDraft() {
                 }
             }
         }
-        const logContainerInputs = document.getElementById("log-inputs-container");
-        const logContainerPreview = document.getElementById("out-log-list");
-        if (logContainerInputs && logContainerPreview && draftData.logs) {
-            logContainerInputs.innerHTML = "";
-            logContainerPreview.innerHTML = "";
+        const logContainer = document.getElementById("log-inputs-container");
+        if (logContainer) logContainer.innerHTML = "";
+        
+        if (draftData.logs && Array.isArray(draftData.logs)) {
+            draftData.logs.forEach(item => {
+                if (typeof window.addLogItemByData === 'function') {
+                    window.addLogItemByData(item);
+                }
+            });
         }
-        alert('Đã khôi phục thông tin cơ bản của bản nháp!');
+        const methodContainer = document.getElementById("method-inputs-container");
+        if (methodContainer) methodContainer.innerHTML = "";
+        
+        if (draftData.methods && Array.isArray(draftData.methods)) {
+            draftData.methods.forEach(item => {
+                if (typeof window.addMethodItemByData === 'function') {
+                    window.addMethodItemByData(item);
+                }
+            });
+        }
+
+        // D. Khôi phục phần APPENDIX
+        const appendixContainer = document.getElementById("appendix-inputs-container");
+        if (appendixContainer) appendixContainer.innerHTML = "";
+        
+        if (draftData.appendix && Array.isArray(draftData.appendix)) {
+            draftData.appendix.forEach(item => {
+                if (typeof window.addAppendixItemByData === 'function') {
+                    window.addAppendixItemByData(item);
+                }
+            });
+        }
+        alert('Đã tải nháp và khôi phục thành công toàn bộ dữ liệu!');
     } catch (e) {
         console.error('Lỗi khi tải nháp Tool:', e);
         alert('Đã xảy ra lỗi khi khôi phục bản nháp.');

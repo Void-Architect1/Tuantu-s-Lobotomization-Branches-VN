@@ -977,9 +977,9 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
     font-style: normal;
 }
 @font-face {
-    font-family: 'GillSans';
-    src: url('SFUGillSans.woff2') format('woff2'),
-        url('SFUGillSans.woff') format('woff');
+    font-family: 'Gill Sans';
+    src: url('FSGillSansMTPro-Medium.woff2') format('woff2'),
+        url('FSGillSansMTPro-Medium.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: swap;

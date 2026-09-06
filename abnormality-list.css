@@ -441,7 +441,7 @@ html, body {
   }
 
   .favour-grid {
-    grid-template-columns: repeat(2, 1fr) !important; /* Chia 2 cột cho phần work favour */
+    grid-template-columns: repeat(2, 1fr) !important;
     gap: 8px !important;
   }
 
@@ -454,5 +454,9 @@ html, body {
   
   .Btn-Home-Corner span {
     font-size: 12px !important;
+  }
+  .Btn-Leave-Corner {
+    transform: scale(0.9);
+    transform-origin: top right;
   }
 }

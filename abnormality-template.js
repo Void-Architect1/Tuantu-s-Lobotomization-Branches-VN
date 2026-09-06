@@ -579,6 +579,68 @@ function initAppendixModule() {
 }
 initAppendixModule();
 
+function saveDraft() {
+    const formData = {};
+    const inputs = document.querySelectorAll('#form-panel input, #form-panel textarea, #form-panel select');
+    
+    inputs.forEach(input => {
+        const key = input.id || input.name;
+        if (key) {
+            if (input.type === 'checkbox' || input.type === 'radio') {
+                formData[key] = input.checked;
+            } else {
+                formData[key] = input.value;
+            }
+        }
+    });
+
+    localStorage.setItem('abnormality_draft', JSON.stringify(formData));
+    
+    alert('Đã lưu nháp thành công vào trình duyệt!');
+}
+
+function loadDraft() {
+    const savedData = localStorage.getItem('abnormality_draft');
+    if (!savedData) {
+        alert('Không tìm thấy bản nháp nào được lưu!');
+        return;
+    }
+
+    try {
+        const formData = JSON.parse(savedData);
+        for (const key in formData) {
+            const input = document.getElementById(key) || document.querySelector(`[name="${key}"]`);
+            if (input) {
+                if (input.type === 'checkbox' || input.type === 'radio') {
+                    input.checked = formData[key];
+                } else {
+                    input.value = formData[key];
+                }
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }
+        
+        alert('Đã khôi phục bản nháp thành công!');
+    } catch (e) {
+        console.error('Lỗi khi đọc bản nháp:', e);
+        alert('Đã xảy ra lỗi khi tải bản nháp.');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const btnSaveDraft = document.getElementById('btn-save-draft');
+    const btnLoadDraft = document.getElementById('btn-load-draft');
+
+    if (btnSaveDraft) {
+        btnSaveDraft.addEventListener('click', saveDraft);
+    }
+    
+    if (btnLoadDraft) {
+        btnLoadDraft.addEventListener('click', loadDraft);
+    }
+});
+
 const firebaseConfig = {
     apiKey: "AIzaSyBLHdA1sxx3iO4hg2SGfFK7qpMzh5CpzIE",
     authDomain: "tlb-vn-database.firebaseapp.com",

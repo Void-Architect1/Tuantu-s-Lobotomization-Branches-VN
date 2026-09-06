@@ -581,7 +581,7 @@ initAppendixModule();
 
 function saveDraft() {
     const formData = {};
-    const inputs = document.querySelectorAll('#form-panel input, #form-panel textarea, #form-panel select');
+    const inputs = document.querySelectorAll('.form-panel input, .form-panel textarea, .form-panel select');
     
     inputs.forEach(input => {
         const key = input.id || input.name;
@@ -595,7 +595,6 @@ function saveDraft() {
     });
 
     localStorage.setItem('abnormality_draft', JSON.stringify(formData));
-    
     alert('Đã lưu nháp thành công vào trình duyệt!');
 }
 
@@ -620,7 +619,6 @@ function loadDraft() {
                 input.dispatchEvent(new Event('change', { bubbles: true }));
             }
         }
-        
         alert('Đã khôi phục bản nháp thành công!');
     } catch (e) {
         console.error('Lỗi khi đọc bản nháp:', e);

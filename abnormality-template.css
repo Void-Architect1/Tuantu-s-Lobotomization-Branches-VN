@@ -615,7 +615,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
   padding: 0 12px;
   color: #FF9441;
   font-size: 15px;
-  font-weight: bold;
+  font-weight: normal;
   white-space: nowrap;
 }
 

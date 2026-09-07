@@ -460,3 +460,22 @@ html, body {
     transform-origin: top right;
   }
 }
+
+.credit {
+    position: absolute;
+    bottom: 3px;
+    left: 20px;
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.5px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    user-select: none;
+    z-index: 20;
+}
+
+.credit:hover {
+    color: rgba(255, 255, 255, 0.7);
+}

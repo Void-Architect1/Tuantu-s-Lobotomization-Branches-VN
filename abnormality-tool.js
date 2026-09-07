@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+import { serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBLHdA1sxx3iO4hg2SGfFK7qpMzh5CpzIE",
@@ -597,6 +598,8 @@ document.getElementById("btn-save").addEventListener("click", async function() {
     const currentTool = {
         baseInfo: {
             id: document.getElementById('in-id').value || "Unknown",
+            author: document.getElementById('input-credit-author').value || "Ẩn danh",
+            createdAt: serverTimestamp(),
             name: document.getElementById('in-name').value,
             risk: document.getElementById('in-risk').value,
             quote: document.getElementById('in-quote').value,

@@ -471,6 +471,9 @@ document.addEventListener("DOMContentLoaded", function() {
         outputRiskImg.innerHTML = iconHtml ? iconHtml : "";
         outputRiskImg.style.display = iconHtml ? "inline-block" : "none";
     }
+    var inputCredit = document.getElementById("in-credit-author");
+    var outputCredit = document.getElementById("out-credit-author");
+    if (inputCredit && outputCredit) outputCredit.textContent = inputCredit.value;
   }
 
   initLogModule();
@@ -598,7 +601,7 @@ document.getElementById("btn-save").addEventListener("click", async function() {
     const currentTool = {
         baseInfo: {
             id: document.getElementById('in-id').value || "Unknown",
-            author: document.getElementById('input-credit-author').value || "Ẩn danh",
+            author: document.getElementById('in-credit-author').value || "Ẩn danh",
             createdAt: serverTimestamp(),
             name: document.getElementById('in-name').value,
             risk: document.getElementById('in-risk').value,

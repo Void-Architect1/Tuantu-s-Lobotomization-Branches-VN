@@ -696,3 +696,21 @@ button:hover { background: #c9302c; }
     overflow: hidden;
     font-family: 'Gill sans', sans-serif;
 }
+
+.credit {
+    position: absolute;
+    bottom: 12px;
+    left: 20px;
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.5px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    user-select: none;
+}
+
+.credit:hover {
+    color: rgba(255, 255, 255, 0.7);
+}

@@ -699,8 +699,8 @@ button:hover { background: #c9302c; }
 
 .credit {
     position: absolute;
-    bottom: 12px;
-    left: 20px;
+    bottom: 15px;
+    left: 25px;
     font-family: monospace;
     font-size: 0.75rem;
     color: rgba(255, 255, 255, 0.4);
@@ -709,6 +709,7 @@ button:hover { background: #c9302c; }
     gap: 8px;
     align-items: center;
     user-select: none;
+    z-index: 20;
 }
 
 .credit:hover {

@@ -699,19 +699,33 @@ const scoreElement = document.getElementById('lobo-current-score');
 const btnUp = document.getElementById('btn-vote-up');
 const btnDown = document.getElementById('btn-vote-down');
 
-let currentScore = 0;
-let userVote = null;
-
 let clientId = localStorage.getItem("lobo_client_id");
 if (!clientId) {
     clientId = 'client_' + Math.random().toString(36).substring(2) + Date.now();
     localStorage.setItem("lobo_client_id", clientId);
 }
 
+let currentScore = 0;
+let userVote = null;
+
+function getRatingElements() {
+    return {
+        scoreElement: document.getElementById('lobo-current-score'),
+        btnUp: document.getElementById('btn-vote-up'),
+        btnDown: document.getElementById('btn-vote-down')
+    };
+}
+
 async function loadLoboRating(itemKey) {
     const db = window.firebaseDb;
+    if (!db) {
+        console.error("Firebase chưa sẵn sàng!");
+        return;
+    }
+    
     const docRef = window.firebaseDoc(db, "abnormalities", itemKey);
     
+    const { btnUp, btnDown } = getRatingElements();
     if (btnUp && btnDown) {
         btnUp.setAttribute('onclick', `voteLobo('up', '${itemKey}')`);
         btnDown.setAttribute('onclick', `voteLobo('down', '${itemKey}')`);
@@ -740,6 +754,7 @@ async function loadLoboRating(itemKey) {
 }
 
 function updateScoreUI() {
+    const { scoreElement, btnUp, btnDown } = getRatingElements();
     if (!scoreElement) return;
     
     scoreElement.innerText = (currentScore > 0 ? '+' : '') + currentScore;
@@ -766,6 +781,8 @@ function updateScoreUI() {
 
 async function voteLobo(type, itemKey) {
     const db = window.firebaseDb;
+    if (!db) return;
+    
     const docRef = window.firebaseDoc(db, "abnormalities", itemKey);
     
     if (type === 'up') {

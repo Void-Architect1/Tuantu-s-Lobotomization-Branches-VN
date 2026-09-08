@@ -711,7 +711,8 @@ let currentScore = 0;
 let userVote = null;
 
 function getRatingElements() {
-    const isTool = document.getElementById("tool-detail-template").style.display === "block";
+    const toolTemplate = document.getElementById("tool-detail-template");
+    const isTool = toolTemplate && window.getComputedStyle(toolTemplate).display === "block";
     const suffix = isTool ? "-tool" : "-abn";
     
     return {
@@ -816,6 +817,35 @@ async function voteLobo(type, itemKey) {
         }
     }
 
+    if (userVote) {
+        localStorage.setItem(`lobo_vote_${itemKey}`, userVote);
+    } else {
+        localStorage.removeItem(`lobo_vote_${itemKey}`);
+    }
+
+    updateScoreUI();
+
+    try {
+
+        const docSnap = await getDoc(docRef);
+        let votedUsersMap = {};
+        if (docSnap.exists()) {
+            votedUsersMap = docSnap.data().votedUsers || {};
+        }
+
+        if (userVote === null) {
+            delete votedUsersMap[clientId];
+        } else {
+            votedUsersMap[clientId] = userVote;
+        }
+
+        await updateDoc(docRef, {
+            score: currentScore,
+            votedUsers: votedUsersMap
+        });
+    } catch (error) {
+        console.error("Lỗi cập nhật vote lên Firebase: ", error);
+    }
 }
 
 window.loadLoboRating = loadLoboRating;

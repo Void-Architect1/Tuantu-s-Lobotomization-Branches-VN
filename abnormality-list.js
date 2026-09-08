@@ -250,7 +250,7 @@ if (appendixContainer) {
 }
 }
 
-function fillDataToDetailTemplate(item) {
+function fillDataToDetailTemplate(item, abvId) {
     const defaultScreen = document.querySelector(".lob-info-screen");
     if (defaultScreen) defaultScreen.style.display = "none";
 
@@ -412,9 +412,11 @@ function fillDataToDetailTemplate(item) {
             dateEl.textContent = "----.--.--";
         }
     }
+
+    loadLoboRating(abvId);
 }
 
-function fillDataToToolTemplate(item) {
+function fillDataToToolTemplate(item, abvId) {
     const info = item.baseInfo || {};
     
     safeSetText('tool-out-id', info.id);
@@ -466,6 +468,8 @@ function fillDataToToolTemplate(item) {
             dateEl.textContent = "----.--.--";
         }
     }
+
+    loadLoboRating(abvId);
 }
 function parseCustomEmojis(text) {
     if (text === null || text === undefined) return "";
@@ -666,13 +670,11 @@ function closeModalWithAnimation(modal) {
     }, 350);
 }
 
-// Gom tất cả vào Global window để HTML onclick gọi được chính xác
 window.openModal = function(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.remove('closing');
         modal.classList.add('active');
-        // Nếu modal của tool dùng class 'open', thêm dòng dưới:
         modal.classList.add('open'); 
     }
 };
@@ -709,15 +711,18 @@ let currentScore = 0;
 let userVote = null;
 
 function getRatingElements() {
+    const isTool = document.getElementById("tool-detail-template").style.display === "block";
+    const suffix = isTool ? "-tool" : "-abn";
+    
     return {
-        scoreElement: document.getElementById('lobo-current-score'),
-        btnUp: document.getElementById('btn-vote-up'),
-        btnDown: document.getElementById('btn-vote-down')
+        scoreElement: document.getElementById(`lobo-current-score${suffix}`),
+        btnUp: document.getElementById(`btn-vote-up${suffix}`),
+        btnDown: document.getElementById(`btn-vote-down${suffix}`)
     };
 }
 
 async function loadLoboRating(itemKey) {
-    const db = window.firebaseDb;
+    const db = db;
     if (!db) {
         console.error("Firebase chưa sẵn sàng!");
         return;
@@ -780,7 +785,7 @@ function updateScoreUI() {
 }
 
 async function voteLobo(type, itemKey) {
-    const db = window.firebaseDb;
+    const db = db;
     if (!db) return;
     
     const docRef = window.firebaseDoc(db, "abnormalities", itemKey);

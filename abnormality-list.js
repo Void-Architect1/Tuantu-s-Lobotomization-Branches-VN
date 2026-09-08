@@ -722,11 +722,16 @@ function getRatingElements() {
 }
 
 async function loadLoboRating(itemKey) {
+    if (!itemKey || typeof itemKey === 'object') {
+        console.error("Mã định danh (itemKey) không hợp lệ:", itemKey);
+        return;
+    }
+
     if (typeof db === 'undefined' || !db) {
         console.error("Firebase chưa sẵn sàng!");
         return;
     }
-
+    
     const docRef = doc(db, "abnormalities", itemKey);
     
     const { btnUp, btnDown } = getRatingElements();

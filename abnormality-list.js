@@ -694,3 +694,129 @@ window.togglePanel = function(panelId) {
         panelBorder.classList.toggle('active');
     }
 };
+
+const scoreElement = document.getElementById('lobo-current-score');
+const btnUp = document.getElementById('btn-vote-up');
+const btnDown = document.getElementById('btn-vote-down');
+
+let currentScore = 0;
+let userVote = null;
+
+let clientId = localStorage.getItem("lobo_client_id");
+if (!clientId) {
+    clientId = 'client_' + Math.random().toString(36).substring(2) + Date.now();
+    localStorage.setItem("lobo_client_id", clientId);
+}
+
+async function loadLoboRating(itemKey) {
+    const db = window.firebaseDb;
+    const docRef = window.firebaseDoc(db, "abnormalities", itemKey);
+    
+    if (btnUp && btnDown) {
+        btnUp.setAttribute('onclick', `voteLobo('up', '${itemKey}')`);
+        btnDown.setAttribute('onclick', `voteLobo('down', '${itemKey}')`);
+    }
+    
+    userVote = localStorage.getItem(`lobo_vote_${itemKey}`) || null;
+
+    try {
+        const docSnap = await window.firebaseGetDoc(docRef);
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            currentScore = data.score || 0;
+            
+            const votedUsersMap = data.votedUsers || {};
+            if (votedUsersMap[clientId]) {
+                userVote = votedUsersMap[clientId];
+            }
+        } else {
+            currentScore = 0;
+            userVote = null;
+        }
+        updateScoreUI();
+    } catch (error) {
+        console.error("Lỗi tải thông tin vote: ", error);
+    }
+}
+
+function updateScoreUI() {
+    if (!scoreElement) return;
+    
+    scoreElement.innerText = (currentScore > 0 ? '+' : '') + currentScore;
+
+    if (currentScore > 0) {
+        scoreElement.className = 'rating-score lobo-score-positive';
+    } else if (currentScore < 0) {
+        scoreElement.className = 'rating-score lobo-score-negative';
+    } else {
+        scoreElement.className = 'rating-score lobo-score-zero';
+    }
+
+    if (btnUp && btnDown) {
+        btnUp.classList.remove('active-up');
+        btnDown.classList.remove('active-down');
+
+        if (userVote === 'up') {
+            btnUp.classList.add('active-up');
+        } else if (userVote === 'down') {
+            btnDown.classList.add('active-down');
+        }
+    }
+}
+
+async function voteLobo(type, itemKey) {
+    const db = window.firebaseDb;
+    const docRef = window.firebaseDoc(db, "abnormalities", itemKey);
+    
+    if (type === 'up') {
+        if (userVote === 'up') {
+            currentScore -= 1;
+            userVote = null;
+        } else if (userVote === 'down') {
+            currentScore += 2;
+            userVote = 'up';
+        } else {
+            currentScore += 1;
+            userVote = 'up';
+        }
+    } else if (type === 'down') {
+        if (userVote === 'down') {
+            currentScore += 1;
+            userVote = null;
+        } else if (userVote === 'up') {
+            currentScore -= 2;
+            userVote = 'down';
+        } else {
+            currentScore -= 1;
+            userVote = 'down';
+        }
+    }
+
+    updateScoreUI();
+    localStorage.setItem(`lobo_vote_${itemKey}`, userVote || '');
+
+    try {
+        const docSnap = await window.firebaseGetDoc(docRef);
+        let votedUsersMap = {};
+        
+        if (docSnap.exists() && docSnap.data().votedUsers) {
+            votedUsersMap = docSnap.data().votedUsers;
+        }
+
+        if (userVote === null) {
+            delete votedUsersMap[clientId];
+        } else {
+            votedUsersMap[clientId] = userVote;
+        }
+
+        await window.firebaseUpdateDoc(docRef, {
+            score: currentScore,
+            votedUsers: votedUsersMap
+        });
+    } catch (error) {
+        console.error("Lỗi đồng bộ vote lên Firebase: ", error);
+    }
+}
+
+window.loadLoboRating = loadLoboRating;
+window.voteLobo = voteLobo;

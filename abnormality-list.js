@@ -386,6 +386,32 @@ function fillDataToDetailTemplate(item) {
             }
         }
     });
+
+    const authorEl = document.getElementById('abn-credit-author');
+    if (authorEl) {
+        authorEl.textContent = info.author || "Ẩn danh";
+    }
+  
+    const dateEl = document.getElementById('abn-credit-date');
+    if (dateEl) {
+        const rawDate = info.createdAt;
+        
+        if (rawDate) {
+            if (typeof rawDate.toDate === 'function') {
+                const dateObj = rawDate.toDate();
+                
+                const year = dateObj.getFullYear();
+                const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                const day = String(dateObj.getDate()).padStart(2, '0');
+                
+                dateEl.textContent = `${year}.${month}.${day}`;
+            } else {
+                dateEl.textContent = rawDate;
+            }
+        } else {
+            dateEl.textContent = "----.--.--";
+        }
+    }
 }
 
 function fillDataToToolTemplate(item) {
@@ -415,12 +441,12 @@ function fillDataToToolTemplate(item) {
     
     renderToolDetails(item);
 
-    const authorEl = document.getElementById('credit-author');
+    const authorEl = document.getElementById('tool-credit-author');
     if (authorEl) {
         authorEl.textContent = info.author || "Ẩn danh";
     }
   
-    const dateEl = document.getElementById('credit-date');
+    const dateEl = document.getElementById('tool-credit-date');
     if (dateEl) {
         const rawDate = info.createdAt;
         

@@ -373,117 +373,115 @@
             </div>
         </div>
     </div>
-<div id="tool-detail-template" style="display: none;">
-<div class="tool-container-border">
-<div class="tool-container">
+    <div id="tool-detail-template" style="display: none;">
+    <div class="tool-container-border">
+    <div class="tool-container">
 
-    <div class="tool-sidebar">
-        <div class="tool-img-box">
-            <img src="" id="tool-out-image" alt="Tool Abnormality">
-        </div>
-        <div class="tool-header-info">
-            <h2 id="tool-out-name"></h2>
-            <div class="tool-sub-info">
-                <span id="tool-out-id"></span>
-                <span id="tool-out-risk" class="dynamic-risk"></span>
+        <div class="tool-sidebar">
+            <div class="tool-img-box">
+                <img src="" id="tool-out-image" alt="Tool Abnormality">
+            </div>
+            <div class="tool-header-info">
+                <h2 id="tool-out-name"></h2>
+                <div class="tool-sub-info">
+                    <span id="tool-out-id"></span>
+                    <span id="tool-out-risk" class="dynamic-risk"></span>
+                </div>
+            </div>
+            <div class="tool-quote" id="tool-out-quote"></div>
+            <fieldset class="tool-classification">
+                <legend>Type of Abnormality</legend>
+                <span class="class-tag" id="tool-out-type"></span>
+            </fieldset>
+
+            <div class="modal-trigger-btn-border" onclick="openModal('tool-desc-modal')">
+                <div class="modal-trigger-btn">
+                    <span>DESCRIPTION</span>
+                </div>
+            </div>
+
+            <div class="modal-trigger-btn-border" onclick="openModal('tool-appendix-modal')">
+                <div class="modal-trigger-btn">
+                    <span>APPENDIX</span>
+                </div>
             </div>
         </div>
-        <div class="tool-quote" id="tool-out-quote"></div>
-        <fieldset class="tool-classification">
-            <legend>Type of Abnormality</legend>
-            <span class="class-tag" id="tool-out-type"></span>
-        </fieldset>
 
-        <div class="modal-trigger-btn-border" onclick="openModal('tool-desc-modal')">
-            <div class="modal-trigger-btn">
-                <span>DESCRIPTION</span>
-            </div>
-        </div>
-
-        <div class="modal-trigger-btn-border" onclick="openModal('tool-appendix-modal')">
-            <div class="modal-trigger-btn">
-                <span>APPENDIX</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="panel-log-border" id="tool-log-panel">
-        <div class="panel-log">
-            <div class="panel-header" onclick="togglePanel('tool-log-panel')">
-                <span>LOG</span>
-            </div>
-            <div class="panel-content">
-                <div class="log-list" id="out-log-list">
+        <div class="panel-log-border" id="tool-log-panel">
+            <div class="panel-log">
+                <div class="panel-header" onclick="togglePanel('tool-log-panel')">
+                    <span>LOG</span>
+                </div>
+                <div class="panel-content">
+                    <div class="log-list" id="out-log-list">
                     
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="panel-method-border" id="tool-method-panel">
-        <div class="panel-method">
-            <div class="panel-header" onclick="togglePanel('tool-method-panel')">
-                <span>METHOD</span>
-            </div>
-            <div class="panel-content">
-                <div class="method-list" id="out-method-list">
+        <div class="panel-method-border" id="tool-method-panel">
+            <div class="panel-method">
+                <div class="panel-header" onclick="togglePanel('tool-method-panel')">
+                    <span>METHOD</span>
+                </div>
+                <div class="panel-content">
+                    <div class="method-list" id="out-method-list">
                     
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="custom-modal-overlay" id="tool-desc-modal">
+        <div class="custom-modal-box" style="background: none; border: none; box-shadow: none; width: 100%; max-width: 650px; min-width: 300px; position: relative;">
+            <div class="appendix-wrapper" style="position: relative; width: 100%;">
+                <div class="desc-container-border">
+                    <div class="desc-container" style="position: relative;">
+                        <div class="Btn-Leave-Corner" onclick="closeModal('tool-desc-modal')">
+                            <span>LEAVE</span>
+                        </div>
+
+                        <div class="Info-Row" style="border-bottom: 2px solid #ffffa1; margin-bottom: 15px; padding-bottom: 8px; padding-right: 110px;">
+                            <span style="font-size: 18px; font-weight: bold; color: #ffffa1;">DESCRIPTION DETAILS</span>
+                        </div>
+
+                        <div class="desc-content-body">
+                            <p style="color: #ffffa1; font-size: 14px; line-height: 1.6; margin-bottom: 12px;" id="tool-out-des">
+                                Mô tả
+                            </p>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-</div>
-</div>
-
-<div class="custom-modal-overlay" id="tool-desc-modal">
-    <div class="custom-modal-box" style="background: none; border: none; box-shadow: none; width: 100%; max-width: 650px; min-width: 300px; position: relative;">
-        <div class="appendix-wrapper" style="position: relative; width: 100%;">
-            <div class="desc-container-border">
-                <div class="desc-container" style="position: relative;">
-                    <div class="Btn-Leave-Corner" onclick="closeModal('tool-desc-modal')">
-                        <span>LEAVE</span>
+    <div class="custom-modal-overlay" id="tool-appendix-modal">
+        <div class="custom-modal-box" style="background: none; border: none; box-shadow: none; width: 100%; max-width: 650px; min-width: 300px; position: relative;">
+            <div class="appendix-wrapper" style="position: relative; width: 100%;">
+                <div class="appendix-container-border">
+                    <div class="appendix-container" style="position: relative;">
+                        <div class="Btn-Leave-Corner" onclick="closeModal('tool-appendix-modal')">
+                            <span>LEAVE</span>
+                        </div>
+                        <div class="Info-Row" style="border-bottom: 2px solid #FF9441; margin-bottom: 15px; padding-bottom: 8px; padding-right: 110px;">
+                            <span style="font-size: 18px; font-weight: bold; color: #FF9441;">APPENDIX</span>
+                        </div>
+                        <div id="out-tool-appendix-container"></div>
                     </div>
-
-                    <div class="Info-Row" style="border-bottom: 2px solid #ffffa1; margin-bottom: 15px; padding-bottom: 8px; padding-right: 110px;">
-                        <span style="font-size: 18px; font-weight: bold; color: #ffffa1;">DESCRIPTION DETAILS</span>
-                    </div>
-
-                    <div class="desc-content-body">
-                        <p style="color: #ffffa1; font-size: 14px; line-height: 1.6; margin-bottom: 12px;" id="tool-out-des">
-                            Mô tả
-                        </p>
-                    </div>
-
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="custom-modal-overlay" id="tool-appendix-modal">
-    <div class="custom-modal-box" style="background: none; border: none; box-shadow: none; width: 100%; max-width: 650px; min-width: 300px; position: relative;">
-        <div class="appendix-wrapper" style="position: relative; width: 100%;">
-            <div class="appendix-container-border">
-                <div class="appendix-container" style="position: relative;">
-                    <div class="Btn-Leave-Corner" onclick="closeModal('tool-appendix-modal')">
-                        <span>LEAVE</span>
-                    </div>
-                    <div class="Info-Row" style="border-bottom: 2px solid #FF9441; margin-bottom: 15px; padding-bottom: 8px; padding-right: 110px;">
-                        <span style="font-size: 18px; font-weight: bold; color: #FF9441;">APPENDIX</span>
-                    </div>
-                    <div id="out-tool-appendix-container"></div>
-                </div>
-            </div>
-        </div>
     </div>
-</div>
-    <div class="credit">
-        <span>AUTHOR: <span id="tool-credit-author" style="color: #ff9441;"></span></span>
-        <span class="credit-divider">|</span>
-        <span>DATE: <span id="tool-credit-date"></span></span>
     </div>
-</div>
+        <div class="credit">
+            <span>AUTHOR: <span id="tool-credit-author" style="color: #ff9441;"></span></span>
+            <span class="credit-divider">|</span>
+            <span>DATE: <span id="tool-credit-date"></span></span>
+      </div>
 </div>
 
     <a href="index.html" class="Btn-Home-Corner" target="_top">

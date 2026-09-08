@@ -721,6 +721,32 @@ function getRatingElements() {
     };
 }
 
+function updateScoreUI() {
+    const { scoreElement, btnUp, btnDown } = getRatingElements();
+    if (!scoreElement) return;
+    
+    scoreElement.innerText = (currentScore > 0 ? '+' : '') + currentScore;
+
+    if (currentScore > 0) {
+        scoreElement.className = 'rating-score lobo-score-positive';
+    } else if (currentScore < 0) {
+        scoreElement.className = 'rating-score lobo-score-negative';
+    } else {
+        scoreElement.className = 'rating-score lobo-score-zero';
+    }
+
+    if (btnUp && btnDown) {
+        btnUp.classList.remove('active-up');
+        btnDown.classList.remove('active-down');
+
+        if (userVote === 'up') {
+            btnUp.classList.add('active-up');
+        } else if (userVote === 'down') {
+            btnDown.classList.add('active-down');
+        }
+    }
+}
+
 async function loadLoboRating(itemKey) {
     if (!itemKey || typeof itemKey === 'object') {
         console.error("Mã định danh (itemKey) không hợp lệ:", itemKey);
@@ -790,29 +816,6 @@ async function voteLobo(type, itemKey) {
         }
     }
 
-    updateScoreUI();
-    localStorage.setItem(`lobo_vote_${itemKey}`, userVote || '');
-
-    try {
-        const docSnap = await getDoc(docRef);
-        let votedUsersMap = {};
-        
-        if (docSnap.exists() && docSnap.data().votedUsers) {
-            votedUsersMap = docSnap.data().votedUsers;
-        }
-
-        if (userVote === null) {
-            delete votedUsersMap[clientId];
-        } else {
-            votedUsersMap[clientId] = userVote;
-        }
-        await updateDoc(docRef, {
-            score: currentScore,
-            votedUsers: votedUsersMap
-        });
-    } catch (error) {
-        console.error("Lỗi đồng bộ vote lên Firebase: ", error);
-    }
 }
 
 window.loadLoboRating = loadLoboRating;

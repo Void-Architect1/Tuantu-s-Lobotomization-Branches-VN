@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBLHdA1sxx3iO4hg2SGfFK7qpMzh5CpzIE",
@@ -726,8 +726,8 @@ async function loadLoboRating(itemKey) {
         console.error("Firebase chưa sẵn sàng!");
         return;
     }
-    
-    const docRef = window.firebaseDoc(db, "abnormalities", itemKey);
+
+    const docRef = doc(db, "abnormalities", itemKey);
     
     const { btnUp, btnDown } = getRatingElements();
     if (btnUp && btnDown) {
@@ -738,7 +738,7 @@ async function loadLoboRating(itemKey) {
     userVote = localStorage.getItem(`lobo_vote_${itemKey}`) || null;
 
     try {
-        const docSnap = await window.firebaseGetDoc(docRef);
+        const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             const data = docSnap.data();
             currentScore = data.score || 0;
@@ -757,36 +757,9 @@ async function loadLoboRating(itemKey) {
     }
 }
 
-function updateScoreUI() {
-    const { scoreElement, btnUp, btnDown } = getRatingElements();
-    if (!scoreElement) return;
-    
-    scoreElement.innerText = (currentScore > 0 ? '+' : '') + currentScore;
-
-    if (currentScore > 0) {
-        scoreElement.className = 'rating-score lobo-score-positive';
-    } else if (currentScore < 0) {
-        scoreElement.className = 'rating-score lobo-score-negative';
-    } else {
-        scoreElement.className = 'rating-score lobo-score-zero';
-    }
-
-    if (btnUp && btnDown) {
-        btnUp.classList.remove('active-up');
-        btnDown.classList.remove('active-down');
-
-        if (userVote === 'up') {
-            btnUp.classList.add('active-up');
-        } else if (userVote === 'down') {
-            btnDown.classList.add('active-down');
-        }
-    }
-}
-
 async function voteLobo(type, itemKey) {
     if (typeof db === 'undefined' || !db) return;
-    
-    const docRef = window.firebaseDoc(db, "abnormalities", itemKey);
+    const docRef = doc(db, "abnormalities", itemKey);
     
     if (type === 'up') {
         if (userVote === 'up') {
@@ -816,7 +789,7 @@ async function voteLobo(type, itemKey) {
     localStorage.setItem(`lobo_vote_${itemKey}`, userVote || '');
 
     try {
-        const docSnap = await window.firebaseGetDoc(docRef);
+        const docSnap = await getDoc(docRef);
         let votedUsersMap = {};
         
         if (docSnap.exists() && docSnap.data().votedUsers) {
@@ -828,8 +801,7 @@ async function voteLobo(type, itemKey) {
         } else {
             votedUsersMap[clientId] = userVote;
         }
-
-        await window.firebaseUpdateDoc(docRef, {
+        await updateDoc(docRef, {
             score: currentScore,
             votedUsers: votedUsersMap
         });

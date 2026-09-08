@@ -237,6 +237,10 @@ function updatePreview() {
     var inputUnlockPE = document.getElementById("in-pe-unlock");
     var outputUnlockPE = document.getElementById("out-pe-unlock");
     if (inputUnlockPE && outputUnlockPE) outputUnlockPE.textContent = inputUnlockPE.value;
+
+    var inputCredit = document.getElementById("in-credit-author");
+    var outputCredit = document.getElementById("out-credit-author");
+    if (inputCredit && outputCredit) outputCredit.textContent = inputCredit.value;
 }
 
 document.addEventListener("DOMContentLoaded", function() {

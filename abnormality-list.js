@@ -784,8 +784,7 @@ function updateScoreUI() {
 }
 
 async function voteLobo(type, itemKey) {
-    const db = db;
-    if (!db) return;
+    if (typeof db === 'undefined' || !db) return;
     
     const docRef = window.firebaseDoc(db, "abnormalities", itemKey);
     

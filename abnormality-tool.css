@@ -14,7 +14,6 @@ button:hover { background: #c9302c; }
     padding: 4px;
     box-shadow: 0 0 15px rgba(255, 255, 161, 0.15);
     clip-path: polygon(22px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
-    max-height: 500px;
 }
 
 .tool-container {

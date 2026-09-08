@@ -124,11 +124,11 @@ querySnapshot.forEach(docSnap => {
             if (dataType === "tool") {
                 if (abnormalityTemplate) abnormalityTemplate.style.display = "none";
                 if (toolTemplate) toolTemplate.style.display = "block";
-                fillDataToToolTemplate(item);
+                fillDataToToolTemplate(item, abvId);
             } else {
                 if (toolTemplate) toolTemplate.style.display = "none";
                 if (abnormalityTemplate) abnormalityTemplate.style.display = "block";
-                fillDataToDetailTemplate(item);
+                fillDataToDetailTemplate(item, abvId);
             }
         }
     });

@@ -486,12 +486,10 @@ html, body {
     right: 20px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     font-family: monospace;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: #ccc;
-    padding: 4px 10px;
-    background-color: rgba(0, 0, 0, 0.5);
     user-select: none;
     z-index: 20;
 }

@@ -371,6 +371,14 @@
                 <span class="credit-divider">|</span>
                 <span>DATE: <span id="abn-credit-date"></span></span>
             </div>
+            <div class="lobo-rating-widget">
+                <span class="rating-label">RATE:</span>
+                <span class="rating-score lobo-score-zero" id="lobo-current-score">0</span>
+                <div class="rating-buttons">
+                    <button class="rating-btn btn-up" id="btn-vote-up" onclick="voteLobo('up', currentItemKey)" title="UP VOTE">▴</button>
+                    <button class="rating-btn btn-down" id="btn-vote-down" onclick="voteLobo('down', currentItemKey)" title="DOWN VOTE">▾</button>
+                </div>
+            </div>
         </div>
     
     <div id="tool-detail-template" style="display: none;">
@@ -438,6 +446,14 @@
             <span>AUTHOR: <span id="tool-credit-author" style="color: #ff9441;"></span></span>
             <span class="credit-divider">|</span>
             <span>DATE: <span id="tool-credit-date"></span></span>
+        </div>
+        <div class="lobo-rating-widget">
+            <span class="rating-label">RATE:</span>
+            <span class="rating-score lobo-score-zero" id="lobo-current-score">0</span>
+            <div class="rating-buttons">
+                <button class="rating-btn btn-up" id="btn-vote-up" onclick="voteLobo('up', currentItemKey)" title="UP VOTE">▴</button>
+                <button class="rating-btn btn-down" id="btn-vote-down" onclick="voteLobo('down', currentItemKey)" title="DOWN VOTE">▾</button>
+            </div>
         </div>
 
     <div class="custom-modal-overlay" id="tool-desc-modal">

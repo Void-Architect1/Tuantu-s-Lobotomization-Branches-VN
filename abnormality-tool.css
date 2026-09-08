@@ -24,7 +24,7 @@ button:hover { background: #c9302c; }
     padding: 20px;
     color: #ffffa1;
     clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
-    max-height: 500px;
+    max-height: 550px;
 }
 
 .tool-sidebar {

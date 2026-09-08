@@ -722,8 +722,7 @@ function getRatingElements() {
 }
 
 async function loadLoboRating(itemKey) {
-    const db = db;
-    if (!db) {
+    if (typeof db === 'undefined' || !db) {
         console.error("Firebase chưa sẵn sàng!");
         return;
     }

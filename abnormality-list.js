@@ -414,6 +414,32 @@ function fillDataToToolTemplate(item) {
     }
     
     renderToolDetails(item);
+
+    const authorEl = document.getElementById('credit-author');
+    if (authorEl) {
+        authorEl.textContent = info.author || "Ẩn danh";
+    }
+  
+    const dateEl = document.getElementById('credit-date');
+    if (dateEl) {
+        const rawDate = info.createdAt;
+        
+        if (rawDate) {
+            if (typeof rawDate.toDate === 'function') {
+                const dateObj = rawDate.toDate();
+                
+                const year = dateObj.getFullYear();
+                const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                const day = String(dateObj.getDate()).padStart(2, '0');
+                
+                dateEl.textContent = `${year}.${month}.${day}`;
+            } else {
+                dateEl.textContent = rawDate;
+            }
+        } else {
+            dateEl.textContent = "----.--.--";
+        }
+    }
 }
 function parseCustomEmojis(text) {
     if (text === null || text === undefined) return "";

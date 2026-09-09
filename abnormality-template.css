@@ -1070,7 +1070,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
     color: rgba(255, 255, 255, 0.7);
 }
 
-.Btn-Home-Corner {
+.Btn-Return-Corner {
   position: absolute;
   top: 0;
   right: 0;
@@ -1095,7 +1095,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
   );
 }
 
-.Btn-Home-Corner:hover {
+.Btn-Return-Corner:hover {
   background: linear-gradient(
     to left,  
     rgba(255, 0, 0, 1) 0%,
@@ -1105,7 +1105,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
   color: #FFFFFF;
 }
 
-.Btn-Home-Corner span {
+.Btn-Return-Corner span {
   font-size: 13px;
   font-weight: 900;
   letter-spacing: 1px;

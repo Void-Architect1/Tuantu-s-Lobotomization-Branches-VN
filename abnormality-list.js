@@ -509,7 +509,7 @@ function parseCustomEmojis(text) {
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
         .replace(/__(.*?)__/g, '<span style="text-decoration: underline;">$1</span>')
-        .replace(/\[color:\s*([#a-zA-Z0-9]+)\](.*?)\[\/color\]/g, '<span style="color: $1;">$2</span>')
+        .replace(/\[color:\s*([#a-zA-Z0-9]+)\]([\s\S]*?)\[\/color\]/g, '<span style="color: $1;">$2</span>')
         .replace(/\[size:\s*(.*?)\]([\s\S]*?)\[\/size\]/g, '<span style="font-size: $1;">$2</span>')
         .replace(/\[---(?:\s*,\s*color:\s*([^\]]+))?\]/g, (match, color) => {
             const lineColor = color ? color.trim() : '#e54545';

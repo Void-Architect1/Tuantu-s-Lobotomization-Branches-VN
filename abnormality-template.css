@@ -1069,3 +1069,46 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
 .credit:hover {
     color: rgba(255, 255, 255, 0.7);
 }
+
+.Btn-Home-Corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 130px;
+  height: 45px;
+  color: #000000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-right: 10px;
+  padding-top: 10px;
+  cursor: pointer;
+  user-select: none;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
+  background: linear-gradient(
+    to left,  
+    rgba(255, 59, 59, 1) 0%,
+    rgba(255, 59, 59, 0.5) 50%,
+    rgba(255, 59, 59, 0) 100%
+  );
+}
+
+.Btn-Home-Corner:hover {
+  background: linear-gradient(
+    to left,  
+    rgba(255, 0, 0, 1) 0%,
+    rgba(255, 0, 0, 0.7) 50%,
+    rgba(255, 0, 0, 0) 100%
+  );
+  color: #FFFFFF;
+}
+
+.Btn-Home-Corner span {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  transform: rotate(20deg); 
+  display: inline-block;
+}

@@ -211,7 +211,7 @@ button:hover { background: #c9302c; }
 
 .panel-log-border.active .panel-content,
 .panel-method-border.active .panel-content {
-    max-height: 340px; 
+    max-height: 410px; 
     height: 200px;
     opacity: 1;
     padding: 15px;

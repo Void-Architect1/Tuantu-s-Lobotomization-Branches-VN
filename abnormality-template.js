@@ -329,7 +329,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (inputEl && outputEl) {
                 const updateField = () => {
                     const val = inputEl.value.trim();
-                    outputEl.textContent = val !== "" ? val : "-";
+                    outputEl.textContent = val !== "" ? val : "";
                 };
                 updateField();
                 inputEl.addEventListener("input", updateField);

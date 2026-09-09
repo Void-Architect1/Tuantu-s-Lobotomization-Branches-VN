@@ -321,6 +321,23 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    const workFavorTypes = ['instinct', 'insight', 'attachment', 'repression'];
+    workFavorTypes.forEach(type => {
+        for (let level = 1; level <= 5; level++) {
+            const inputEl = document.getElementById(`in-${type}-${level}`);
+            const outputEl = document.getElementById(`out-${type}-${level}`);
+            if (inputEl && outputEl) {
+                const updateField = () => {
+                    const val = inputEl.value.trim();
+                    outputEl.textContent = val !== "" ? val : "-";
+                };
+                updateField();
+                inputEl.addEventListener("input", updateField);
+                inputEl.addEventListener("change", updateField);
+            }
+        }
+    });
+
     document.querySelectorAll('.form-panel input, .form-panel select, .form-panel textarea').forEach(function(element) {
         element.addEventListener('input', updatePreview);
         element.addEventListener('change', updatePreview);

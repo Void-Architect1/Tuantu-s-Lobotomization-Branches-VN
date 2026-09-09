@@ -760,3 +760,28 @@ button:hover { background: #c9302c; }
   transform: rotate(20deg); 
   display: inline-block;
 }
+
+@media screen and (max-width: 900px) {
+    .tool-container {
+        grid-template-columns: 1fr;
+        padding: 10px;
+        max-height: none !important;
+        height: auto !important;
+    }
+    
+    .tool-sidebar {
+        border-right: none;
+        border-bottom: 1px dashed #ffffa1;
+        padding-right: 0;
+        padding-bottom: 15px;
+    }
+
+    .tool-container-border {
+        margin: 10px;
+    }
+    
+    .panel-log-border.active .panel-content,
+    .panel-method-border.active .panel-content {
+        max-height: 250px !important; 
+    }
+}

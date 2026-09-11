@@ -96,3 +96,43 @@
     0% { opacity: 1; }
     100% { opacity: 0; visibility: hidden; }
 }
+
+@media screen and (max-width: 768px) {
+    .loading-brand {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .loading-logo {
+        width: 90px;
+    }
+
+    .loading-title {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .loading-subtitle {
+        font-size: 0.9rem;
+        text-align: center;
+    }
+
+    .loading-content {
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+    @keyframes revealTextBox {
+        0% {
+            max-height: 0;
+            max-width: 100%;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        100% {
+            max-height: 200px;
+            max-width: 100%;
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}

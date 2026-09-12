@@ -136,3 +136,12 @@
         }
     }
 }
+
+@font-face {
+    font-family: 'Norwester';
+    src: url('Norwester-Regular.woff2') format('woff2'),
+        url('Norwester-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}

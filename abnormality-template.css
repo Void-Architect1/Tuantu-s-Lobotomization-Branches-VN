@@ -1019,7 +1019,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
 .lobo-fold-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease-out, padding 0.3s ease;
+    transition: max-height 0.4s ease-out, padding 0.3s ease;
     background-color: #000000;
     padding: 0 15px;
     box-sizing: border-box;
@@ -1030,9 +1030,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
     padding: 15px;
     border: 2px dashed rgba(242, 242, 242, 0.6);
     margin-top: 5px;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    overflow-y: auto;
+    overflow-y: visible;
 }
 
 

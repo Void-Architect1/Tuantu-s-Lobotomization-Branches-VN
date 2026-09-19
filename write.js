@@ -287,147 +287,63 @@ function updatePreview() {
     }
 }
 
-document.addEventListener('click', function(e) {
-    const loadBox = e.target.closest('.load');
-    if (!loadBox) return;
-    
-    if (loadBox.dataset.animating === 'true' || loadBox.classList.contains('active')) return;
-    
-    let lines;
-    try {
-        const encodedData = loadBox.dataset.lines;
-        lines = JSON.parse(decodeURIComponent(encodedData));
-    } catch (err) {
-        return;
-    }
+document.addEventListener("click", event => {
+	const loadBox = event.target.closest(".load");
+	if (!loadBox || loadBox.dataset.animating === "true") return;
+	let lines;
+	try { lines = JSON.parse(decodeURIComponent(loadBox.dataset.lines || "[]")); } catch { return; }
+	if (!lines.length) return;
 
-    if (!lines || lines.length === 0) return;
-
-    loadBox.dataset.animating = 'true';
-    loadBox.classList.add('active');
-    
-    let currentLineIndex = 0;
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789*#@$%&";
-    
-    function playRandomSequence() {
-        let currentAudio = null;
-        let isStopped = false;
-        let nextFileIndex = 0; 
-
-        function playNext() {
-            if (isStopped) return;
-            
-            currentAudio = new Audio(rollAudioFiles[nextFileIndex]);
-            currentAudio.play().catch(() => {});
-            
-            currentAudio.onended = function() {
-                if (isStopped) return;
-                
-                if (nextFileIndex === 0) {
-                
-                    if (Math.random() < 0.45) {
-                        nextFileIndex = 1;
-                    } else {
-                        nextFileIndex = 0;
-                    }
-                } else {
-                
-                    if (Math.random() < 0.25) {
-                        nextFileIndex = 1;
-                    } else {
-                        nextFileIndex = 0;
-                    }
-                }
-                
-                playNext();
-            };
-        }
-
-        playNext();
-
-        return {
-            stop: function() {
-                isStopped = true;
-                if (currentAudio) {
-                    currentAudio.pause();
-                    currentAudio.currentTime = 0;
-                }
-            }
-        };
-    }
-
-    function playWaitSound() {
-        const audio = new Audio(rollAudioFiles[1]);
-        audio.loop = true;
-        audio.play().catch(() => {});
-        return audio;
-    }
-
-    let activeSoundSeq = playRandomSequence();
-
-    function playLineAnimation(lineText, onLineFinished) {
-        let currentIndex = 0;
-        const totalChars = lineText.length;
-        let currentArray = lineText.split('').map(char => char === ' ' ? ' ' : chars.charAt(Math.floor(Math.random() * chars.length)));
-        loadBox.textContent = currentArray.join('');
-
-        const interval = setInterval(() => {
-            if (currentIndex < totalChars) {
-                if (lineText[currentIndex] === ' ') {
-                    currentArray[currentIndex] = ' ';
-                } else {
-                    currentArray[currentIndex] = lineText[currentIndex];
-                }
-                
-                for (let i = currentIndex + 1; i < totalChars; i++) {
-                    if (lineText[i] !== ' ') {
-                        currentArray[i] = chars.charAt(Math.floor(Math.random() * chars.length));
-                    }
-                }
-                loadBox.textContent = currentArray.join('');
-                currentIndex++;
-            } else {
-                clearInterval(interval);
-                loadBox.textContent = lineText;
-                if (typeof onLineFinished === 'function') onLineFinished();
-            }
-        }, 50);
-    }
-
-    function processNextLine() {
-        if (currentLineIndex < lines.length) {
-            playLineAnimation(lines[currentLineIndex], function() {
-                currentLineIndex++;
-                
-                if (currentLineIndex < lines.length) {
-                    if (activeSoundSeq) {
-                        activeSoundSeq.stop();
-                    }
-
-                    let activeWaitSound = playWaitSound();
-                    
-                    setTimeout(() => {
-                        if (activeWaitSound) {
-                            activeWaitSound.pause();
-                            activeWaitSound.currentTime = 0;
-                            activeWaitSound = null;
-                        }
-
-                        activeSoundSeq = playRandomSequence();
-                        processNextLine();
-                    }, 2000); 
-
-                } else {
-                    if (activeSoundSeq) {
-                        activeSoundSeq.stop();
-                    }
-                    loadBox.classList.add('revealed');
-                    loadBox.classList.remove('active');
-                    loadBox.dataset.animating = 'false';
-                }
-            });
-        }
-    }
-
-    processNextLine();
+	loadBox.dataset.animating = "true";
+	loadBox.classList.add("active");
+	const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789*#@$%&";
+	let lineIndex = 0;
+	let messageTwo = null;
+	const stopMessageTwo = () => {
+		if (messageTwo) { messageTwo.pause(); messageTwo.currentTime = 0; messageTwo = null; }
+	};
+	
+	const revealLine = lineText => {
+		const displayText = `_${lineText}_`;
+		let index = 0;
+		const output = displayText.split("").map(() => chars[Math.floor(Math.random() * chars.length)]);
+		
+		messageTwo = new Audio(rollAudioFiles[1]);
+		messageTwo.loop = true;
+		messageTwo.play().catch(() => {});
+		
+		const interval = setInterval(() => {
+			if (index >= displayText.length) {
+				clearInterval(interval); 
+				stopMessageTwo(); 
+				loadBox.textContent = displayText; 
+				lineIndex++;
+				if (lineIndex < lines.length) setTimeout(playNextLine, 2000);
+				else { loadBox.classList.add("revealed"); loadBox.classList.remove("active"); loadBox.dataset.animating = "false"; }
+				return;
+			}
+			
+			output[index] = displayText[index];
+			
+			for (let position = index + 1; position < displayText.length; position++) {
+				output[position] = chars[Math.floor(Math.random() * chars.length)];
+			}
+			
+			loadBox.textContent = output.join(""); 
+			index++;
+		}, 50);
+	};
+	
+	const playNextLine = () => { if (lines[lineIndex] !== undefined) revealLine(lines[lineIndex]); };
+	
+	const firstLine = lines[0];
+	const randomOutput = () => { 
+		loadBox.textContent = firstLine.split("").map(() => chars[Math.floor(Math.random() * chars.length)]).join(""); 
+	};
+	
+	const randomInterval = setInterval(randomOutput, 50);
+	const messageOne = new Audio(rollAudioFiles[0]);
+	messageOne.addEventListener("ended", () => { clearInterval(randomInterval); revealLine(firstLine); }, { once: true });
+	randomOutput(); 
+	messageOne.play().catch(() => {});
 });

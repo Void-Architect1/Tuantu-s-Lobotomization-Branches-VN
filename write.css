@@ -337,7 +337,7 @@ button:hover { background: #c9302c; }
 .containment-content {
     width: 100%;
     box-sizing: border-box;
-    max-height: 280px;
+    height: auto;
     overflow-y: auto;
     margin-top: 5px;
     padding: 5px;

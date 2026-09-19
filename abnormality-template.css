@@ -1052,7 +1052,7 @@ details[open].Description-Box summary.Description-Title { background-color: #FF5
 }
 
 .credit {
-    position: absolute;
+    position: relative;
     bottom: 3px;
     left: 20px;
     font-family: monospace;

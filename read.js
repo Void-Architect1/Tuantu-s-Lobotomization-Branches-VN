@@ -230,3 +230,26 @@ document.addEventListener("DOMContentLoaded", () => {
 	modal?.addEventListener("click", event => { if (event.target === modal) modal.style.display = "none"; });
 	loadArticles();
 });
+
+window.toggleLoboFold = function(headerElement) {
+    const foldContainer = headerElement.closest('.lobo-fold-container');
+    const iconSpan = headerElement.querySelector('.lobo-fold-toggle-icon');
+    const contentDiv = foldContainer.querySelector(':scope > .lobo-fold-content');
+    const isOpen = foldContainer.classList.toggle('open');
+    if (isOpen) {
+        contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
+    } else {
+        contentDiv.style.maxHeight = '0px';
+    }
+    iconSpan.classList.add('rotate');
+    setTimeout(() => {
+        if (isOpen) {
+            iconSpan.textContent = '-';
+        } else {
+            iconSpan.textContent = '+';
+        }
+    }, 75);
+    setTimeout(() => {
+        iconSpan.classList.remove('rotate');
+    }, 150);
+};

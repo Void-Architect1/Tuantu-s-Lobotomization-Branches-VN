@@ -77,7 +77,7 @@ function parseCustomEmojis(text) {
 
 	parsed = parsed.replace(/\[li\]([\s\S]*?)\[\/li\]/g, (match, content) => `<ul style="color:#ddd;line-height:1.6;margin-top:5px;padding-left:20px;list-style-type:disc;">${content.split("\n").filter(line => line.trim()).map(line => `<li>${line.trim().replace(/^(?:-\s*|o\s*)/, "")}</li>`).join("")}</ul>`);
 	parsed = parsed.replace(/\[num\]([\s\S]*?)\[\/num\]/g, (match, content) => `<ol style="color:#ddd;line-height:1.6;margin-top:5px;padding-left:20px;">${content.split("\n").filter(line => line.trim()).map(line => `<li>${line.trim()}</li>`).join("")}</ol>`);
-	parsed = parsed.replace(/\[fold:\s*([^\]]+)\]([\s\S]*?)\[\/fold\]/g, (match, title, content) => `<div class="lobo-fold-container"><div class="lobo-fold-header" onclick="this.parentElement.classList.toggle('open')"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner">${content.trim()}</div></div></div>`);
+	parsed = parsed.replace(/\[fold:\s*([^\]]+)\]([\s\S]*?)\[\/fold\]/g, (match, title, content) => `<div class="lobo-fold-container"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner">${content.trim()}</div></div></div>`);
 	parsed = parsed.replace(/\[load\]([\s\S]*?)\[\/load\]/gi, (match, content) => {
 		const rawLines = content.split("\n").map(line => line.trim()).filter(line => line.length > 0);
 		const encodedLines = encodeURIComponent(JSON.stringify(rawLines));

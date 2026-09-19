@@ -143,34 +143,50 @@ document.addEventListener("click", event => {
 	const stopMessageTwo = () => {
 		if (messageTwo) { messageTwo.pause(); messageTwo.currentTime = 0; messageTwo = null; }
 	};
+	
 	const revealLine = lineText => {
 		const displayText = `_${lineText}_`;
 		let index = 0;
-		const output = displayText.split("").map(character => character === " " ? " " : chars[Math.floor(Math.random() * chars.length)]);
+		const output = displayText.split("").map(() => chars[Math.floor(Math.random() * chars.length)]);
+		
 		messageTwo = new Audio(rollAudioFiles[1]);
 		messageTwo.loop = true;
 		messageTwo.play().catch(() => {});
+		
 		const interval = setInterval(() => {
 			if (index >= displayText.length) {
-				clearInterval(interval); stopMessageTwo(); loadBox.textContent = displayText; lineIndex++;
+				clearInterval(interval); 
+				stopMessageTwo(); 
+				loadBox.textContent = displayText; 
+				lineIndex++;
 				if (lineIndex < lines.length) setTimeout(playNextLine, 2000);
 				else { loadBox.classList.add("revealed"); loadBox.classList.remove("active"); loadBox.dataset.animating = "false"; }
 				return;
 			}
+			
 			output[index] = displayText[index];
+			
 			for (let position = index + 1; position < displayText.length; position++) {
-				if (displayText[position] !== " ") output[position] = chars[Math.floor(Math.random() * chars.length)];
+				output[position] = chars[Math.floor(Math.random() * chars.length)];
 			}
-			loadBox.textContent = output.join(""); index++;
+			
+			loadBox.textContent = output.join(""); 
+			index++;
 		}, 50);
 	};
+	
 	const playNextLine = () => { if (lines[lineIndex] !== undefined) revealLine(lines[lineIndex]); };
+	
 	const firstLine = lines[0];
-	const randomOutput = () => { loadBox.textContent = firstLine.split("").map(character => character === " " ? " " : chars[Math.floor(Math.random() * chars.length)]).join(""); };
+	const randomOutput = () => { 
+		loadBox.textContent = firstLine.split("").map(() => chars[Math.floor(Math.random() * chars.length)]).join(""); 
+	};
+	
 	const randomInterval = setInterval(randomOutput, 50);
 	const messageOne = new Audio(rollAudioFiles[0]);
 	messageOne.addEventListener("ended", () => { clearInterval(randomInterval); revealLine(firstLine); }, { once: true });
-	randomOutput(); messageOne.play().catch(() => {});
+	randomOutput(); 
+	messageOne.play().catch(() => {});
 });
 
 async function loadArticles() {

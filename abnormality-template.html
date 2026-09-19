@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Abnormality Template - Tuantu's Lobotomization Branches VN</title>
+    <link rel="stylesheet" href="abnormality-template.css">
+    <link rel="stylesheet" href="toolbar.css">
+    <link rel="icon" type="image/png" href="TLB.VN.png">
+</head>
+<body>
+    <div class="form-panel">
+        <h2>Lobotomy Corp - Abnormality Creator</h2>
+        <form id="abnormality-form">
+            <div class="form-group">
+                <label>Subject Classification</label>
+                <input type="text" id="in-id" placeholder="X-XX-XXX" required>
+            </div>
+            <div class="form-group">
+                <label>Abnormality Name</label>
+                <input type="text" id="in-name" placeholder="Name" required>
+            </div>
+            <div class="form-group">
+                <label>Risk Level</label>
+                <select id="in-risk">
+                    <option value="ZAYIN">ZAYIN</option>
+                    <option value="TETH">TETH</option>
+                    <option value="HE">HE</option>
+                    <option value="WAW">WAW</option>
+                    <option value="ALEPH">ALEPH</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Quote</label>
+                <input type="text" id="in-quote" placeholder="Quote" required>
+            </div>
+            <div class="form-group">
+                <label>Image URL</label>
+                <input type="text" id="in-image" placeholder="link ảnh">
+            </div>
+            <div class="form-group">
+                <label>Work Damage Type</label>
+                <select id="in-work-dmg-type-text">
+                     <option value="RED">RED</option>
+                     <option value="WHITE">WHITE</option>
+                     <option value="BLACK">BLACK</option>
+                     <option value="PALE">PALE</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Work Damage Value</label>
+                <input type="text" id="in-work-dmg" placeholder="XX-XX">
+            </div>
+            <div class="form-group">
+                <label>Work Range</label>
+                    <label>Good Result</label>
+                    <input type="text" id="in-good" placeholder="XX-XX">
+                    <label>Normal Result</label>
+                    <input type="text" id="in-normal" placeholder="XX-XX">
+                    <label>Bad Result</label>
+                    <input type="text" id="in-bad" placeholder="XX-XX">
+            </div>
+            <div class="form-group">
+                <label>Max PE</label>
+                <input type="text" id="in-max-pe" placeholder="XX">
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="in-des" rows="4" placeholder="Nhập mô tả dị thể..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>PE unlock</label>
+                <input type="text" id="in-pe-unlock" placeholder="Số PE cần để mở trang này">
+            </div>
+            <div class="form-group">
+                <label>Observation Level</label>
+                    <label>Level 1</label>
+                    <input type="text" id="in-obs-1" placeholder="+X% dùng :speed: để có icon speedrate, :work: để có icon workrate, điền thêm thông tin mở khóa nếu có">
+                    <label>Level 2</label>
+                    <input type="text" id="in-obs-2" placeholder="+X% dùng :speed: để có icon speedrate, :work: để có icon workrate, điền thêm thông tin mở khóa nếu có">
+                    <label>Level 3</label>
+                    <input type="text" id="in-obs-3" placeholder="+X% dùng :speed: để có icon speedrate, :work: để có icon workrate, điền thêm thông tin mở khóa nếu có">
+                    <label>Level 4</label>
+                    <input type="text" id="in-obs-4" placeholder="+X% dùng :speed: để có icon speedrate, :work: để có icon workrate, điền thêm thông tin mở khóa nếu có">
+            </div>
+            <div class="form-group">
+                <label>Work Favour</label>
+                    <label>Instinct</label>
+                        <input type="text" id="in-instinct-1" placeholder="Level 1">
+                        <input type="text" id="in-instinct-2" placeholder="Level 2">
+                        <input type="text" id="in-instinct-3" placeholder="Level 3">
+                        <input type="text" id="in-instinct-4" placeholder="Level 4">
+                        <input type="text" id="in-instinct-5" placeholder="Level 5">
+                    <label>Insight</label>
+                        <input type="text" id="in-insight-1" placeholder="Level 1">
+                        <input type="text" id="in-insight-2" placeholder="Level 2">
+                        <input type="text" id="in-insight-3" placeholder="Level 3">
+                        <input type="text" id="in-insight-4" placeholder="Level 4">
+                        <input type="text" id="in-insight-5" placeholder="Level 5">
+                    <label>Attachment</label>
+                        <input type="text" id="in-attachment-1" placeholder="Level 1">
+                        <input type="text" id="in-attachment-2" placeholder="Level 2">
+                        <input type="text" id="in-attachment-3" placeholder="Level 3">
+                        <input type="text" id="in-attachment-4" placeholder="Level 4">
+                        <input type="text" id="in-attachment-5" placeholder="Level 5">
+                    <label>Repression</label>
+                        <input type="text" id="in-repression-1" placeholder="Level 1">
+                        <input type="text" id="in-repression-2" placeholder="Level 2">
+                        <input type="text" id="in-repression-3" placeholder="Level 3">
+                        <input type="text" id="in-repression-4" placeholder="Level 4">
+                        <input type="text" id="in-repression-5" placeholder="Level 5">
+            </div>
+            <div class="form-group">
+                <label>Management Tips</label>
+                <div id="management-tips-inputs-container"></div>
+                <button type="button" id="btn-add-management-tip">Thêm Management Tip</button>
+            </div>
+            <div class="form-group">
+                <label>E.G.O Equipments</label>
+                <div class="form-group">
+                    <label>E.G.O Weapon</label>
+                        <label>Grade</label>
+                        <select id="in-weapon-grade">
+                            <option value="ZAYIN">ZAYIN</option>
+                            <option value="TETH">TETH</option>
+                            <option value="HE">HE</option>
+                            <option value="WAW">WAW</option>
+                            <option value="ALEPH">ALEPH</option>
+                        </select>
+                        <label>Cost</label>
+                        <input type="text" id="in-weapon-cost" placeholder="Nhập giá mua vũ khí">
+                        <label>Max Amount</label>
+                        <input type="text" id="in-weapon-amount" placeholder="Nhập số lượng tối đa của vũ khí">
+                        <label>Damage</label>
+                        <input type="text" id="in-weapon-damage" placeholder="Nhập lượng damage của vũ khí">
+                        <label>Attack Speed</label>
+                        <input type="text" id="in-weapon-speed" placeholder="Nhập tốc đánh">
+                        <label>Attack Range</label>
+                        <input type="text" id="in-weapon-range" placeholder="Nhập tầm đánh">
+                        <label>Passive</label>
+                        <textarea id="in-weapon-passive" rows="10" placeholder="Nhập nội dung passive nếu có"></textarea>
+                        <label>Requirements</label>
+                        <textarea id="in-weapon-require" rows="10" placeholder="Nhập nội thông số cần để sử dụng"></textarea>
+                        <label>Name</label>
+                        <input type="text" id="in-weapon-name" placeholder="Nhập tên vũ khí">
+                        <label>Weapon Image</label>
+                        <input type="text" id="in-weapon-image" placeholder="link ảnh vũ khí">
+                        <label>Weapon Description</label>
+                        <textarea id="in-weapon-des" rows="10" placeholder="mô tả vũ khí"></textarea>
+                        <label>Observation Level</label>
+                        <input type="text" id="in-weapon-obs" placeholder="Cấp độ quan sát mở khóa">
+                </div>
+                <div class="form-group">
+                    <label>E.G.O Suit</label>
+                        <label>Grade</label>
+                        <select id="in-suit-grade">
+                            <option value="ZAYIN">ZAYIN</option>
+                            <option value="TETH">TETH</option>
+                            <option value="HE">HE</option>
+                            <option value="WAW">WAW</option>
+                            <option value="ALEPH">ALEPH</option>
+                        </select>
+                        <label>Cost</label>
+                        <input type="text" id="in-suit-cost" placeholder="Nhập giá mua giáp">
+                        <label>Max Amount</label>
+                        <input type="text" id="in-suit-amount" placeholder="Nhập số lượng tối đa của giáp">
+                        <label>RED Def</label>
+                        <input type="text" id="in-suit-red" placeholder="chỉ số kháng red">
+                        <label>WHITE Def</label>
+                        <input type="text" id="in-suit-white" placeholder="chỉ số kháng white">
+                        <label>BLACK Def</label>
+                        <input type="text" id="in-suit-black" placeholder="chỉ số kháng black">
+                        <label>PALE Def</label>
+                        <input type="text" id="in-suit-pale" placeholder="chỉ số kháng pale">
+                        <label>Passive</label>
+                        <textarea id="in-suit-passive" rows="10" placeholder="passive của giáp nếu có"></textarea>
+                        <label>Requirements</label>
+                        <textarea id="in-suit-require" rows="10" placeholder="Nhập thông số cần để sử dụng giáp"></textarea>
+                        <label>Name</label>
+                        <input type="text" id="in-suit-name" placeholder="Tên giáp">
+                        <label>Suit Image</label>
+                        <input type="text" id="in-suit-image" placeholder="link ảnh giáp">
+                        <label>Suit Description</label>
+                        <textarea id="in-suit-des" rows="10" placeholder="mô tả giáp"></textarea>
+                        <label>Observation Level</label>
+                        <input type="text" id="in-suit-obs" placeholder="cấp độ quan sát mở khóa">
+                </div>
+                <div class="form-group">
+                    <label>E.G.O Gift</label>
+                        <label>Chance</label>
+                        <input type="text" id="in-gift-chance" placeholder="tỷ lệ nhận được gift">
+                        <label>Stats</label>
+                        <textarea id="in-gift-stats" rows="10" placeholder="chỉ số buff của gift"></textarea>
+                        <label>Passive</label>
+                        <textarea id="in-gift-passive" rows="10" placeholder="passive của gift nếu có"></textarea>
+                        <label>Name</label>
+                        <input type="text" id="in-gift-name" placeholder="tên gift">
+                        <label>Gift Image</label>
+                        <input type="text" id="in-gift-image" placeholder="link ảnh gift">
+                        <label>Gift Description</label>
+                        <textarea id="in-gift-des" rows="10" placeholder="mô tả gift"></textarea>
+                        <label>Observation Level</label>
+                        <input type="text" id="in-gift-obs" placeholder="cấp độ quan sát mở khóa">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Escape Info</label>
+                    <label>Risk Level</label>
+                    <select id="in-escape-risk">
+                        <option value="ZAYIN">ZAYIN</option>
+                        <option value="TETH">TETH</option>
+                        <option value="HE">HE</option>
+                        <option value="WAW">WAW</option>
+                        <option value="ALEPH">ALEPH</option>
+                    </select>
+                    <label>HP</label>
+                    <input type="text" id="in-escape-hp" placeholder="lượng máu">
+                    <label>Qliphoth Counter</label>
+                    <input type="text" id="in-escape-qliphoth" placeholder="số bộ đếm qliphoth">
+                    <label>Abnormality Defense</label>
+                        <label>RED Def</label>
+                        <input type="text" id="in-escape-red" placeholder="chỉ số kháng red">
+                        <label>WHITE Def</label>
+                        <input type="text" id="in-escape-white" placeholder="chỉ số kháng white">
+                        <label>BLACK Def</label>
+                        <input type="text" id="in-escape-black" placeholder="chỉ số kháng black">
+                        <label>PALE Def</label>
+                        <input type="text" id="in-escape-pale" placeholder="chỉ số kháng pale">
+                    <label>Passive</label>
+                    <textarea id="in-escape-passive" rows="10" placeholder="passive của đối tượng nếu có"></textarea>
+                    <label>Skill</label>
+                    <textarea id="in-escape-skill" rows="10" placeholder="skill của đối tượng nếu có"></textarea>
+                    <label>Image Escape</label>
+                    <input type="text" id="in-escape-image" placeholder="hình ảnh khi trốn thoát">
+                    <label>Type</label>
+                    <select id="in-escape-status">
+                        <option value="NON-ESCAPING">NON-ESCAPING</option>
+                        <option value="ESCAPING-ENTITY">ESCAPING-ENTITY</option>
+                    </select>
+                    <label>Subject Classification</label>
+                    <input type="text" id="in-escape-id" placeholder="mã số khi trốn thoát">
+                    <label>PE Unlock</label>
+                    <input type="text" id="in-escape-pe" placeholder="số PE để mở trang này">
+            </div>
+            <div class="form-group">
+                <label>Appendix List</label>
+                <div id="appendix-inputs-container"></div>
+                <button type="button" id="btn-add-appendix">Thêm Appendix</button>
+            </div>
+
+<div id="editor-control-panel-01">
+    <button type="button" id="panel-toggle-btn-01">
+        <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg></span>
+    </button>
+
+    <div id="panel-content-body-01" class="collapsed-01">
+        
+        <div class="popup-wrapper-01">
+            <button type="button" id="format-text-btn-01" class="menu-trigger-btn-01"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg></button>
+            <div id="format-text-dropdown-01" class="toolbar-popup-menu-01">
+                <div class="toolbar-row-01">
+                    <button type="button" class="menu-trigger-btn-01" data-tag-start="**" data-tag-end="**"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bold"><path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"/></svg></button>
+                    <button type="button" class="menu-trigger-btn-01" data-tag-start="*" data-tag-end="*"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-italic"><line x1="19" x2="10" y1="4" y2="4"/><line x1="14" x2="5" y1="20" y2="20"/><line x1="15" x2="9" y1="4" y2="20"/></svg></button>
+                    <button type="button" class="menu-trigger-btn-01" data-tag-start="__" data-tag-end="__" title="Gạch chân"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-underline"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="4" x2="20" y1="20" y2="20"/></svg></button>
+                    <button type="button" class="menu-trigger-btn-01" data-tag-start="~~" data-tag-end="~~" title="Gạch"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-strikethrough"><path d="M16 4H9a3 3 0 0 0-2.83 4"/><path d="M14 12a4 4 0 0 1 0 8H6"/><line x1="4" x2="20" y1="12" y2="12"/></svg></button>
+                    <button type="button" class="menu-trigger-btn-01" data-tag-start="[size: cỡ chữ]" data-tag-end="[/size]" title="Kích cỡ"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-a-large-small"><path d="m15 16 2.536-7.328a1.02 1.02 1 0 1 1.928 0L22 16"/><path d="M15.697 14h5.606"/><path d="m2 16 4.039-9.69a.5.5 0 0 1 .923 0L11 16"/><path d="M3.304 13h6.392"/></svg></button>
+                    <button type="button" class="menu-trigger-btn-01" data-tag-start="||" data-tag-end="||" title="spoiler"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup-wrapper-01">
+            <button type="button" id="format-advan-menu-btn-01" class="menu-trigger-btn-01"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-ruler"><path d="M13 7 8.7 2.7a2.41 2.41 0 0 0-3.4 0L2.7 5.3a2.41 2.41 0 0 0 0 3.4L7 13"/><path d="m8 6 2-2"/><path d="m18 16 2-2"/><path d="m17 11 4.3 4.3c.94.94.94 2.46 0 3.4l-2.6 2.6c-.94.94-2.46.94-3.4 0L11 17"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg></button>
+            
+            <div id="format-advan-dropdown-content-01" class="toolbar-popup-menu-01">
+                <div class="toolbar-row-01">
+                    <button type="button" class="menu-trigger-btn-01" data-tag-start="[box]" data-tag-end="[/box]" title="Tạo hộp thoại"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-box"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></button>
+                    <button type="button" class="menu-trigger-btn-01" data-tag-start="[fold: Tiêu đề]" data-tag-end="[/fold]" title="Tạo khung thu gọn"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-closed"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/><path d="M2 10h20"/></svg></button>
+                    <button type="button" class="menu-trigger-btn-01" data-tag-start="[load]" data-tag-end="[/load]" title="Ẩn nâng cao"><svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" width="15" height="15">
+	<defs>
+		<image  width="15" height="13" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAANCAMAAABBwMRzAAAAAXNSR0IB2cksfwAAAWVQTFRFAAAAAAAACgoJAAAAAAAACQkIOzozXVpMc3Bha2leLCwoAQEBOTgxlpSGlpOEenduhIJ3m5iJbWxhAAAAAAAAJCMfTktAcW5dhoN5WVdUnZuay8jFq6mlbm1pBAQEAwMCT01EXlpLXlpNUlFLMDExGDpFdnx9wL662NTQmJeVPTw7AAAAKSgjmJaHjIl3TEtEPDw7DyYtD1hwDEJUO0FDlZOSlJORPj49AAEAAAAAZWNZa2ZUdHNnQD8+ISsuDEdbDlJpFCcuW1tagH99mZeUNzY1AAAAAAAAAAAAPz04h4aDXVxbDT9REFx2DikyTk1Nd3Z0sa6rxsPAMjEwBQUFAAAAAAAAenl4j46MHzxFMTU3cG9umZeW09DNkpCOPDs7AAAAFBQUqKildXRyk5CPura0r62rZWRkCQkJAAAAAAAAYmJhraqpvrq4iIaEGhsaAAAATExLoJ2bSEdGAAEAGxsaAQIBEjZr5wAAAHd0Uk5TAAQkIg8bm/Du21sXhuH+////7RQBXcb8////////LjSo8///////////XxON/v////////////9mLtr//////////////qYXVPb////////////BLkjw/////////+Rhfv//////4ocWCsv///OvNDz61F8KXRuoTGrEAAAAWUlEQVR4nGNkgAFGIPjDwAjjsoL4jN+gfG5GGADxRBgZkfnyjMh8bUYUYInKZfRA5qxhYAxF8La+AbkiHsadAXYVQyaEt/QNxJUMDAUgbg/M1UBcytgF9wUAdyMK6CIvgI4AAAAASUVORK5CYII="/>
+	</defs>
+	<style>
+	</style>
+	<use id="Background" href="#img1" x="0" y="1"/>
+</svg></button>
+
+                        <button type="button" class="menu-trigger-btn-01" id="align-menu-btn-01"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-text-align-start"><path d="M21 5H3"/><path d="M15 12H3"/><path d="M17 19H3"/></svg><span class="dropdown-arrow">▼</span></button>
+                        
+                        <div id="align-dropdown-content-01" class="toolbar-popup-menu-01 sub-menu-popup-01">
+                            <div class="toolbar-row-01">
+                                <button type="button" data-tag-start="[left]" data-tag-end="[/left]"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M3 4h18v2H3V4zm0 4h12v2H3V8zm0 4h18v2H3v-2zm0 4h12v2H3v-2zm0 4h18v2H3v-2z"/></svg></button>
+                                <button type="button" data-tag-start="[center]" data-tag-end="[/center]"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M3 4h18v2H3V4zm3 4h12v2H3V8zm-3 4h18v2H3v-2zm3 4h12v2H3V8zm-3 4h18v2H3v-2z"/></svg></button>
+                                <button type="button" data-tag-start="[right]" data-tag-end="[/right]"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M3 4h18v2H3V4zm6 4h12v2H3V8zm-6 4h18v2H3v-2zm6 4h12v2H3V8zm-6 4h18v2H3v-2z"/></svg></button>
+                            </div>
+                        </div>
+
+
+                    <button type="button" id="color-toggle-btn-01" class="menu-trigger-btn-01" title="Đổi màu chữ"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-palette"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg></button>
+                    
+                    <div id="color-dropdown-content-01" class="toolbar-popup-menu-01 color-picker-panel-custom">
+                        <div id="color-picker-box-01" class="cp-box">
+                            <div class="cp-white-gradient"></div>
+                            <div class="cp-black-gradient"></div>
+                            <div id="cp-pointer-01" class="cp-pointer"></div>
+                        </div>
+
+                        <div class="cp-slider-row">
+                            <div id="cp-preview-circle-01" class="cp-preview-circle"></div>
+                            <button type="button" id="cp-eyedropper-btn-01" class="cp-icon-btn" title="Chọn màu từ màn hình">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3-3 3 3-3 3-3-3Z"/><path d="m14 7 3 3"/></svg>
+                            </button>
+                            <div class="cp-slider-track">
+                                <input type="range" id="cp-hue-slider-01" min="0" max="360" value="0">
+                            </div>
+                        </div>
+
+                        <div class="cp-inputs-grid">
+                            <div class="cp-input-group">
+                                <label>Hệ lục phân</label>
+                                <input type="text" id="cp-hex-input-01" value="#ff0000">
+                            </div>
+                            <div class="cp-input-group">
+                                <label>R</label>
+                                <input type="number" id="cp-r-input-01" min="0" max="255" value="255">
+                            </div>
+                            <div class="cp-input-group">
+                                <label>G</label>
+                                <input type="number" id="cp-g-input-01" min="0" max="255" value="0">
+                            </div>
+                            <div class="cp-input-group">
+                                <label>B</label>
+                                <input type="number" id="cp-b-input-01" min="0" max="255" value="0">
+                            </div>
+                        </div>
+                        
+                        <button type="button" id="color-submit-btn-01" class="cp-submit-btn">ÁP DỤNG MÀU</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup-wrapper-01">
+            <button type="button" id="insert-img-toggle-btn-01" class="menu-trigger-btn-01"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-squares-exclude"><path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2"/></svg></button>
+            <div id="img-input-panel-01" class="toolbar-popup-menu-01 img-panel-popup-01">
+                <input type="text" id="img-url-input-01" placeholder="Dán link ảnh..." />
+                <div class="img-params-row-01">
+                    <input type="text" id="img-width-input-01" placeholder="W" />
+                    <input type="text" id="img-height-input-01" placeholder="H" />
+                    <select id="img-align-select-01">
+                        <option value="">Align</option>
+                        <option value="left">Trái</option>
+                        <option value="center">Giữa</option>
+                        <option value="right">Phải</option>
+                    </select>
+                </div>
+                <button type="button" id="img-submit-btn-01">Xác nhận</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+            <div id="floating-toolbar">
+              <div class="toolbar-row">
+                <button type="button" data-tag-start="**" data-tag-end="**" title="In đậm"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bold"><path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"/></svg>
+</button>
+                <button type="button" data-tag-start="*" data-tag-end="*" title="In nghiêng"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-italic"><line x1="19" x2="10" y1="4" y2="4"/><line x1="14" x2="5" y1="20" y2="20"/><line x1="15" x2="9" y1="4" y2="20"/></svg>
+</button>
+                <button type="button" data-tag-start="__" data-tag-end="__" title="Gạch chân"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-underline"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="4" x2="20" y1="20" y2="20"/></svg></button>
+                <button type="button" data-tag-start="~~" data-tag-end="~~" title="Gạch"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-strikethrough"><path d="M16 4H9a3 3 0 0 0-2.83 4"/><path d="M14 12a4 4 0 0 1 0 8H6"/><line x1="4" x2="20" y1="12" y2="12"/></svg></button>
+                <button type="button" data-tag-start="[size: cỡ chữ]" data-tag-end="[/size]" title="Kích cỡ"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-a-large-small"><path d="m15 16 2.536-7.328a1.02 1.02 1 0 1 1.928 0L22 16"/><path d="M15.697 14h5.606"/><path d="m2 16 4.039-9.69a.5.5 0 0 1 .923 0L11 16"/><path d="M3.304 13h6.392"/></svg></button>
+              </div>
+              
+              <div class="toolbar-row">  
+                <button type="button" data-tag-start="[color:#mã màu]" data-tag-end="[/color]" title="Đổi màu chữ"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-palette"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg></button>
+                <button type="button" data-tag-start="[box]" data-tag-end="[/box]" title="Tạo hộp thoại"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-box"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></button>
+                <button type="button" data-tag-start="[fold: Tiêu đề]" data-tag-end="[/fold]" title="Tạo khung thu gọn"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-closed"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/><path d="M2 10h20"/></svg></button>
+                <button type="button" data-tag-start="||" data-tag-end="||" title="spoiler">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+                
+                <div class="dropdown-container">
+                    <button type="button" id="align-menu-btn" title="Căn lề">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-text-align-start"><path d="M21 5H3"/><path d="M15 12H3"/><path d="M17 19H3"/></svg>
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div id="align-dropdown-content" class="dropdown-content">
+                        <button type="button" data-tag-start="[left]" data-tag-end="[/left]" title="Căn trái">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M3 4h18v2H3V4zm0 4h12v2H3V8zm0 4h18v2H3v-2zm0 4h12v2H3v-2zm0 4h18v2H3v-2z"/></svg>
+                        </button>
+                        <button type="button" data-tag-start="[center]" data-tag-end="[/center]" title="Căn giữa">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M3 4h18v2H3V4zm3 4h12v2H3V8zm-3 4h18v2H3v-2zm3 4h12v2H3V8zm-3 4h18v2H3v-2z"/></svg>
+                        </button>
+                        <button type="button" data-tag-start="[right]" data-tag-end="[/right]" title="Căn phải">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M3 4h18v2H3V4zm6 4h12v2H3V8zm-6 4h18v2H3v-2zm6 4h12v2H3V8zm-6 4h18v2H3v-2z"/></svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="dropdown-container img-container">
+                  <button type="button" id="insert-img-toggle-btn" title="Chèn ảnh nâng cao">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                  </button>
+                  <div id="img-input-panel" class="dropdown-content img-panel-advanced">
+                    <input type="text" id="img-url-input" placeholder="Dán link ảnh vào đây..." />
+                    <div class="img-params-row">
+                      <input type="text" id="img-width-input" placeholder="Width (vd: 150px)" />
+                      <input type="text" id="img-height-input" placeholder="Height (vd: auto)" />
+                      <select id="img-align-select">
+                        <option value="">Căn lề...</option>
+                        <option value="left">Trái</option>
+                        <option value="center">Giữa</option>
+                        <option value="right">Phải</option>
+                      </select>
+                    </div>
+                    <button type="button" id="img-submit-btn">Chèn Ảnh</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Credit</label>
+                <input type="text" id="in-credit-author" placeholder="Nhập tên của bạn">
+            </div>
+            <div class="draft-buttons" style="margin-top: 15px; display: flex; gap: 10px;">
+                <button type="button" id="btn-save-draft" class="btn-control" style="flex: 1; background-color: #4a4a2a; border-color: #ffffa1; color: #ffffa1;">💾 SAVE DRAFT</button>
+                <button type="button" id="btn-load-draft" class="btn-control" style="flex: 1; background-color: #2a3a4a; border-color: #a1ffff; color: #a1ffff;">📂 LOAD DRAFT</button>
+            </div>
+            <button type="button" id="btn-save">📤 UPLOAD</button>
+        </form>
+    </div>
+
+    <div class="preview-panel">
+        <h3>Preview</h3>
+        
+        <div class="Base-Layout-Wrapper">
+  <input type="checkbox" id="toggle-obs" class="Modal-Toggle">
+  <input type="checkbox" id="toggle-favour" class="Modal-Toggle">
+  <input type="checkbox" id="toggle-tips" class="Modal-Toggle">
+  <input type="checkbox" id="toggle-ego" class="Modal-Toggle">
+  <input type="checkbox" id="toggle-escape" class="Modal-Toggle">
+  <input type="checkbox" id="toggle-appendix" class="Modal-Toggle">
+
+  <div class="sidebar-menu">
+    <label for="toggle-obs" class="skeleton">
+      <div class="inner">Observation Level</div>
+    </label>
+    <label for="toggle-favour" class="skeleton">
+      <div class="inner">Work Favour</div>
+    </label>
+    <label for="toggle-tips" class="skeleton">
+      <div class="inner">Management Tips</div>
+    </label>
+    <label for="toggle-ego" class="skeleton">
+      <div class="inner">E.G.O Equipments</div>
+    </label>
+    <label for="toggle-escape" class="skeleton">
+      <div class="inner">Escape Info</div>
+    </label>
+    <label for="toggle-appendix" class="skeleton">
+      <div class="inner">Appendix</div>
+    </label>
+  </div>
+
+  <div class="Base-Container-Border">
+    <div class="Base-Container">
+      <div class="Header-Title">BASE INFORMATION</div>
+      
+      <div class="Main-Content">
+        <div class="Left-Column">
+          <div class="Info-Row">
+            <strong class="Label">Risk Level</strong>
+            <strong class="Value" id="out-risk">
+            </strong>
+          </div>
+          <div class="Info-Row">
+            <strong class="Label Sub-Class-Label">Subject<br>Classification</strong>
+            <strong class="Value Big", id="out-id">X-XX-XXX</strong>
+          </div>
+          
+          <div class="Sub-Grid">
+            <div class="favour-box" style="flex: 1; min-height: 65px; padding: 8px 8px 6px 8px; display: flex !important; flex-direction: column !important; justify-content: space-between !important; align-items: center !important; position: relative !important;">
+              <span class="favour-title" style="color: #ffffa1; font-size: 13px; position: absolute !important; top: -8px !important; left: 50% !important; transform: translateX(-50%) !important; background: #12110c !important; padding: 0 4px !important; white-space: nowrap !important;">Work Damage</span>
+              <img id="work-dmg-img" src="" alt="Work Damage" class="Icon-Damage" style="display: none; position: static !important; width: 24px !important; height: 24px !important; margin: 2px auto !important; float: none !important;">
+              <div class="Damage-Info" style="width: 100%; display: flex !important; justify-content: space-between !important; align-items: center !important; margin-top: auto !important; position: static !important;">
+                <span id="out-work-dmg-type-text" style="display:none;"></span>
+                <span id="work-dmg-label" style="color: #FF0000; font-weight: bold; font-size: 13px;">TYPE</span>
+                <span class="Value" id="out-work-dmg" style="color: #ffffa1; font-size: 14px; white-space: nowrap !important; margin-left: 6px !important;" ></span>
+              </div>
+            </div>
+            
+            <div class="favour-box" style="flex: 1; min-height: 65px; padding: 12px 8px 6px 8px; justify-content: center;">
+              <span class="favour-title" style="color: #ffffa1; font-size: 13px;">Max.E-Boxes</span>
+              <span class="E-Box-Value" id="out-max-pe" style="font-size: 22px; margin: auto 0 0 0;"></span>
+            </div>
+          </div>
+
+          <div class="favour-box" style="flex-direction: column; min-height: auto; padding: 15px 12px 12px 12px; margin-top: 15px;">
+            <span class="favour-title" style="color: #ffffa1;">Work Range</span>
+
+            <div class="Work-Range-List" style="width: 100%;">
+              <div class="Work-Row Good">
+                <span class="Work-Label">
+                  <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Good.webp?raw=true" class="Icon-Result" alt="Good">
+                  Good
+                </span>
+                <span id="out-good" style="font-family: 'Gill sans', sans-serif;">XX</span>
+              </div>
+              <div class="Work-Row Neutral">
+                <span class="Work-Label">
+                  <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Neutral.webp?raw=true" class="Icon-Result" alt="Normal">
+                  Normal
+                </span>
+                <span id="out-normal" style="font-family: 'Gill sans', sans-serif;">XX</span>
+              </div>
+              <div class="Work-Row Bad">
+                <span class="Work-Label">
+                  <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Bad.webp?raw=true" class="Icon-Result" alt="Bad">
+                  Bad
+                </span>
+                <span id="out-bad" style="font-family: 'Gill sans', sans-serif;">XX</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="Right-Column">
+          <img class="Abnormality-Image" id="out-image" src="" alt="Item-image">
+          <div class="Abnormality-Name" id="out-name">Abnormality Name</div>
+          <div class="Quote", id="out-quote"><em><strong>Quote</strong></em></div>
+          <details class="Description-Box">
+            <summary class="Description-Title"></summary>
+            <div class="Description-Content" id="out-des">Mô tả</div>
+          </details>
+        </div>
+      </div>
+
+      <div class="PE-Box-Footer">
+        <div class="PE-Box-Title">PE-Boxes <span id="out-pe-unlock"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-obs" class="Overlay-Modal">
+    <div class="Modal-Content">
+      <div class="obs-container-border">
+        <div class="obs-container">
+          
+          <div class="Info-Row" style="margin-bottom: 15px; padding-bottom: 8px;">
+            <span style="font-size: 18px; font-weight: bold;">OBSERVATION LEVEL</span>
+            <label for="toggle-obs" class="Btn-Leave-Corner"><span>LEAVE</span></label>
+          </div>
+
+          <div class="obs-row">
+            <div class="obs-level">Level 1 ( 1 Section Unlocked )</div>
+            <div class="obs-effect">
+              <span class="obs-type-box" data-type="{$obs_level_1_value}">
+                <span class="obs-val" id="out-obs-1"></span>
+              </span>
+            </div>
+          </div>
+
+          <div class="obs-row">
+            <div class="obs-level">Level 2 ( 2 Sections Unlocked )</div>
+            <div class="obs-effect">
+              <span class="obs-type-box" data-type="{$obs_level_2_value}">
+                <span class="obs-val" id="out-obs-2"></span>
+              </span>
+            </div>
+          </div>
+
+          <div class="obs-row">
+            <div class="obs-level">Level 3 ( 3 Sections Unlocked )</div>
+            <div class="obs-effect">
+              <span class="obs-type-box" data-type="{$obs_level_3_value}">
+                <span class="obs-val" id="out-obs-3"></span>
+              </span>
+            </div>
+          </div>
+
+          <div class="obs-row">
+            <div class="obs-level">Level 4 ( All Details Unlocked )</div>
+            <div class="obs-effect">
+              <span class="obs-type-box" data-type="{$obs_level_4_value}">
+                <span class="obs-val" id="out-obs-4"></span>
+              </span>
+              <span>Unlocks The Appendix</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-favour" class="Overlay-Modal">
+    <div class="Modal-Content">
+      <div class="obs-container-border">
+        <div class="obs-container">
+          
+          <div class="Info-Row" style="margin-bottom: 20px; padding-bottom: 8px; padding-right: 110px;">
+            <span style="font-size: 18px; font-weight: bold;">ABNORMALITY WORK FAVOUR</span>
+            <label for="toggle-favour" class="Btn-Leave-Corner" style="margin-left: 10px;"><span>LEAVE</span></label>
+          </div>
+
+          <div class="favour-grid">
+            
+            <div class="favour-box">
+              <span class="favour-title" style="color: #FF5555;">Instinct</span>
+              <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Instinct.webp?raw=true" class="favour-icon" alt="Instinct">
+              <div class="favour-levels">
+                <div class="favour-row"><span>I</span> <span id="out-instinct-1"></span></div>
+                <div class="favour-row"><span>II</span> <span id="out-instinct-2"></span></div>
+                <div class="favour-row"><span>III</span> <span id="out-instinct-3"></span></div>
+                <div class="favour-row"><span>IV</span> <span id="out-instinct-4"></span></div>
+                <div class="favour-row"><span>V</span> <span id="out-instinct-5"></span></div>
+              </div>
+            </div>
+
+            <div class="favour-box">
+              <span class="favour-title" style="color: #ffffa1;">Insight</span>
+              <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Insight.webp?raw=true" class="favour-icon" alt="Insight">
+              <div class="favour-levels">
+                <div class="favour-row"><span>I</span> <span id="out-insight-1"></span></div>
+                <div class="favour-row"><span>II</span> <span id="out-insight-2"></span></div>
+                <div class="favour-row"><span>III</span> <span id="out-insight-3"></span></div>
+                <div class="favour-row"><span>IV</span> <span id="out-insight-4"></span></div>
+                <div class="favour-row"><span>V</span> <span id="out-insight-5"></span></div>
+              </div>
+            </div>
+
+            <div class="favour-box">
+              <span class="favour-title" style="color: #CC66FF;">Attachment</span>
+              <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Attachment.webp?raw=true" class="favour-icon" alt="Attachment">
+              <div class="favour-levels">
+                <div class="favour-row"><span>I</span> <span id="out-attachment-1"></span></div>
+                <div class="favour-row"><span>II</span> <span id="out-attachment-2"></span></div>
+                <div class="favour-row"><span>III</span> <span id="out-attachment-3"></span></div>
+                <div class="favour-row"><span>IV</span> <span id="out-attachment-4"></span></div>
+                <div class="favour-row"><span>V</span> <span id="out-attachment-5"></span></div>
+              </div>
+            </div>
+
+            <div class="favour-box">
+              <span class="favour-title" style="color: #55FFFF;">Repression</span>
+              <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Repression.webp?raw=true" class="favour-icon" alt="Repression">
+              <div class="favour-levels">
+                <div class="favour-row"><span>I</span> <span id="out-repression-1"></span></div>
+                <div class="favour-row"><span>II</span> <span id="out-repression-2"></span></div>
+                <div class="favour-row"><span>III</span> <span id="out-repression-3"></span></div>
+                <div class="favour-row"><span>IV</span> <span id="out-repression-4"></span></div>
+                <div class="favour-row"><span>V</span> <span id="out-repression-5"></span></div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-tips" class="Overlay-Modal">
+    <div class="Modal-Content">
+      <div class="tips-wrapper">
+        <div class="tips-container-border">
+          <div class="tips-container" id="out-management-tips-container">
+            <div class="Info-Row" style="border-bottom: 2px solid #FF9441; margin-bottom: 15px; padding-bottom: 8px; padding-right: 110px;">
+              <span style="font-size: 18px; font-weight: bold; color: #FF9441;">ABNORMALITY MANAGEMENT TIPS</span>
+              <label for="toggle-tips" class="Btn-Leave-Corner" style="margin-left: 10px;"><span>LEAVE</span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div id="modal-ego" class="Overlay-Modal">
+    <div class="Modal-Content">
+      <div class="obs-container-border">
+        <div class="obs-container" style="padding-top: 50px;">
+          <label for="toggle-ego" class="Btn-Leave-Corner"><span>LEAVE</span></label>
+          
+          <input type="radio" id="ego-tab-1" name="ego-tabs" class="ego-tab-radio" checked>
+          <input type="radio" id="ego-tab-2" name="ego-tabs" class="ego-tab-radio">
+          <input type="radio" id="ego-tab-3" name="ego-tabs" class="ego-tab-radio">
+
+          <div class="ego-tab-buttons">
+            <label for="ego-tab-1" class="ego-tab-btn">WEAPON</label>
+            <label for="ego-tab-2" class="ego-tab-btn">SUIT</label>
+            <label for="ego-tab-3" class="ego-tab-btn">GIFT</label>
+          </div>
+
+          <div class="ego-content-area">
+            
+            <div id="ego-panel-weapon" class="ego-panel">
+              <div class="Info-Row" style="border-bottom: none;"><span style="font-size: 18px; font-weight: bold; width: 100%; text-align: right;">E.G.O WEAPON</span></div>
+              <div class="ego-grid">
+                <div class="ego-left">
+                  <div class="ego-row">
+                    <span>Grade</span>
+                    <span class="Rainbow-Level dynamic-risk" id="out-weapon-grade"></span>
+                  </div>
+                  <div class="ego-row">
+                    <span>Cost</span>
+                    <span><img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/EBoxIcon.webp?raw=true" style="width:14px; vertical-align:-2px;"> <span id="out-weapon-cost"></span></span>
+                  </div>
+                  <div class="ego-row">
+                    <span>Max Amount</span>
+                    <span id="out-weapon-amount"></span>
+                  </div>
+                  
+                  <div class="ego-row" style="flex-direction:column; align-items:stretch; gap:2px;">
+                    <span>Damage</span>
+
+                    <span id="out-weapon-damage" style="text-align:right;"></span>
+                  </div>
+
+                  <div class="ego-row">
+                    <span>Attack Speed</span>
+                    <span id="out-weapon-speed"></span>
+                  </div>
+                  <div class="ego-row">
+                    <span>Attack Range</span>
+                    <span id="out-weapon-range"></span>
+                  </div>
+                  
+                  <div style="font-weight:bold; font-size:12px; margin-top:5px;">Passive</div>
+                  <div class="ego-desc-text" id="out-weapon-passive"></div>
+
+                  <div style="font-weight:bold; font-size:12px; margin-top:5px;">Requirements</div>
+                  <div class="ego-stat-box">
+                    <div class="stat-item">
+                      <span id="out-weapon-require"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ego-right">
+                  <img src="" class="ego-img-box" id="out-weapon-image" alt="Weapon Image">
+                  <div class="ego-name" id="out-weapon-name"></div>
+                  <details class="Description-Box">
+                    <summary class="Description-Title"></summary>
+                    <div class="Description-Content" id="out-weapon-des"></div>
+                  </details>
+                </div>
+              </div>
+              <div class="ego-footer-obs">Observation Level <span id="out-weapon-obs"></span></div>
+            </div>
+
+            <div id="ego-panel-suit" class="ego-panel">
+              <div class="Info-Row" style="border-bottom: none;"><span style="font-size: 18px; font-weight: bold; width: 100%; text-align: right;">E.G.O SUIT</span></div>
+              <div class="ego-grid">
+                <div class="ego-left">
+                  <div class="ego-row">
+                    <span>Grade</span>
+                    <span class="Rainbow-Level dynamic-risk" id="out-suit-grade"></span>
+                  </div>
+                  <div class="ego-row">
+                    <span>Cost</span>
+                    <span><img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/EBoxIcon.webp?raw=true" style="width:14px; vertical-align:-2px;"> <span id="out-suit-cost"></span></span>
+                  </div>
+                  <div class="ego-row">
+                    <span>Max Amount</span>
+                    <span id="out-suit-amount"></span>
+                  </div>
+                  
+                  <div class="ego-row" style="color:#FF5555;">
+                    <span style="display: flex; align-items: center; gap: 5px;">
+                      <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Red.webp?raw=true" class="dmg-icon" alt="Red"> RED Defense
+                    </span>
+                    <span id="out-suit-red"></span>
+                  </div>
+
+                  <div class="ego-row" style="color:#F3F3F3;">
+                    <span style="display: flex; align-items: center; gap: 5px;">
+                      <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/White.webp?raw=true" class="dmg-icon" alt="White"> WHITE Defense
+                    </span>
+                    <span id="out-suit-white"></span>
+                  </div>
+
+                  <div class="ego-row" style="color:#CC66FF;">
+                    <span style="display: flex; align-items: center; gap: 5px;">
+                      <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Black.webp?raw=true" class="dmg-icon" alt="Black"> BLACK Defense
+                    </span>
+                    <span id="out-suit-black"></span>
+                  </div>
+
+                  <div class="ego-row" style="color:#55FFFF;">
+                    <span style="display: flex; align-items: center; gap: 5px;">
+                      <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Pale.webp?raw=true" class="dmg-icon" alt="Pale"> PALE Defense
+                    </span>
+                    <span id="out-suit-pale"></span>
+                  </div>
+
+                  <div style="font-weight:bold; font-size:12px; margin-top:5px;">Passive</div>
+                  <div class="ego-desc-text" id="out-suit-passive"></div>
+
+                  <div style="font-weight:bold; font-size:12px; margin-top:5px;">Requirements</div>
+                  <div class="ego-stat-box">
+                    <div class="stat-item">
+                      <span id="out-suit-require"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ego-right">
+                  <img src="" class="ego-img-box" id="out-suit-image" alt="Suit Image">
+                  <div class="ego-name" id="out-suit-name"></div>
+                  <details class="Description-Box">
+                    <summary class="Description-Title"></summary>
+                    <div class="Description-Content" id="out-suit-des"></div>
+                  </details>
+                </div>
+              </div>
+              <div class="ego-footer-obs">Observation Level <span id="out-suit-obs"></span></div>
+            </div>
+
+            <div id="ego-panel-gift" class="ego-panel">
+              <div class="Info-Row" style="border-bottom: none;"><span style="font-size: 18px; font-weight: bold; width: 100%; text-align: right;">E.G.O GIFT</span></div>
+              <div class="ego-grid">
+                <div class="ego-left">
+                  <div class="ego-row">
+                    <span>Chance</span>
+                    <span id="out-gift-chance"></span>
+                  </div>
+                  
+                  <div style="font-weight:bold; font-size:12px; margin-top:5px;">Stats</div>
+                  <div class="ego-stat-box">
+                    <div class="stat-item">
+                      <span id="out-gift-stats"></span>
+                    </div>
+                  </div>
+
+                  <div style="font-weight:bold; font-size:12px; margin-top:10px;">Passive</div>
+                  <div class="ego-desc-text" id="out-gift-passive"></div>
+                </div>
+
+                <div class="ego-right">
+                  <img src="" class="ego-img-box" id="out-gift-image" alt="Gift Image">
+                  <div class="ego-name" id="out-gift-name"></div>
+                  <details class="Description-Box">
+                    <summary class="Description-Title"></summary>
+                    <div class="Description-Content" id="out-gift-des"></div>
+                  </details>
+                </div>
+              </div>
+              <div class="ego-footer-obs">Observation Level <span id="out-gift-obs"></span></div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-escape" class="Overlay-Modal">
+    <div class="Modal-Content">
+      <div class="obs-container-border">
+        <div class="obs-container">
+          <label for="toggle-escape" class="Btn-Leave-Corner" style="margin-left: 10px;"><span>LEAVE</span></label>
+
+          <div class="Info-Row" style="margin-bottom: 15px; padding-bottom: 8px; padding-right: 110px;">
+            <span style="font-size: 18px; font-weight: bold;">ABNORMALITY ESCAPE INFORMATION</span>
+            
+          </div>
+
+          <div class="ego-grid">
+
+            <div class="ego-left">
+              <div class="ego-row">
+                <span>Risk Level</span>
+                <span class="Rainbow-Level dynamic-risk" id="out-escape-risk"></span>
+              </div>
+              
+              <div class="ego-row">
+                <span>Health</span>
+                <span id="out-escape-hp"></span>
+              </div>
+
+              <div class="Sub-Grid" style="margin: 10px 0;">
+                <div class="favour-box" style="flex: 1; min-height: 75px; padding: 12px 8px 6px 8px; justify-content: center;">
+                  <span class="favour-title" style="color: #ffffa1; font-size: 9px;">QLIPHOTH COUNTER</span>
+                  <div style="display: flex; align-items: center; gap: 8px; margin: auto 0 0 0;">
+                    <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Qliphoth.webp?raw=true" style="width: 22px; height: 22px; object-fit: contain;">
+                    <span style="font-size: 20px; font-weight: bold; color: #FF9900;" id="out-escape-qliphoth"></span>
+                  </div>
+                </div>
+
+                <div class="favour-box" style="flex: 1; min-height: 75px; padding: 12px 8px 6px 8px; justify-content: center;">
+                  <span class="favour-title" style="color: #ffffa1; font-size: 9px;">ABNORMALITY DEFENSE</span>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; width: 100%; font-size: 11px; font-weight: bold; margin: auto 0 0 0;">
+                    <span style="color: #FF5555; text-align: center;" id="out-escape-red"></span>
+                    <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Red.webp?raw=true" class="dmg-icon">
+                    <span style="color: #FFFF99; text-align: center;" id="out-escape-white"></span>
+                    <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/White.webp?raw=true" class="dmg-icon">
+                    <span style="color: #CC66FF; text-align: center;" id="out-escape-black"></span>
+                    <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Black.webp?raw=true" class="dmg-icon">
+                    <span style="color: #55FFFF; text-align: center;" id="out-escape-pale"></span>
+                    <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Pale.webp?raw=true" class="dmg-icon">
+                  </div>
+                </div>
+              </div>
+
+              <details class="Description-Box">
+                <summary class="Description-Title" style="width: 100%; box-sizing: border-box; text-align: center; border: 1px solid #FFFFA1; background: #FFFFA1; color: #12110c; margin-bottom: 5px;">PASSIVE</summary>
+                <div class="Description-Content" style="border-top: 1px dashed #FFFFA1;">
+                  <span id="out-escape-passive"></span>
+                </div>
+              </details>
+
+              <details class="Description-Box" style="margin-top: 10px;">
+                <summary class="Description-Title" style="width: 100%; box-sizing: border-box; text-align: center; border: 1px solid #FFFFA1; background: #FFFFA1; color: #12110c; margin-bottom: 5px;">SKILL</summary>
+                <div class="Description-Content" style="border-top: 1px dashed #FFFFA1;">
+                  <span id="out-escape-skill"></span>
+                </div>
+              </details>
+
+            </div>
+
+            <div class="ego-right">
+              <img src="" id="out-escape-image" class="ego-img-box" alt="Escape Image">
+              
+              <div class="ego-name dynamic-escape-status" style="font-size: 14px; margin-top: 10px;" id="out-escape-status"></div>
+              
+              <div style="border-top: 1px solid #FFFFA1; margin-top: 8px; padding-top: 8px; text-align: center;">
+                <div style="font-size: 11px; font-weight: bold;">SUBJECT CLASSIFICATION</div>
+                <div style="font-size: 16px; font-weight: bold;" id="out-escape-id"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="PE-Box-Footer" style="margin-top: 15px;">
+            <div class="PE-Box-Title" style="font-size: 14px; padding: 4px 15px;">PE-Boxes <span id="out-escape-pe"></span></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-appendix" class="Overlay-Modal">
+    <div class="Modal-Content">
+      <div class="appendix-wrapper">
+        <div class="appendix-container-border">
+          <div class="appendix-container" id="out-appendix-container">
+            <label for="toggle-appendix" class="Btn-Leave-Corner" style="margin-left: 10px;"><span>LEAVE</span></label>
+            <div class="Info-Row" style="border-bottom: 2px solid #FF9441; margin-bottom: 15px; padding-bottom: 8px; padding-right: 110px;">
+              <span style="font-size: 18px; font-weight: bold; color: #FF9441;">ABNORMALITY APPENDIX</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+        <div class="credit">
+            <span>AUTHOR: <span id="out-credit-author" style="color: #ff9441;"></span></span>
+        </div>
+        <a href="abnormality-list.html" class="Btn-Return-Corner" target="_top">
+            <span>RETURN</span>
+        </a>
+    </div>
+<script type="module" src="abnormality-template.js"></script>
+<script type="module" src="toolbar.js"></script>
+</body>
+</html>

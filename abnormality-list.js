@@ -1,0 +1,1110 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBLHdA1sxx3iO4hg2SGfFK7qpMzh5CpzIE",
+  authDomain: "tlb-vn-database.firebaseapp.com",
+  projectId: "tlb-vn-database",
+  storageBucket: "tlb-vn-database.firebasestorage.app",
+  messagingSenderId: "161263399284",
+  appId: "1:161263399284:web:0d6163d072aad937df3c21",
+  measurementId: "G-GRT1ZMCTYL"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const rollAudioFiles = [
+    'https://raw.githubusercontent.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/main/index_message_1.wav',
+    'https://raw.githubusercontent.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/main/index_message_2.wav'
+];
+
+function normalizeAbnormalityId(value) {
+    return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+let activeRiskCategory = "all";
+
+function filterAbnormalityCards(searchValue, categoryValue = activeRiskCategory) {
+    const searchTerm = normalizeAbnormalityId(searchValue);
+    document.querySelectorAll("#abnormality-list .abnormality-card").forEach(card => {
+        const visibleCardId = card.querySelector(".card-id")?.textContent || card.dataset.id;
+        const cardId = normalizeAbnormalityId(visibleCardId);
+        const matchesSearch = searchTerm === "" || cardId.includes(searchTerm);
+        const matchesCategory = categoryValue === "all" || card.dataset.risk === categoryValue;
+        const shouldHide = !matchesSearch || !matchesCategory;
+        card.hidden = shouldHide;
+        card.classList.toggle("search-hidden", shouldHide);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const sidebar = document.querySelector(".lob-left-panel");
+    const sidebarToggle = document.getElementById("sidebar-toggle");
+    const sidebarResizer = document.getElementById("sidebar-resizer");
+    const searchInput = document.getElementById("abnormality-search-input");
+    const savedSidebarWidth = Number(localStorage.getItem("abnormality-sidebar-width"));
+    let isResizingSidebar = false;
+
+    if (searchInput) {
+        searchInput.addEventListener("input", () => filterAbnormalityCards(searchInput.value));
+    }
+
+    document.querySelectorAll(".category-btn").forEach(categoryButton => {
+        categoryButton.addEventListener("click", () => {
+            const selectedCategory = categoryButton.dataset.category || "all";
+            activeRiskCategory = activeRiskCategory === selectedCategory ? "all" : selectedCategory;
+            document.querySelectorAll(".category-btn").forEach(button => {
+                button.classList.toggle("is-active", activeRiskCategory === button.dataset.category);
+            });
+            filterAbnormalityCards(searchInput?.value || "");
+        });
+    });
+
+    if (sidebar && savedSidebarWidth >= 180 && savedSidebarWidth <= 620) {
+        sidebar.style.setProperty("--sidebar-width", `${savedSidebarWidth}px`);
+    }
+
+    if (sidebar && sidebarToggle) {
+        sidebarToggle.addEventListener("click", () => {
+            const isCollapsed = sidebar.classList.toggle("is-collapsed");
+            sidebarToggle.textContent = isCollapsed ? "›" : "‹";
+            sidebarToggle.setAttribute("aria-expanded", String(!isCollapsed));
+        });
+    }
+
+    if (sidebar && sidebarResizer) {
+        sidebarResizer.addEventListener("pointerdown", (event) => {
+            if (sidebar.classList.contains("is-collapsed")) return;
+            isResizingSidebar = true;
+            sidebarResizer.setPointerCapture(event.pointerId);
+            document.body.style.cursor = "ew-resize";
+            document.body.style.userSelect = "none";
+        });
+
+        sidebarResizer.addEventListener("pointermove", (event) => {
+            if (!isResizingSidebar || window.innerWidth <= 768) return;
+            const width = Math.min(620, Math.max(180, event.clientX - sidebar.getBoundingClientRect().left));
+            sidebar.style.setProperty("--sidebar-width", `${width}px`);
+        });
+
+        const stopResizingSidebar = () => {
+            if (!isResizingSidebar) return;
+            isResizingSidebar = false;
+            document.body.style.cursor = "";
+            document.body.style.userSelect = "";
+            localStorage.setItem("abnormality-sidebar-width", sidebar.getBoundingClientRect().width);
+        };
+
+        sidebarResizer.addEventListener("pointerup", stopResizingSidebar);
+        sidebarResizer.addEventListener("pointercancel", stopResizingSidebar);
+    }
+
+    const openBtn = document.getElementById("openCreateModalBtn");
+    const modal = document.getElementById("createChoiceModal");
+    const closeBtn = document.getElementById("closeChoiceModal");
+
+    if (openBtn && modal) {
+        openBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            modal.style.display = "flex";
+        });
+    }
+
+    if (closeBtn && modal) {
+        closeBtn.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+    }
+
+    if (modal) {
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    }
+
+    loadAllAbnormalitiesFromFirebase();
+});
+
+var DEFAULT_IMAGE = "https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/placeholder.webp?raw=true";
+
+var dmgIconsMap = {
+    "RED": "https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Red.webp?raw=true",
+    "WHITE": "https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/White.webp?raw=true",
+    "BLACK": "https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Black.webp?raw=true",
+    "PALE": "https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Pale.webp?raw=true"
+};
+
+var dmgColorMap = {
+    "RED": "#FF0000",
+    "WHITE": "#FFFFB5",
+    "BLACK": "#9900FF",
+    "PALE": "#00FFFF"
+};
+
+var riskIconsMap = {
+    "ZAYIN": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Zayin.webp?raw=true" style="width: clamp(24px, 3vw, 48px); height: auto;" alt="ZAYIN">',
+    "TETH": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Teth.webp?raw=true" style="width: clamp(24px, 3vw, 48px); height: auto;" alt="TETH">',
+    "HE": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_He.webp?raw=true" style="width: clamp(24px, 3vw, 48px); height: auto;" alt="HE">',
+    "WAW": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Waw.webp?raw=true" style="width: clamp(24px, 3vw, 48px); height: auto;" alt="WAW">',
+    "ALEPH": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Aleph.webp?raw=true" style="width: clamp(24px, 3vw, 48px); height: auto;" alt="ALEPH">'
+};
+
+function clean(str) {
+    if (!str) return "";
+    return str.replace(/[{}$]/g, '').trim();
+}
+
+async function loadAllAbnormalitiesFromFirebase() {
+    const listContainer = document.getElementById("abnormality-list");
+    if (!listContainer) return;
+    listContainer.innerHTML = "<div style='color: #777; font-size: 11px; padding: 10px;'>Đang tải dữ liệu từ Firebase...</div>";
+
+    try {
+        const querySnapshot = await getDocs(collection(db, "abnormalities"));
+        
+        listContainer.innerHTML = "";
+
+        if (querySnapshot.empty) {
+            listContainer.innerHTML = "<div style='color: #777; font-size: 11px; padding: 10px;'>Chưa có dị thể nào.</div>";
+            return;
+        }
+
+querySnapshot.forEach(docSnap => {
+    const row = docSnap.data();
+    const item = row.data; 
+    if (!item) return;
+
+    const info = item.baseInfo || {};
+    const abvId = info.id || docSnap.id;
+    const abvRisk = (info.risk || "zayin").toLowerCase(); 
+    const abvImage = info.image || DEFAULT_IMAGE;
+    
+    const dataType = row.type || "abnormality";
+
+    const card = document.createElement("div");
+    card.className = `abnormality-card risk-${abvRisk}`;
+    card.dataset.id = normalizeAbnormalityId(abvId);
+    card.dataset.risk = abvRisk;
+    
+    card.innerHTML = `
+        <div class="card-id">${abvId}</div>
+        <img src="${abvImage}" alt="${abvId}" onerror="this.src='${DEFAULT_IMAGE}'">
+    `;
+    
+    card.addEventListener("click", () => {
+        const abnormalityTemplate = document.getElementById("abnormality-detail-template");
+        const toolTemplate = document.getElementById("tool-detail-template");
+        const defaultScreen = document.querySelector(".lob-info-screen");
+
+        if (card.classList.contains("active-card")) {
+            card.classList.remove("active-card");
+            if (abnormalityTemplate) abnormalityTemplate.style.display = "none";
+            if (toolTemplate) toolTemplate.style.display = "none";
+            if (defaultScreen) defaultScreen.style.display = "flex";
+        } else {
+            document.querySelectorAll(".abnormality-card").forEach(c => c.classList.remove("active-card"));
+            card.classList.add("active-card");
+            if (defaultScreen) defaultScreen.style.display = "none";
+            if (dataType === "tool") {
+                if (abnormalityTemplate) abnormalityTemplate.style.display = "none";
+                if (toolTemplate) toolTemplate.style.display = "block";
+                fillDataToToolTemplate(item, abvId);
+            } else {
+                if (toolTemplate) toolTemplate.style.display = "none";
+                if (abnormalityTemplate) abnormalityTemplate.style.display = "block";
+                fillDataToDetailTemplate(item, abvId);
+            }
+        }
+    });
+
+    listContainer.appendChild(card);
+});
+
+        const searchInput = document.getElementById("abnormality-search-input");
+        if (searchInput) filterAbnormalityCards(searchInput.value);
+      
+    } catch (error) {
+        console.error("Lỗi khi tải dữ liệu từ Firebase:", error);
+        listContainer.innerHTML = "<div style='color: #ff1a1a; font-size: 11px; padding: 10px;'>Lỗi kết nối database!</div>";
+    }
+}
+
+function safeSetText(elementId, text) {
+    const el = document.getElementById(elementId);
+    if (el) {
+        el.textContent = text || "";
+    }
+}
+
+function renderAbnormalityDetails(item) {
+    const tipsContainer = document.getElementById("out-management-tips-list");
+    if (tipsContainer) {
+        tipsContainer.innerHTML = "";
+        const tipsArr = item.managementTips || [];
+        
+        if (tipsArr.length === 0) {
+            tipsContainer.innerHTML = `<p class="no-data">Không có hướng dẫn quản lý nào.</p>`;
+        } else {
+            tipsArr.forEach((tipData, index) => {
+                const rawTip = tipData.tip || "";
+                const rawCost = tipData.cost || "";
+                
+                const tipDiv = document.createElement("div");
+                tipDiv.className = "tips-item dynamic-item";
+                tipDiv.innerHTML = `
+                    <div class="tips-header-box">
+                      <span class="tips-title">Managerial Guidelines ${index + 1}</span>
+                      <span class="tips-cost">PE-Boxes <span class="out-tipscost">${parseCustomEmojis(rawCost)}</span></span>
+                    </div>
+                    <div class="tips-text out-tips">${parseCustomEmojis(rawTip)}</div>
+                `;
+                tipsContainer.appendChild(tipDiv);
+            });
+        }
+    }
+
+    const appendixContainer = document.getElementById("out-appendix-container");
+    if (appendixContainer) {
+        appendixContainer.innerHTML = "";
+        const appendixArr = item.appendix || [];
+        
+        appendixArr.forEach((appData, index) => {
+            const rawText = appData.text || appData.content || (typeof appData === 'string' ? appData : "");
+            const appDiv = document.createElement("div");
+            appDiv.className = "appendix-item dynamic-item";
+            appDiv.innerHTML = `
+                <div class="appendix-title">Appendix ${index + 1}</div>
+                <div class="appendix-text">${parseCustomEmojis(rawText)}</div>
+            `;
+            appendixContainer.appendChild(appDiv);
+        });
+    }
+}
+
+function renderToolDetails(item) {
+    const logListContainer = document.getElementById("out-log-list");
+    if (logListContainer) {
+        logListContainer.innerHTML = "";
+        const logsArr = item.logs || [];
+        
+        if (logsArr.length === 0) {
+            logListContainer.innerHTML = `<p class="no-data">Không có nhật ký ghi nhận.</p>`;
+        } else {
+            logsArr.forEach(logData => {
+                const logDiv = document.createElement("div");
+                logDiv.className = "log-item dynamic-item";
+                logDiv.innerHTML = `
+                    <p class="out-log-text">${parseCustomEmojis(logData.text || "")}</p>
+                    <span class="log-time out-log-time">${parseCustomEmojis(logData.time || "")}</span>
+                `;
+                logListContainer.appendChild(logDiv);
+            });
+        }
+    }
+
+    const methodContainer = document.getElementById("out-method-list");
+    if (methodContainer) {
+        methodContainer.innerHTML = "";
+        const methodsArr = item.methods || [];
+        
+        methodsArr.forEach((methodData, index) => {
+            const methodDiv = document.createElement("div");
+            methodDiv.className = "method-item dynamic-item";
+            const textContent = methodData.content || methodData.description || methodData;
+            methodDiv.innerHTML = `
+                <div class="method-title">Method ${index + 1}</div>
+                <div class="method-desc">${parseCustomEmojis(textContent)}</div>
+            `;
+            methodContainer.appendChild(methodDiv);
+        });
+    }
+
+const appendixContainer = document.getElementById("out-tool-appendix-container");
+if (appendixContainer) {
+    appendixContainer.innerHTML = "";
+    const appendixArr = item.appendix || [];
+    
+    appendixArr.forEach((appData, index) => {
+        const rawText = appData.text || appData.content || (typeof appData === 'string' ? appData : "");
+        const appDiv = document.createElement("div");
+        appDiv.className = "appendix-item dynamic-item";
+        appDiv.innerHTML = `
+            <div class="appendix-title">Appendix ${index + 1}</div>
+            <div class="appendix-text">${parseCustomEmojis(rawText)}</div>
+        `;
+        appendixContainer.appendChild(appDiv);
+    });
+}
+}
+
+function fillDataToDetailTemplate(item, abvId) {
+    const defaultScreen = document.querySelector(".lob-info-screen");
+    if (defaultScreen) defaultScreen.style.display = "none";
+
+    const detailTemplate = document.getElementById("abnormality-detail-template");
+    if (detailTemplate) detailTemplate.style.display = "block";
+
+    const info = item.baseInfo || {};
+
+    safeSetText('out-id', info.id);
+    safeSetText('out-name', info.name);
+    
+    const quoteEl = document.getElementById('out-quote');
+    if (quoteEl) {
+        quoteEl.textContent = info.quote ? `"${info.quote}"` : "";
+        quoteEl.style.fontStyle = "italic";
+    }
+
+    const descEl = document.getElementById('out-des');
+    if (descEl) descEl.textContent = info.description || "";
+
+    const detailImg = document.getElementById('out-image');
+    if (detailImg) {
+        detailImg.src = info.image || DEFAULT_IMAGE;
+    }
+
+    const riskImg = document.getElementById('out-risk');
+    if (riskImg) {
+        const type = clean(info.risk).toUpperCase();
+        riskImg.innerHTML = riskIconsMap[type] || info.risk || "";
+    }
+
+    safeSetText('out-work-dmg', info.workDmg || "");
+    
+    const workDmgTypeText = document.getElementById('out-work-dmg-type-text');
+    if (workDmgTypeText) {
+        workDmgTypeText.textContent = info.workDmgType || "";
+        var dmgType = clean(workDmgTypeText.textContent).toUpperCase();
+        var img = document.getElementById("work-dmg-img");
+        var labelEl = document.getElementById("work-dmg-label");
+        if (img && dmgIconsMap[dmgType]) {
+            img.src = dmgIconsMap[dmgType];
+            img.style.display = "inline-block";
+        }
+        if (labelEl && dmgColorMap[dmgType]) {
+            labelEl.textContent = dmgType;
+            labelEl.style.color = dmgColorMap[dmgType];
+        }
+    }
+
+    const workRange = info.workRange || {};
+    safeSetText('out-good', workRange.good || "");
+    safeSetText('out-normal', workRange.normal || "");
+    safeSetText('out-bad', workRange.bad || "");
+    
+    safeSetText('out-max-pe', info.maxPE || "");
+    safeSetText('out-pe-unlock', info.peUnlock || "");
+
+    const obsLevels = item.observationLevels || {};
+    for (let level = 1; level <= 4; level++) {
+        const outputObs = document.getElementById(`out-obs-${level}`);
+        if (outputObs) {
+            const rawVal = obsLevels[`level_${level}`] || "";
+            outputObs.innerHTML = parseCustomEmojis(rawVal);
+            
+            const parentItem = outputObs.closest('.obs-item, .dynamic-obs');
+            if (parentItem) {
+                const cleanTxt = clean(rawVal.trim());
+                parentItem.style.display = (!cleanTxt || rawVal.includes("{$")) ? 'none' : 'block';
+            }
+        }
+    }
+    
+    renderAbnormalityDetails(item);
+
+    const workTypes = ["instinct", "insight", "attachment", "repression"];
+    workTypes.forEach(type => {
+        for (let level = 1; level <= 5; level++) {
+            const outputElement = document.getElementById(`out-${type}-${level}`);
+            if (outputElement && item.workFavour && item.workFavour[type]) {
+                const val = item.workFavour[type][level - 1] || "";
+                outputElement.innerHTML = parseCustomEmojis(val);
+            }
+        }
+    });
+
+    const egoConfig = {
+        weapon: ["grade", "cost", "amount", "damage", "speed", "range", "passive", "require", "name", "image", "des", "obs"],
+        suit:   ["grade", "cost", "amount", "red", "white", "black", "pale", "passive", "require", "name", "image", "des", "obs"],
+        gift:   ["chance", "stats", "passive", "name", "image", "des", "obs"]
+    };
+
+    Object.keys(egoConfig).forEach(type => {
+        egoConfig[type].forEach(prop => {
+            const outputEl = document.getElementById(`out-${type}-${prop}`);
+            const val = (item.egoEquipment && item.egoEquipment[type] && item.egoEquipment[type][prop]) ? String(item.egoEquipment[type][prop]).trim() : "";
+
+            if (outputEl) {
+                if (val === "") {
+                    if (prop === "image") outputEl.src = "";
+                    else outputEl.textContent = "[NO DATA]";
+                } else if (prop === "image") {
+                    outputEl.src = val;
+                } else if (prop === "grade") {
+                    const upperVal = val.toUpperCase();
+                    outputEl.innerHTML = riskIconsMap[upperVal] || val;
+                } else if (["passive", "require", "des", "stats", "damage"].includes(prop)) {
+                    outputEl.innerHTML = parseCustomEmojis(val);
+                } else {
+                    outputEl.textContent = val;
+                }
+            }
+        });
+    });
+
+    const escapeConfig = ["risk", "hp", "qliphoth", "red", "white", "black", "pale", "passive", "skill", "image", "status", "id", "pe"];
+    escapeConfig.forEach(prop => {
+        const outputEl = document.getElementById(`out-escape-${prop}`);
+        const val = (item.escapeInfo && item.escapeInfo[prop]) ? String(item.escapeInfo[prop]).trim() : "";
+
+        if (outputEl) {
+            if (val === "") {
+                if (prop === "image") outputEl.src = "";
+                else outputEl.textContent = "[NO DATA]";
+            } else if (prop === "image") {
+                outputEl.src = val;
+            } else if (prop === "risk") {
+                const upperVal = val.toUpperCase();
+                outputEl.innerHTML = riskIconsMap[upperVal] || val;
+            } else if (["passive", "skill"].includes(prop)) {
+                outputEl.innerHTML = parseCustomEmojis(val);
+            } else {
+                outputEl.textContent = val;
+            }
+        }
+    });
+
+    const authorEl = document.getElementById('abn-credit-author');
+    if (authorEl) {
+        authorEl.textContent = info.author || "Ẩn danh";
+    }
+  
+    const dateEl = document.getElementById('abn-credit-date');
+    if (dateEl) {
+        const rawDate = info.createdAt;
+        
+        if (rawDate) {
+            if (typeof rawDate.toDate === 'function') {
+                const dateObj = rawDate.toDate();
+                
+                const year = dateObj.getFullYear();
+                const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                const day = String(dateObj.getDate()).padStart(2, '0');
+                
+                dateEl.textContent = `${year}.${month}.${day}`;
+            } else {
+                dateEl.textContent = rawDate;
+            }
+        } else {
+            dateEl.textContent = "----.--.--";
+        }
+    }
+
+    loadLoboRating(abvId);
+}
+
+function fillDataToToolTemplate(item, abvId) {
+    const info = item.baseInfo || {};
+    
+    safeSetText('tool-out-id', info.id);
+    safeSetText('tool-out-name', info.name);
+    safeSetText('tool-out-type', info.type);
+    safeSetText('tool-out-des', info.description);
+
+    const quoteEl = document.getElementById('tool-out-quote');
+    if (quoteEl) {
+        quoteEl.textContent = info.quote ? `"${info.quote}"` : "";
+        quoteEl.style.fontStyle = "italic";
+    }
+
+    const detailImg = document.getElementById('tool-out-image');
+    if (detailImg) {
+        detailImg.src = info.image || DEFAULT_IMAGE;
+    }
+
+    const riskImg = document.getElementById('tool-out-risk');
+    if (riskImg) {
+        const type = clean(info.risk).toUpperCase();
+        riskImg.innerHTML = riskIconsMap[type] || info.risk || "";
+    }
+    
+    renderToolDetails(item);
+
+    const authorEl = document.getElementById('tool-credit-author');
+    if (authorEl) {
+        authorEl.textContent = info.author || "Ẩn danh";
+    }
+  
+    const dateEl = document.getElementById('tool-credit-date');
+    if (dateEl) {
+        const rawDate = info.createdAt;
+        
+        if (rawDate) {
+            if (typeof rawDate.toDate === 'function') {
+                const dateObj = rawDate.toDate();
+                
+                const year = dateObj.getFullYear();
+                const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                const day = String(dateObj.getDate()).padStart(2, '0');
+                
+                dateEl.textContent = `${year}.${month}.${day}`;
+            } else {
+                dateEl.textContent = rawDate;
+            }
+        } else {
+            dateEl.textContent = "----.--.--";
+        }
+    }
+
+    loadLoboRating(abvId);
+}
+function parseCustomEmojis(text) {
+    if (!text) return "";
+    let str = typeof text === 'object' ? JSON.stringify(text) : String(text);
+
+    const emojiMap = {
+        ":speedrate:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/speed%20rate.webp?raw=true" class="inline-icon" alt="speed">',
+        ":workrate:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/work%20rate.webp?raw=true" class="inline-icon" alt="work">',
+        ":qliphoth:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Qliphoth.webp?raw=true" class="inline-icon" alt="qliphoth">',
+        ":zayin:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Zayin.webp?raw=true" class="inline-icon" alt="zayin">',
+        ":teth:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Teth.webp?raw=true" class="inline-icon" alt="teth">',
+        ":he:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_He.webp?raw=true" class="inline-icon" alt="he">',
+        ":waw:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Risk_Waw.webp?raw=true" class="inline-icon" alt="waw">',
+        ":aleph:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Aleph.webp?raw=true" class="inline-icon" alt="aleph">',
+        ":fortitude:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Fortitude.webp?raw=true" class="inline-icon" alt="fortitude">',
+        ":prudence:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Prudence.webp?raw=true" class="inline-icon" alt="prudence">',
+        ":temperance:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Temperance.webp?raw=true" class="inline-icon" alt="temperance">',
+        ":justice:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Justice.webp?raw=true" class="inline-icon" alt="justice">',
+        ":red:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Red.webp?raw=true" class="inline-icon" alt="red">',
+        ":white:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/White.webp?raw=true" class="inline-icon" alt="white">',
+        ":black:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Black.webp?raw=true" class="inline-icon" alt="black">',
+        ":pale:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Pale.webp?raw=true" class="inline-icon" alt="pale">',
+        ":hp:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/HP.webp?raw=true" class="inline-icon" alt="hp">',
+        ":sp:": '<img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/SP.webp?raw=true" class="inline-icon" alt="sp">'
+    };
+
+    let parsed = str
+        .replace(/:([a-zA-Z0-9_-]+):/g, (match) => emojiMap[match] || match)
+        .replace(/\[img:\s*(.*?),\s*height:\s*(.*?),\s*width:\s*(.*?)(?:,\s*(left|center|right))?\]/g, (match, src, height, width, align) => {
+            let marginStyle = 'margin: 10px auto;';
+            if (align === 'left') {
+                marginStyle = 'margin: 10px auto 10px 0;';
+            } else if (align === 'right') {
+                marginStyle = 'margin: 10px 0 10px auto;';
+            }
+            return `<img src="${src}" style="display: block; max-width: 100%; height: ${height}; width: ${width}; object-fit: cover; ${marginStyle}" alt="Custom Image">`;
+        })
+        .replace(/\[icon:(.*?)\]/g, '<img src="$1" class="inline-icon" alt="icon" style="width: 1em; height: 1em; vertical-align: -0.15em; margin: 0 3px;">')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/\~\~(.*?)\~\~/g, '<s>$1</s>')
+        .replace(/__(.*?)__/g, '<span style="text-decoration: underline;">$1</span>')
+        .replace(/\[color[=:]\s*([#a-zA-Z0-9]+)\]([\s\S]*?)\[\/color\]/g, '<span style="color: $1;">$2</span>')
+        .replace(/\[size:\s*(.*?)\]([\s\S]*?)\[\/size\]/g, (match, p1, p2) => {
+            let size = p1.trim();
+            if (/^\d+$/.test(size)) {
+                size += 'px';
+            }
+            return `<span style="font-size: ${size};">${p2}</span>`;
+        })
+        .replace(/\[---(?:\s*,\s*color:\s*([^\]]+))?\]/g, (match, color) => {
+            const lineColor = color ? color.trim() : '#e54545';
+            return `<hr style="border: none; height: 1px; background-color: ${lineColor}; margin: 15px 0;">`;
+        })
+        .replace(/\[left\](.*?)\[\/left\]/gs, '<div style="text-align: left;">$1</div>')
+        .replace(/\[center\](.*?)\[\/center\]/gs, '<div style="text-align: center;">$1</div>')
+        .replace(/\[right\](.*?)\[\/right\]/gs, '<div style="text-align: right;">$1</div>')
+        .replace(/\[box\](.*?)\[\/box\]/gs, '<div class="custom-formatting-box">$1</div>')
+        .replace(/\|\|(.*?)\|\|/g, '<span class="discord-spoiler" onclick="this.classList.toggle(\'revealed\')"><span class="spoiler-content">$1</span></span>');
+    
+    parsed = parsed.replace(/\[li\]([\s\S]*?)\[\/li\]/g, (match, innerContent) => {
+        const rawLines = innerContent.split('\n');
+        let htmlResult = '<ul style="color: #ddd; line-height: 1.6; margin-top: 5px; padding-left: 20px; list-style-type: disc;">';
+        let subListOpen = false;
+        rawLines.forEach(line => {
+            const trimmedLine = line.trim();
+            if (trimmedLine.length === 0) return;
+            const isSubItem = trimmedLine.startsWith('-') || trimmedLine.startsWith('o ');
+            const cleanedText = trimmedLine.replace(/^(?:-\s*|o\s*)/, '').trim();
+            if (isSubItem) {
+                if (!subListOpen) {
+                    htmlResult += '<ul style="list-style-type: circle; margin-top: 3px; padding-left: 20px;">';
+                    subListOpen = true;
+                }
+                htmlResult += `<li>${cleanedText}</li>`;
+            } else {
+                if (subListOpen) {
+                    htmlResult += '</ul>';
+                    subListOpen = false;
+                }
+                htmlResult += `<li>${cleanedText}</li>`;
+            }
+        });
+        if (subListOpen) {
+            htmlResult += '</ul>';
+        }
+        htmlResult += '</ul>';
+        return htmlResult;
+    });
+
+    parsed = parsed.replace(/\[num\]([\s\S]*?)\[\/num\]/g, (match, innerContent) => {
+        const lines = innerContent.split('\n')
+                                  .map(line => line.trim())
+                                  .filter(line => line.length > 0);
+        return '<ol style="color: #ddd; line-height: 1.6; margin-top: 5px; padding-left: 20px;">' + 
+               lines.map(line => `<li>${line}</li>`).join('') + 
+               '</ol>';
+    });
+
+    let previousText;
+    do {
+        previousText = parsed;
+        parsed = parsed.replace(/\[fold:\s*([^\]]+)\](((?!\[fold:|\[\/fold\])[\s\S])*?)\[\/fold\]/g, (match, title, content) => {
+            return `<div class="lobo-fold-container"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner">${content.trim()}</div></div></div>`;
+        });
+    } while (parsed !== previousText);
+    
+    parsed = parsed.replace(/\[load\]([\s\S]*?)\[\/load\]/gi, (match, content) => {
+        const rawLines = content.split('\n')
+          .map(line => line.trim())
+        .filter(line => line.length > 0);
+        
+        const encodedLines = encodeURIComponent(JSON.stringify(rawLines));
+        const firstLine = rawLines[0] || "";
+        const masked = firstLine.replace(/./g, '*');
+        
+        return `<span class="load" data-lines="${encodedLines}" data-encoded="true">${masked}</span>`;
+    });
+
+    return parsed;
+}
+
+window.toggleLoboFold = function(headerElement) {
+    const foldContainer = headerElement.closest('.lobo-fold-container');
+    const iconSpan = headerElement.querySelector('.lobo-fold-toggle-icon');
+    const contentDiv = foldContainer.querySelector(':scope > .lobo-fold-content');
+    const isOpen = foldContainer.classList.toggle('open');
+    
+    if (isOpen) {
+        contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
+    } else {
+        contentDiv.style.maxHeight = '0px';
+    }
+
+    iconSpan.classList.add('rotate');
+    setTimeout(() => {
+        if (isOpen) {
+            iconSpan.textContent = '-';
+        } else {
+            iconSpan.textContent = '+';
+        }
+    }, 75);
+    setTimeout(() => {
+        iconSpan.classList.remove('rotate');
+    }, 150);
+};
+
+(function initScrollIndicators() {
+  const SELECTORS = '.appendix-container, .tips-container, .Description-Content, .obs-container';
+  function attachScrollListener(box) {
+    if (box.dataset.hasScrollListener) return;
+    box.dataset.hasScrollListener = "true";
+    const checkScroll = () => {
+      const wrapper = box.closest('.appendix-wrapper, .tips-wrapper, .obs-container-wrapper') || box.parentElement; 
+      if (!wrapper) return;
+      if (box.scrollTop <= 5) {
+        wrapper.classList.add('hide-top-arrow');
+      } else {
+        wrapper.classList.remove('hide-top-arrow');
+      }
+      const isAtBottom = box.scrollHeight - box.scrollTop <= box.clientHeight + 25;
+      if (isAtBottom) {
+        wrapper.classList.add('hide-arrow');
+      } else {
+        wrapper.classList.remove('hide-arrow');
+      }
+    };
+    checkScroll();
+    box.addEventListener('scroll', checkScroll);
+  }
+  function scanAndApply() {
+    document.querySelectorAll(SELECTORS).forEach(attachScrollListener);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scanAndApply);
+  } else {
+    scanAndApply();
+  }
+  const observer = new MutationObserver(() => scanAndApply());
+  observer.observe(document.body, { childList: true, subtree: true });
+})();
+
+function openModalById(modalId) {
+    document.querySelectorAll('.Overlay-Modal').forEach(m => {
+        m.classList.remove('active', 'closing');
+    });
+
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('closing');
+        modal.classList.add('active');
+    }
+}
+
+document.querySelectorAll('.sidebar-menu .skeleton').forEach(label => {
+    label.addEventListener('click', () => {
+        const modalId = label.getAttribute('data-modal');
+        if (modalId) {
+            openModalById(modalId);
+        }
+    });
+});
+document.addEventListener('click', function(e) {
+    const leaveBtn = e.target.closest('.Btn-Leave-Corner');
+    if (leaveBtn) {
+        if (leaveBtn.id === 'closeChoiceModal') return; 
+
+        e.preventDefault();
+        const modal = leaveBtn.closest('.Overlay-Modal');
+        if (modal) {
+            closeModalWithAnimation(modal);
+        }
+    }
+});
+
+function closeModalWithAnimation(modal) {
+    modal.classList.remove('active');
+    modal.classList.add('closing');
+    setTimeout(() => {
+        modal.classList.remove('closing');
+    }, 350);
+}
+
+window.openModal = function(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('closing');
+        modal.classList.add('active');
+        modal.classList.add('open'); 
+    }
+};
+
+window.closeModal = function(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('active', 'open');
+        modal.classList.add('closing');
+        setTimeout(() => {
+            modal.classList.remove('closing');
+        }, 350);
+    }
+};
+
+window.togglePanel = function(panelId) {
+    let panelBorder = document.getElementById(panelId);
+    if (panelBorder) {
+        panelBorder.classList.toggle('active');
+    }
+};
+
+const scoreElement = document.getElementById('lobo-current-score');
+const btnUp = document.getElementById('btn-vote-up');
+const btnDown = document.getElementById('btn-vote-down');
+
+let clientId = localStorage.getItem("lobo_client_id");
+if (!clientId) {
+    clientId = 'client_' + Math.random().toString(36).substring(2) + Date.now();
+    localStorage.setItem("lobo_client_id", clientId);
+}
+
+let currentScore = 0;
+let userVote = null;
+
+function getRatingElements() {
+    const toolTemplate = document.getElementById("tool-detail-template");
+    const isTool = toolTemplate && window.getComputedStyle(toolTemplate).display === "block";
+    const suffix = isTool ? "-tool" : "-abn";
+    
+    return {
+        scoreElement: document.getElementById(`lobo-current-score${suffix}`),
+        btnUp: document.getElementById(`btn-vote-up${suffix}`),
+        btnDown: document.getElementById(`btn-vote-down${suffix}`)
+    };
+}
+
+function updateScoreUI() {
+    const { scoreElement, btnUp, btnDown } = getRatingElements();
+    if (!scoreElement) return;
+    
+    scoreElement.innerText = (currentScore > 0 ? '+' : '') + currentScore;
+
+    if (currentScore > 0) {
+        scoreElement.className = 'rating-score lobo-score-positive';
+    } else if (currentScore < 0) {
+        scoreElement.className = 'rating-score lobo-score-negative';
+    } else {
+        scoreElement.className = 'rating-score lobo-score-zero';
+    }
+
+    if (btnUp && btnDown) {
+        btnUp.classList.remove('active-up');
+        btnDown.classList.remove('active-down');
+
+        if (userVote === 'up') {
+            btnUp.classList.add('active-up');
+        } else if (userVote === 'down') {
+            btnDown.classList.add('active-down');
+        }
+    }
+}
+
+async function loadLoboRating(itemKey) {
+    if (!itemKey || typeof itemKey === 'object') {
+        console.error("Mã định danh (itemKey) không hợp lệ:", itemKey);
+        return;
+    }
+
+    if (typeof db === 'undefined' || !db) {
+        console.error("Firebase chưa sẵn sàng!");
+        return;
+    }
+    
+    const docRef = doc(db, "abnormalities", itemKey);
+    
+    const { btnUp, btnDown } = getRatingElements();
+    if (btnUp && btnDown) {
+        btnUp.setAttribute('onclick', `voteLobo('up', '${itemKey}')`);
+        btnDown.setAttribute('onclick', `voteLobo('down', '${itemKey}')`);
+    }
+    
+    userVote = localStorage.getItem(`lobo_vote_${itemKey}`) || null;
+
+    try {
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            currentScore = data.score || 0;
+            
+            const votedUsersMap = data.votedUsers || {};
+            if (votedUsersMap[clientId]) {
+                userVote = votedUsersMap[clientId];
+            }
+        } else {
+            currentScore = 0;
+            userVote = null;
+        }
+        updateScoreUI();
+    } catch (error) {
+        console.error("Lỗi tải thông tin vote: ", error);
+    }
+}
+
+async function voteLobo(type, itemKey) {
+    if (typeof db === 'undefined' || !db) return;
+    const docRef = doc(db, "abnormalities", itemKey);
+    
+    if (type === 'up') {
+        if (userVote === 'up') {
+            currentScore -= 1;
+            userVote = null;
+        } else if (userVote === 'down') {
+            currentScore += 2;
+            userVote = 'up';
+        } else {
+            currentScore += 1;
+            userVote = 'up';
+        }
+    } else if (type === 'down') {
+        if (userVote === 'down') {
+            currentScore += 1;
+            userVote = null;
+        } else if (userVote === 'up') {
+            currentScore -= 2;
+            userVote = 'down';
+        } else {
+            currentScore -= 1;
+            userVote = 'down';
+        }
+    }
+
+    if (userVote) {
+        localStorage.setItem(`lobo_vote_${itemKey}`, userVote);
+    } else {
+        localStorage.removeItem(`lobo_vote_${itemKey}`);
+    }
+
+    updateScoreUI();
+
+    try {
+
+        const docSnap = await getDoc(docRef);
+        let votedUsersMap = {};
+        if (docSnap.exists()) {
+            votedUsersMap = docSnap.data().votedUsers || {};
+        }
+
+        if (userVote === null) {
+            delete votedUsersMap[clientId];
+        } else {
+            votedUsersMap[clientId] = userVote;
+        }
+
+        await updateDoc(docRef, {
+            score: currentScore,
+            votedUsers: votedUsersMap
+        });
+    } catch (error) {
+        console.error("Lỗi cập nhật vote lên Firebase: ", error);
+    }
+}
+
+window.loadLoboRating = loadLoboRating;
+window.voteLobo = voteLobo;
+
+document.addEventListener('click', function(e) {
+    const loadBox = e.target.closest('.load');
+    if (!loadBox) return;
+    
+    if (loadBox.dataset.animating === 'true' || loadBox.classList.contains('active')) return;
+    
+    let lines;
+    try {
+        const encodedData = loadBox.dataset.lines;
+        lines = JSON.parse(decodeURIComponent(encodedData));
+    } catch (err) {
+        return;
+    }
+
+    if (!lines || lines.length === 0) return;
+
+    loadBox.dataset.animating = 'true';
+    loadBox.classList.add('active');
+    
+    let currentLineIndex = 0;
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789*#@$%&";
+    
+    function playRandomSequence() {
+        let currentAudio = null;
+        let isStopped = false;
+        let nextFileIndex = 0; 
+
+        function playNext() {
+            if (isStopped) return;
+            
+            currentAudio = new Audio(rollAudioFiles[nextFileIndex]);
+            currentAudio.play().catch(() => {});
+            
+            currentAudio.onended = function() {
+                if (isStopped) return;
+                
+                if (nextFileIndex === 0) {
+                
+                    if (Math.random() < 0.45) {
+                        nextFileIndex = 1;
+                    } else {
+                        nextFileIndex = 0;
+                    }
+                } else {
+                
+                    if (Math.random() < 0.25) {
+                        nextFileIndex = 1;
+                    } else {
+                        nextFileIndex = 0;
+                    }
+                }
+                
+                playNext();
+            };
+        }
+
+        playNext();
+
+        return {
+            stop: function() {
+                isStopped = true;
+                if (currentAudio) {
+                    currentAudio.pause();
+                    currentAudio.currentTime = 0;
+                }
+            }
+        };
+    }
+
+    function playWaitSound() {
+        const audio = new Audio(rollAudioFiles[1]);
+        audio.loop = true;
+        audio.play().catch(() => {});
+        return audio;
+    }
+
+    let activeSoundSeq = playRandomSequence();
+
+    function playLineAnimation(lineText, onLineFinished) {
+        let currentIndex = 0;
+        const totalChars = lineText.length;
+        let currentArray = lineText.split('').map(char => char === ' ' ? ' ' : chars.charAt(Math.floor(Math.random() * chars.length)));
+        loadBox.textContent = currentArray.join('');
+
+        const interval = setInterval(() => {
+            if (currentIndex < totalChars) {
+                if (lineText[currentIndex] === ' ') {
+                    currentArray[currentIndex] = ' ';
+                } else {
+                    currentArray[currentIndex] = lineText[currentIndex];
+                }
+                
+                for (let i = currentIndex + 1; i < totalChars; i++) {
+                    if (lineText[i] !== ' ') {
+                        currentArray[i] = chars.charAt(Math.floor(Math.random() * chars.length));
+                    }
+                }
+                loadBox.textContent = currentArray.join('');
+                currentIndex++;
+            } else {
+                clearInterval(interval);
+                loadBox.textContent = lineText;
+                if (typeof onLineFinished === 'function') onLineFinished();
+            }
+        }, 50);
+    }
+
+    function processNextLine() {
+        if (currentLineIndex < lines.length) {
+            playLineAnimation(lines[currentLineIndex], function() {
+                currentLineIndex++;
+                
+                if (currentLineIndex < lines.length) {
+                    if (activeSoundSeq) {
+                        activeSoundSeq.stop();
+                    }
+
+                    let activeWaitSound = playWaitSound();
+                    
+                    setTimeout(() => {
+                        if (activeWaitSound) {
+                            activeWaitSound.pause();
+                            activeWaitSound.currentTime = 0;
+                            activeWaitSound = null;
+                        }
+
+                        activeSoundSeq = playRandomSequence();
+                        processNextLine();
+                    }, 2000); 
+
+                } else {
+                    if (activeSoundSeq) {
+                        activeSoundSeq.stop();
+                    }
+                    loadBox.classList.add('revealed');
+                    loadBox.classList.remove('active');
+                    loadBox.dataset.animating = 'false';
+                }
+            });
+        }
+    }
+
+    processNextLine();
+});

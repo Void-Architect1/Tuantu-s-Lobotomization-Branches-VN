@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read - Tuantu's Lobotomization Branches VN</title>
+    <link rel="stylesheet" href="read.css">
+    <link rel="stylesheet" href="write.css">
+    <link rel="stylesheet" href="loading-screen.css">
+    <link rel="icon" type="image/png" href="TLB.VN.png">
+</head>
+<body>
+<div id="intro-splash" class="loading-screen">
+    <div class="loading-content">
+        <div class="loading-brand">
+            <img src="TLB.VN.png" class="loading-logo" alt="Logo">
+            <div class="loading-title-box">
+                <span class="loading-title"><span style="font-size: 1.6rem;">T</span>UANTU'S <span style="font-size: 1.6rem;">L</span>OBOTOMIZATION <span style="font-size: 1.6rem;">B</span>RANCHES <span style="font-size: 1.6rem;">VN</span></span>
+<br><span class="loading-subtitle">FACE THE TEMPLATE, MAKE THE ABNORMALITY</span>
+            </div>
+        </div>
+        <div class="loading-sub">Đang thiết lập kết nối bảo mật...</div>
+    </div>
+</div>
+<div class="lobotomy-ui">
+    <div class="lob-left-panel">
+            <button type="button" class="sidebar-toggle" id="sidebar-toggle" aria-label="Thu hoặc mở danh sách" aria-expanded="true">‹</button>
+      <div class="sidebar-resizer" id="sidebar-resizer" aria-hidden="true"></div>
+        <div class="lob-header">
+            <img src="TLB.VN.png" alt="Logo" class="lob-logo-img">
+            <div class="lob-title">THE ABNORMALITY ENCYCLOPEDIA</div>
+        </div>
+        <div class="lob-dissolution">
+            <div class="lob-diss-label">DATABASE</div>
+        </div>
+        <label class="abnormality-search" for="abnormality-search-input">
+                    <span>SEARCH ARTICLES</span>
+                    <div class="search-input-shell">
+                        <span class="search-icon" aria-hidden="true">⌕</span>
+                        <input type="search" id="abnormality-search-input" placeholder="ID, tiêu đề hoặc category..." autocomplete="off">
+                        <button type="button" class="search-clear" id="search-clear" aria-label="Xóa tìm kiếm">×</button>
+                    </div>
+        </label>
+        <div class="Abnormality-List-Container" id="abnormality-list">
+        </div>
+        <a href="javascript:void(0);" id="openCreateModalBtn" class="lob-create-btn">
+            <span>+ THÊM BÀI VIẾT</span>
+        </a>
+    </div>
+
+    <div class="hide-scrollbar" style="flex: 1; padding: 20px 20px 3px 20px; overflow-y: auto; position: relative;">
+        
+        <div class="lob-info-screen">Để bắt đầu hãy chọn một bài viết để đọc.</div>
+<div class="document-container">
+  <div class="header-banner">
+      <div class="header-logo-box">
+          <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/TLB.VN.png?raw=true" class="logo">
+      </div>
+      <div class="header-text-box">
+          <div class="header-subtitle">Classified by authority of the</div>
+          <div class="header-title">R<span style="font-size: 1.5rem">ECORD</span> D<span style="font-size: 1.5rem">EPARTMENT</span></div>
+      </div>
+  </div>
+
+  <div class="object-info-section">
+      <div class="item-bar">
+          <div class="item-number">ID:<p id="out-id"></p></div>
+          
+          <div class="stripe-decoration">
+              <div class="stripe"></div>
+              <div class="stripe"></div>
+              <div class="stripe"></div>
+              <div class="stripe"></div>
+              <div class="stripe"></div>
+          </div>
+
+          <div class="item-level-box">
+              <span class="lvl-sub">ACCESS LEVEL:</span><span class="lvl-text" id="out-level"></span>
+          </div>
+      </div>
+      
+      <div class="section-divider"></div>
+
+      <div class="containment-box keter-theme">
+          <div class="class-side-strip"></div>
+          <div class="class-text-content">
+              <span class="class-label">CATEGORY:</span>
+              <span class="class-value" id="out-category"></span>
+          </div>
+          <div class="class-icon-box">
+              <img src="" id="out-icon" alt="Icon" class="icon">
+              <img src="https://github.com/Void-Architect1/Tuantu-s-Lobotomization-Branches-VN/blob/main/Warn2.webp?raw=true" class="icon-background">
+          </div>
+      </div>
+      
+      <div class="section-divider"></div>
+      
+      <div class="title-container">
+        <span class="title-content" id="out-title"></span>
+      </div>
+      <div class="containment-content">
+        <p id="out-write"></p>
+      </div>
+  </div>
+</div>
+<div class="credit">
+    <span>AUTHOR: <span id="out-credit-author" style="color: #ff9441;"></span></span>
+    <span class="credit-divider">|</span>
+    <span>DATE: <span id="abn-credit-date"></span></span>
+</div>
+
+    </div>
+
+    <a href="index.html" class="Btn-Home-Corner" target="_top">
+        <span>CLOSE</span>
+    </a>
+</div>
+
+<div id="createChoiceModal" class="lob-modal-overlay">
+    <div class="lob-modal-box">
+        <a href="javascript:void(0);" id="closeChoiceModal" class="Btn-Leave-Corner modal-close-corner">
+            <span>CLOSE</span>
+        </a>
+        <div class="lob-modal-title">TẠO BÀI VIẾT</div>
+        <div class="lob-modal-options">
+            <a href="write.html" class="lob-modal-option-btn" target="_top">+ Write</a>
+        </div>
+    </div>
+</div>
+<script type="module" src="read.js"></script>
+</body>
+</html>

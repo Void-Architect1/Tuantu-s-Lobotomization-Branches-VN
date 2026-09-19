@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Cabin:wght@600;700&display=swap');
+@font-face {
+    font-family: 'Railway';
+    src: url('Railway.woff2') format('woff2'),
+         url('Railway.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+body {
+    background-color: #0d0d0d;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;
+}
+
+html, body {
+    scrollbar-width: none;
+}
+
+#container, #main-content, #page-container {
+    background: transparent !important;
+}
+
+.main-ui-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.ui-background {
+    width: 100%;
+    height: auto;
+    display: block;
+    pointer-events: none;
+}
+
+.sidebar-menu {
+    position: absolute;
+    top: 65%;
+    left: 13%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8vw;
+    z-index: 10;
+    transform: rotate(8deg);
+}
+
+.button-skeleton {
+    position: relative;
+    width: 13vw;
+    max-width: 220px;
+    min-width: 90px;
+    height: 2.6vw;
+    max-height: 40px;
+    min-height: 22px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+}
+
+.button-inner {
+    color: #000000;
+    font-family: 'Railway', sans-serif !important;
+    font-size: clamp(8px, 1vw, 16px);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+}
+
+.button-skeleton:hover {
+    transform: translateY(-3px);
+    background-color: #e54545;
+    border: 1px solid #ff6b6b;
+    box-shadow: 0 0 10px rgba(229, 69, 69, 0.8);
+}
+
+.button-skeleton:hover .button-inner {
+    color: #ffffff;
+}
+
+.discord-float {
+    position: absolute;
+    right: 3.5%;
+    bottom: 4%;
+    z-index: 50;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 56px;
+    height: 56px;
+    box-sizing: border-box;
+    overflow: visible;
+    color: #ffffff;
+    background: #5865f2;
+    border: 2px solid #aeb5ff;
+    border-radius: 8px;
+    box-shadow: 0 0 14px rgba(88, 101, 242, 0.65);
+    text-decoration: none;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.discord-float:hover,
+.discord-float:focus-visible {
+    background: #4752c4;
+    box-shadow: 0 0 20px rgba(88, 101, 242, 0.9);
+}
+
+.discord-label {
+    position: absolute;
+    top: 2px;
+    right: calc(100% - 2px);
+    z-index: -1;
+    display: flex;
+    align-items: center;
+    width: 138px;
+    height: 52px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    color: #ffffff;
+    background: #5865f2;
+    border: 2px solid #aeb5ff;
+    border-right: 0;
+    border-radius: 8px 0 0 8px;
+    font-family: 'Railway', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    pointer-events: none;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 0.3s ease;
+}
+
+.discord-float:hover .discord-label,
+.discord-float:focus-visible .discord-label {
+    pointer-events: auto;
+    transform: scaleX(1);
+}
+
+.discord-icon-wrap {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    flex: 0 0 52px;
+    width: 52px;
+    height: 52px;
+    place-items: center;
+}
+
+.discord-icon-wrap img {
+    display: block;
+    width: 27px;
+    height: 27px;
+    opacity: 1;
+    object-fit: contain;
+}
+
+@media screen and (max-width: 600px) {
+    .discord-float {
+        right: 3%;
+        bottom: 3%;
+        width: 50px;
+        height: 50px;
+    }
+
+    .discord-icon-wrap {
+        flex-basis: 46px;
+        width: 46px;
+        height: 46px;
+    }
+
+    .discord-label {
+        top: 2px;
+        height: 46px;
+    }
+}

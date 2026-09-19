@@ -555,7 +555,7 @@ button:hover { background: #c9302c; }
 }
 
 .credit {
-    position: absolute;
+    position: relative;
     bottom: 3px;
     left: 20px;
     font-family: monospace;

@@ -278,6 +278,10 @@ window.toggleLoboFold = function(headerElement) {
             videoEl.pause();
             videoEl.currentTime = 0;
         }
+		const musicSrc = foldContainer.dataset.music;
+        if (musicSrc && currentMusicSrc === musicSrc) {
+            playFoldMusic(null);
+        }
     } else {
         foldContainer.classList.add('open');
         contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';

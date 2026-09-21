@@ -286,6 +286,7 @@ window.toggleLoboFold = function(headerElement) {
         foldContainer.classList.add('open');
         contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
 
+		headerElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
         const videoSrc = foldContainer.dataset.video;
         const musicSrc = foldContainer.dataset.music;
         const videoEl = foldContainer.querySelector('video');

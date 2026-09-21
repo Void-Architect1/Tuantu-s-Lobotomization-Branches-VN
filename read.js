@@ -323,10 +323,6 @@ window.toggleLoboFold = function(headerElement) {
                 otherVideo.pause();
                 otherVideo.currentTime = 0;
 			}
-			if (currentFoldAudio) {
-                currentFoldAudio.pause();
-                currentFoldAudio = null;
-            }
         }
     });
     if (isCurrentlyOpen) {
@@ -337,10 +333,6 @@ window.toggleLoboFold = function(headerElement) {
         if (videoEl) {
             videoEl.pause();
             videoEl.currentTime = 0;
-        }
-        if (currentFoldAudio) {
-            currentFoldAudio.pause();
-            currentFoldAudio = null;
         }
     } else {
         foldContainer.classList.add('open');
@@ -408,12 +400,24 @@ window.openFullscreenVideo = function(videoEl, onVideoEnded) {
 };
 
 function playFoldMusic(musicSrc) {
-    if (!musicSrc) return;
+    if (!musicSrc) {
+        if (currentFoldAudio) { currentFoldAudio.pause(); currentFoldAudio = null; currentMusicSrc = ""; }
+        return;
+    }
+
+    if (currentFoldAudio && currentMusicSrc === musicSrc) {
+        return; 
+    }
+
     if (currentFoldAudio) {
         currentFoldAudio.pause();
         currentFoldAudio = null;
     }
+
+    currentMusicSrc = musicSrc;
     currentFoldAudio = new Audio(musicSrc);
     currentFoldAudio.loop = true;
-    currentFoldAudio.play().catch(() => {});
+    currentFoldAudio.play().catch((err) => {
+        console.log("Không thể tự động phát nhạc do chính sách trình duyệt:", err);
+    });
 }

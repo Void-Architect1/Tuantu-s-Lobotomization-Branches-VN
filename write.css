@@ -585,28 +585,24 @@ button:hover { background: #c9302c; }
     animation: fadeInModal 0.3s forwards;
 }
 
-.lobo-video-modal video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 0; 
-    box-shadow: none;
-}
-.lobo-video-modal-close {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    color: #fff;
-    font-size: 2rem;
-    font-weight: bold;
-    cursor: pointer;
-    background: none;
-    border: none;
-    z-index: 100000;
-    padding: 5px 15px;
-    border-radius: 4px;
+.lobo-video-modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: #000;
+    z-index: 99999;
+    opacity: 1;
+    transition: opacity 1s ease-out; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-@keyframes fadeInModal {
-    to { opacity: 1; }
+.lobo-video-modal video {
+    width: 100%; height: 100%;
+    object-fit: cover;
+}
+
+.lobo-video-modal.fade-out {
+    opacity: 0;
 }

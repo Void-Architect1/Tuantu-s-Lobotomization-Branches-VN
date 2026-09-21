@@ -130,7 +130,7 @@ do {
 
         let videoHtml = '';
         if (cleanVideoSrc !== '') {
-            videoHtml = `<div class="fold-popup-video" style="margin-top:10px;"><video src="${cleanVideoSrc}" playsinline onended="handleVideoEnded(this)" style="width:100%; border-radius:8px;"></video></div>`;
+            videoHtml = `<div class="fold-popup-video" style="margin-top:10px;"><video src="${cleanVideoSrc}" playsinline onclick="openFullscreenVideo(this)" style="width:100%; border-radius:8px; cursor:pointer;"></video></div>`;
         }
 
         return `<div class="lobo-fold-container" id="${uniqueId}"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner">${content.trim()}${videoHtml}</div></div></div>`;
@@ -255,9 +255,7 @@ window.toggleLoboFold = function(headerElement) {
         
         if (videoEl) {
             videoEl.currentTime = 0;
-            videoEl.play().catch(err => {
-                console.log("Không thể tự phát video:", err);
-            });
+            openFullscreenVideo(videoEl);
         }
     } else {
         contentDiv.style.maxHeight = '0px';
@@ -277,15 +275,32 @@ window.toggleLoboFold = function(headerElement) {
     }, 150);
 };
 
-window.handleVideoEnded = function(videoEl) {
-    const foldContainer = videoEl.closest('.lobo-fold-container');
-    if (!foldContainer) return;
-    videoEl.pause();
-    
-    const videoWrapper = videoEl.closest('.fold-popup-video');
-    if (videoWrapper) {
-        videoWrapper.style.opacity = '0.9';
-    }
+window.openFullscreenVideo = function(videoEl) {
+    if (document.querySelector('.lobo-video-modal')) return;
+
+    const modal = document.createElement('div');
+    modal.className = 'lobo-video-modal';
+
+    const bigVideo = document.createElement('video');
+    bigVideo.src = videoEl.src;
+    bigVideo.autoplay = true;
+    bigVideo.playsInline = true;
+
+    modal.appendChild(bigVideo);
+    document.body.appendChild(modal);
+
+    const closeModal = () => {
+        bigVideo.pause();
+        modal.remove();
+    };
+    bigVideo.addEventListener('ended', () => {
+        closeModal();
+    });
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
 };
 
 function updatePreview() {

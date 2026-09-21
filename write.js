@@ -127,15 +127,26 @@ do {
         foldIndex++;
         const uniqueId = `lobo-fold-${foldIndex}`;
         const cleanVideoSrc = videoSrc ? videoSrc.trim() : '';
+        
+        let videoHtml = '';
+        if (cleanVideoSrc) {
+            videoHtml = `<div class="fold-popup-video" style="margin-top:10px;">
+                <video src="${cleanVideoSrc}" autoplay muted playsinline style="width:100%; border-radius:8px;"></video>
+            </div>`;
+        }
+
         return `<div class="lobo-fold-container" id="${uniqueId}">
-                    <div class="lobo-fold-header" onclick="toggleLoboFold(this)" data-video="${cleanVideoSrc}">
+                    <div class="lobo-fold-header" onclick="toggleLoboFold(this)">
                         <span class="lobo-fold-toggle-icon">+</span>
                         <span class="lobo-fold-title">${title.trim()}</span>
                     </div>
                     <div class="lobo-fold-content">
-                        <div class="lobo-fold-inner">${content.trim()}</div>
+                        <div class="lobo-fold-inner">
+                            ${content.trim()}
+                            ${videoHtml}
+                        </div>
                     </div>
-                 </div>`;
+               </div>`;
     });
 } while (parsed !== previousText);
     
@@ -246,8 +257,6 @@ window.addEventListener("DOMContentLoaded", function() {
 
 window.toggleLoboFold = function(headerElement) {
     const foldContainer = headerElement.closest('.lobo-fold-container');
-    const videoSrc = headerElement.dataset.video;
-    
     const iconSpan = headerElement.querySelector('.lobo-fold-toggle-icon');
     const contentDiv = foldContainer.querySelector(':scope > .lobo-fold-content');
     const isOpen = foldContainer.classList.toggle('open');
@@ -255,15 +264,21 @@ window.toggleLoboFold = function(headerElement) {
     if (isOpen) {
         contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
         
-        if (videoSrc) {
-            playFoldVideo(videoSrc, foldContainer);
+        const videoEl = foldContainer.querySelector('video');
+        if (videoEl) {
+            videoEl.currentTime = 0;
+            videoEl.muted = false;
+            videoEl.play().catch(err => {
+                console.log("Vẫn bị chặn, thử fallback về muted:", err);
+                videoEl.muted = true;
+                videoEl.play();
+            });
         }
     } else {
         contentDiv.style.maxHeight = '0px';
-        
-        const existingVideo = foldContainer.querySelector('.fold-popup-video');
-        if (existingVideo) {
-            existingVideo.remove();
+        const videoEl = foldContainer.querySelector('video');
+        if (videoEl) {
+            videoEl.pause();
         }
     }
 
@@ -275,19 +290,6 @@ window.toggleLoboFold = function(headerElement) {
         iconSpan.classList.remove('rotate');
     }, 150);
 };
-
-function playFoldVideo(src, container) {
-    let videoWrapper = container.querySelector('.fold-popup-video');
-    if (!videoWrapper) {
-        videoWrapper = document.createElement('div');
-        videoWrapper.className = 'fold-popup-video';
-        videoWrapper.innerHTML = `<video src="${src}" controls autoplay style="width:100%; margin-top:10px; border-radius:8px;"></video>`;
-        container.querySelector('.lobo-fold-inner').appendChild(videoWrapper);
-    }
-    
-    const videoEl = videoWrapper.querySelector('video');
-    videoEl.play().catch(err => console.log("Trình duyệt chặn autoplay video của fold:", err));
-}
 
 function updatePreview() {
     const docId = document.getElementById('in-id').value;

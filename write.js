@@ -294,12 +294,12 @@ window.openFullscreenVideo = function(videoEl) {
     };
     bigVideo.addEventListener('ended', () => {
         modal.classList.add('fade-out');
-        setTimeout(removeModalFn, 1000); 
+        setTimeout(removeModalFn, 400); 
     });
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.classList.add('fade-out');
-            setTimeout(removeModalFn, 1000);
+            setTimeout(removeModalFn, 400);
             
             bigVideo.pause();
         }

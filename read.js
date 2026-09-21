@@ -77,7 +77,24 @@ function parseCustomEmojis(text) {
 
 	parsed = parsed.replace(/\[li\]([\s\S]*?)\[\/li\]/g, (match, content) => `<ul style="color:#ddd;line-height:1.6;margin-top:5px;padding-left:20px;list-style-type:disc;">${content.split("\n").filter(line => line.trim()).map(line => `<li>${line.trim().replace(/^(?:-\s*|o\s*)/, "")}</li>`).join("")}</ul>`);
 	parsed = parsed.replace(/\[num\]([\s\S]*?)\[\/num\]/g, (match, content) => `<ol style="color:#ddd;line-height:1.6;margin-top:5px;padding-left:20px;">${content.split("\n").filter(line => line.trim()).map(line => `<li>${line.trim()}</li>`).join("")}</ol>`);
-	parsed = parsed.replace(/\[fold:\s*([^\]]+)\]([\s\S]*?)\[\/fold\]/g, (match, title, content) => `<div class="lobo-fold-container"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner">${content.trim()}</div></div></div>`);
+let previousText;
+let foldIndex = 0;
+
+do {
+    previousText = parsed;
+    parsed = parsed.replace(/\[fold:\s*([^\]|]+)(?:\s*\|\s*video="([^"]*)")?\](((?!\[fold:|\[\/fold\])[\s\S])*?)\[\/fold\]/g, (match, title, videoSrc, content) => {
+        foldIndex++;
+        const uniqueId = `lobo-fold-${foldIndex}`;
+        const cleanVideoSrc = videoSrc ? videoSrc.trim().replace(/['"]+/g, '') : '';
+
+        let videoHtml = '';
+        if (cleanVideoSrc !== '') {
+            videoHtml = `<div class="fold-popup-video" style="margin-top:10px;"><video src="${cleanVideoSrc}" playsinline onclick="openFullscreenVideo(this)" style="width:100%; border-radius:8px; cursor:pointer;"></video></div>`;
+        }
+
+        return `<div class="lobo-fold-container" id="${uniqueId}"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner">${content.trim()}${videoHtml}</div></div></div>`;
+    });
+} while (parsed !== previousText);
 	parsed = parsed.replace(/\[load\]([\s\S]*?)\[\/load\]/gi, (match, content) => {
 		const rawLines = content.split("\n").map(line => line.trim()).filter(line => line.length > 0);
 		const encodedLines = encodeURIComponent(JSON.stringify(rawLines));
@@ -252,20 +269,61 @@ window.toggleLoboFold = function(headerElement) {
     const iconSpan = headerElement.querySelector('.lobo-fold-toggle-icon');
     const contentDiv = foldContainer.querySelector(':scope > .lobo-fold-content');
     const isOpen = foldContainer.classList.toggle('open');
+    
+    const videoEl = foldContainer.querySelector('video');
+
     if (isOpen) {
         contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
+        
+        if (videoEl) {
+            videoEl.currentTime = 0;
+            openFullscreenVideo(videoEl);
+        }
     } else {
         contentDiv.style.maxHeight = '0px';
+        
+        if (videoEl) {
+            videoEl.pause();
+            videoEl.currentTime = 0;
+        }
     }
+
     iconSpan.classList.add('rotate');
     setTimeout(() => {
-        if (isOpen) {
-            iconSpan.textContent = '-';
-        } else {
-            iconSpan.textContent = '+';
-        }
+        iconSpan.textContent = isOpen ? '-' : '+';
     }, 75);
     setTimeout(() => {
         iconSpan.classList.remove('rotate');
     }, 150);
+};
+
+window.openFullscreenVideo = function(videoEl) {
+    if (document.querySelector('.lobo-video-modal')) return;
+
+    const modal = document.createElement('div');
+    modal.className = 'lobo-video-modal';
+
+    const bigVideo = document.createElement('video');
+    bigVideo.src = videoEl.src;
+    bigVideo.autoplay = true;
+    bigVideo.playsInline = true;
+
+    modal.appendChild(bigVideo);
+    document.body.appendChild(modal);
+    const removeModalFn = () => {
+        bigVideo.pause();
+        modal.remove();
+    };
+    bigVideo.addEventListener('ended', () => {
+        modal.classList.add('fade-out');
+        setTimeout(removeModalFn, 400); 
+    });
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.add('fade-out');
+            setTimeout(removeModalFn, 400);
+            
+            bigVideo.pause();
+        }
+    });
 };

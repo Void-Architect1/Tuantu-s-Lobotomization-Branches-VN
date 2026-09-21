@@ -118,13 +118,26 @@ function parseCustomEmojis(text) {
                '</ol>';
     });
 
-    let previousText;
-    do {
-        previousText = parsed;
-        parsed = parsed.replace(/\[fold:\s*([^\]]+)\](((?!\[fold:|\[\/fold\])[\s\S])*?)\[\/fold\]/g, (match, title, content) => {
-            return `<div class="lobo-fold-container"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner">${content.trim()}</div></div></div>`;
-        });
-    } while (parsed !== previousText);
+let previousText;
+let foldIndex = 0;
+
+do {
+    previousText = parsed;
+    parsed = parsed.replace(/\[fold:\s*([^\]|]+)(?:\s*\|\s*video="([^"]*)")?\](((?!\[fold:|\[\/fold\])[\s\S])*?)\[\/fold\]/g, (match, title, videoSrc, content) => {
+        foldIndex++;
+        const uniqueId = `lobo-fold-${foldIndex}`;
+        const cleanVideoSrc = videoSrc ? videoSrc.trim() : '';
+        return `<div class="lobo-fold-container" id="${uniqueId}">
+                    <div class="lobo-fold-header" onclick="toggleLoboFold(this)" data-video="${cleanVideoSrc}">
+                        <span class="lobo-fold-toggle-icon">+</span>
+                        <span class="lobo-fold-title">${title.trim()}</span>
+                    </div>
+                    <div class="lobo-fold-content">
+                        <div class="lobo-fold-inner">${content.trim()}</div>
+                    </div>
+                 </div>`;
+    });
+} while (parsed !== previousText);
     
     parsed = parsed.replace(/\[load\]([\s\S]*?)\[\/load\]/gi, (match, content) => {
         const rawLines = content.split('\n')
@@ -233,26 +246,48 @@ window.addEventListener("DOMContentLoaded", function() {
 
 window.toggleLoboFold = function(headerElement) {
     const foldContainer = headerElement.closest('.lobo-fold-container');
+    const videoSrc = headerElement.dataset.video;
+    
     const iconSpan = headerElement.querySelector('.lobo-fold-toggle-icon');
     const contentDiv = foldContainer.querySelector(':scope > .lobo-fold-content');
     const isOpen = foldContainer.classList.toggle('open');
+    
     if (isOpen) {
         contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
+        
+        if (videoSrc) {
+            playFoldVideo(videoSrc, foldContainer);
+        }
     } else {
         contentDiv.style.maxHeight = '0px';
+        
+        const existingVideo = foldContainer.querySelector('.fold-popup-video');
+        if (existingVideo) {
+            existingVideo.remove();
+        }
     }
+
     iconSpan.classList.add('rotate');
     setTimeout(() => {
-        if (isOpen) {
-            iconSpan.textContent = '-';
-        } else {
-            iconSpan.textContent = '+';
-        }
+        iconSpan.textContent = isOpen ? '-' : '+';
     }, 75);
     setTimeout(() => {
         iconSpan.classList.remove('rotate');
     }, 150);
 };
+
+function playFoldVideo(src, container) {
+    let videoWrapper = container.querySelector('.fold-popup-video');
+    if (!videoWrapper) {
+        videoWrapper = document.createElement('div');
+        videoWrapper.className = 'fold-popup-video';
+        videoWrapper.innerHTML = `<video src="${src}" controls autoplay style="width:100%; margin-top:10px; border-radius:8px;"></video>`;
+        container.querySelector('.lobo-fold-inner').appendChild(videoWrapper);
+    }
+    
+    const videoEl = videoWrapper.querySelector('video');
+    videoEl.play().catch(err => console.log("Trình duyệt chặn autoplay video của fold:", err));
+}
 
 function updatePreview() {
     const docId = document.getElementById('in-id').value;

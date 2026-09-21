@@ -131,22 +131,11 @@ do {
         let videoHtml = '';
         if (cleanVideoSrc !== '') {
             videoHtml = `<div class="fold-popup-video" style="margin-top:10px;">
-                <video src="${cleanVideoSrc}" autoplay muted playsinline style="width:100%; border-radius:8px;"></video>
+                <video src="${cleanVideoSrc}" muted playsinline controls style="width:100%; border-radius:8px;"></video>
             </div>`;
         }
 
-        return `<div class="lobo-fold-container" id="${uniqueId}">
-                    <div class="lobo-fold-header" onclick="toggleLoboFold(this)">
-                        <span class="lobo-fold-toggle-icon">+</span>
-                        <span class="lobo-fold-title">${title.trim()}</span>
-                    </div>
-                    <div class="lobo-fold-content">
-                        <div class="lobo-fold-inner">
-                            ${content.trim()}
-                            ${videoHtml}
-                        </div>
-                    </div>
-               </div>`;
+        return `<div class="lobo-fold-container" id="${uniqueId}"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner">${content.trim()}${videoHtml}</div></div></div>`;
     });
 } while (parsed !== previousText);
     
@@ -261,23 +250,36 @@ window.toggleLoboFold = function(headerElement) {
     const contentDiv = foldContainer.querySelector(':scope > .lobo-fold-content');
     const isOpen = foldContainer.classList.toggle('open');
     
+    const videoEl = foldContainer.querySelector('video');
+
     if (isOpen) {
         contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
         
-        const videoEl = foldContainer.querySelector('video');
         if (videoEl) {
             videoEl.currentTime = 0;
             videoEl.play().catch(err => {
-                console.log("Vẫn bị chặn, thử fallback về muted:", err);
-                videoEl.muted = true;
-                videoEl.play();
+                console.log("Lỗi phát video:", err);
             });
+            if (videoEl.requestFullscreen) {
+                videoEl.requestFullscreen().catch(err => {
+                    console.log("Trình duyệt chặn yêu cầu fullscreen tự động:", err);
+                });
+            } else if (videoEl.webkitRequestFullscreen) { /* Safari */
+                videoEl.webkitRequestFullscreen();
+            } else if (videoEl.msRequestFullscreen) { /* IE/Edge cũ */
+                videoEl.msRequestFullscreen();
+            }
         }
     } else {
         contentDiv.style.maxHeight = '0px';
-        const videoEl = foldContainer.querySelector('video');
+        
         if (videoEl) {
             videoEl.pause();
+            videoEl.currentTime = 0;
+            
+            if (document.fullscreenElement) {
+                document.exitFullscreen().catch(err => console.log(err));
+            }
         }
     }
 

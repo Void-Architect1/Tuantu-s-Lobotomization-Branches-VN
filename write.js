@@ -251,15 +251,18 @@ window.addEventListener("DOMContentLoaded", function() {
 
 window.toggleLoboFold = function(headerElement) {
     const foldContainer = headerElement.closest('.lobo-fold-container');
+    if (!foldContainer) return;
+
     const iconSpan = headerElement.querySelector('.lobo-fold-toggle-icon');
-    const contentDiv = foldContainer.querySelector(':scope > .lobo-fold-content');
-    
+    const contentDiv = foldContainer.querySelector('.lobo-fold-content');
+    if (!contentDiv) return;
+
     const isCurrentlyOpen = foldContainer.classList.contains('open');
     document.querySelectorAll('.lobo-fold-container.open').forEach(container => {
         if (container !== foldContainer) {
             container.classList.remove('open');
+            const otherContent = container.querySelector('.lobo-fold-content');
             const otherIcon = container.querySelector('.lobo-fold-toggle-icon');
-            const otherContent = container.querySelector(':scope > .lobo-fold-content');
             if (otherContent) otherContent.style.maxHeight = '0px';
             if (otherIcon) otherIcon.textContent = '+';
             const otherVideo = container.querySelector('video');
@@ -285,19 +288,24 @@ window.toggleLoboFold = function(headerElement) {
         }
     } else {
         foldContainer.classList.add('open');
+        
         contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
+
+        const transitionEndHandler = () => {
+            if (foldContainer.classList.contains('open')) {
+                contentDiv.style.maxHeight = 'none';
+            }
+            contentDiv.removeEventListener('transitionend', transitionEndHandler);
+        };
+        contentDiv.addEventListener('transitionend', transitionEndHandler);
+
         setTimeout(() => {
             const previewPanel = headerElement.closest('.preview-panel') || window;
-            
             if (previewPanel !== window) {
                 const panelRect = previewPanel.getBoundingClientRect();
                 const headerRect = headerElement.getBoundingClientRect();
-                const scrollTop = previewPanel.scrollTop;
-                
-                const targetScrollTop = scrollTop + (headerRect.top - panelRect.top) - 15;
-
                 previewPanel.scrollTo({
-                    top: targetScrollTop,
+                    top: previewPanel.scrollTop + (headerRect.top - panelRect.top) - 15,
                     behavior: 'smooth'
                 });
             } else {
@@ -323,13 +331,15 @@ window.toggleLoboFold = function(headerElement) {
         }
     }
 
-    iconSpan.classList.add('rotate');
-    setTimeout(() => {
-        iconSpan.textContent = isCurrentlyOpen ? '+' : '-';
-    }, 75);
-    setTimeout(() => {
-        iconSpan.classList.remove('rotate');
-    }, 150);
+    if (iconSpan) {
+        iconSpan.classList.add('rotate');
+        setTimeout(() => {
+            iconSpan.textContent = isCurrentlyOpen ? '+' : '-';
+        }, 75);
+        setTimeout(() => {
+            iconSpan.classList.remove('rotate');
+        }, 150);
+    }
 };
 window.openFullscreenVideo = function(videoEl, onVideoEnded) {
     if (document.querySelector('.lobo-video-modal')) return;

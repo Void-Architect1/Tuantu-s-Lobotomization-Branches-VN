@@ -576,8 +576,8 @@ button:hover { background: #c9302c; }
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.95);
-    display: flex;
+    background-color: #000;
+    display: flex; 
     justify-content: center;
     align-items: center;
     z-index: 99999;
@@ -586,13 +586,12 @@ button:hover { background: #c9302c; }
 }
 
 .lobo-video-modal video {
-    max-width: 90%;
-    max-height: 90vh;
-    object-fit: contain;
-    border-radius: 8px;
-    box-shadow: 0 0 30px rgba(255, 148, 65, 0.3);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0; 
+    box-shadow: none;
 }
-
 .lobo-video-modal-close {
     position: absolute;
     top: 20px;
@@ -604,6 +603,8 @@ button:hover { background: #c9302c; }
     background: none;
     border: none;
     z-index: 100000;
+    padding: 5px 15px;
+    border-radius: 4px;
 }
 
 @keyframes fadeInModal {

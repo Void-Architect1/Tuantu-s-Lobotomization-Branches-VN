@@ -130,9 +130,7 @@ do {
 
         let videoHtml = '';
         if (cleanVideoSrc !== '') {
-            videoHtml = `<div class="fold-popup-video" style="margin-top:10px;">
-                <video src="${cleanVideoSrc}" playsinline autoplay controls onended="handleVideoEnded(this)" style="width:100%; border-radius:8px;"></video>
-            </div>`;
+            videoHtml = `<div class="fold-popup-video" style="margin-top:10px;"><video src="${cleanVideoSrc}" playsinline onended="handleVideoEnded(this)" style="width:100%; border-radius:8px;"></video></div>`;
         }
 
         return `<div class="lobo-fold-container" id="${uniqueId}"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner">${content.trim()}${videoHtml}</div></div></div>`;

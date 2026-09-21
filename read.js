@@ -1,6 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
+let currentFoldAudio = null;
+
 const firebaseConfig = {
 	apiKey: "AIzaSyBLHdA1sxxi3iO4hg2SGfFK7qpMzh5CpzIE",
 	authDomain: "tlb-vn-database.firebaseapp.com",
@@ -77,24 +79,30 @@ function parseCustomEmojis(text) {
 
 	parsed = parsed.replace(/\[li\]([\s\S]*?)\[\/li\]/g, (match, content) => `<ul style="color:#ddd;line-height:1.6;margin-top:5px;padding-left:20px;list-style-type:disc;">${content.split("\n").filter(line => line.trim()).map(line => `<li>${line.trim().replace(/^(?:-\s*|o\s*)/, "")}</li>`).join("")}</ul>`);
 	parsed = parsed.replace(/\[num\]([\s\S]*?)\[\/num\]/g, (match, content) => `<ol style="color:#ddd;line-height:1.6;margin-top:5px;padding-left:20px;">${content.split("\n").filter(line => line.trim()).map(line => `<li>${line.trim()}</li>`).join("")}</ol>`);
+
 let previousText;
 let foldIndex = 0;
 
 do {
     previousText = parsed;
-    parsed = parsed.replace(/\[fold:\s*([^\]|]+)(?:\s*\|\s*video="([^"]*)")?\](((?!\[fold:|\[\/fold\])[\s\S])*?)\[\/fold\]/g, (match, title, videoSrc, content) => {
+    parsed = parsed.replace(/\[fold:\s*([^\]|]+)(?:\s*\|\s*(?:video="([^"]*)"|music="([^"]*)"))*(?:\s*\|\s*(?:video="([^"]*)"|music="([^"]*)"))?\](((?!\[fold:|\[\/fold\])[\s\S])*?)\[\/fold\]/g, (match, title, v1, m1, v2, m2, content) => {
         foldIndex++;
         const uniqueId = `lobo-fold-${foldIndex}`;
+        
+        const videoSrc = v1 || v2 || '';
+        const musicSrc = m1 || m2 || '';
+
         const cleanVideoSrc = videoSrc ? videoSrc.trim().replace(/['"]+/g, '') : '';
+        const cleanMusicSrc = musicSrc ? musicSrc.trim().replace(/['"]+/g, '') : '';
 
         let videoHtml = '';
         if (cleanVideoSrc !== '') {
             videoHtml = `<div class="fold-popup-video" style="margin-top:10px;"><video src="${cleanVideoSrc}" playsinline onclick="openFullscreenVideo(this)" style="width:100%; border-radius:8px; cursor:pointer;"></video></div>`;
         }
-
-        return `<div class="lobo-fold-container" id="${uniqueId}"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner">${content.trim()}${videoHtml}</div></div></div>`;
+        return `<div class="lobo-fold-container" id="${uniqueId}" data-video="${cleanVideoSrc}" data-music="${cleanMusicSrc}"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner">${content.trim()}${videoHtml}</div></div></div>`;
     });
 } while (parsed !== previousText);
+	
 	parsed = parsed.replace(/\[load\]([\s\S]*?)\[\/load\]/gi, (match, content) => {
 		const rawLines = content.split("\n").map(line => line.trim()).filter(line => line.length > 0);
 		const encodedLines = encodeURIComponent(JSON.stringify(rawLines));
@@ -297,7 +305,70 @@ window.toggleLoboFold = function(headerElement) {
     }, 150);
 };
 
-window.openFullscreenVideo = function(videoEl) {
+window.toggleLoboFold = function(headerElement) {
+    const foldContainer = headerElement.closest('.lobo-fold-container');
+    const iconSpan = headerElement.querySelector('.lobo-fold-toggle-icon');
+    const contentDiv = foldContainer.querySelector(':scope > .lobo-fold-content');
+    
+    const isCurrentlyOpen = foldContainer.classList.contains('open');
+    document.querySelectorAll('.lobo-fold-container.open').forEach(container => {
+        if (container !== foldContainer) {
+            container.classList.remove('open');
+            const otherIcon = container.querySelector('.lobo-fold-toggle-icon');
+            const otherContent = container.querySelector(':scope > .lobo-fold-content');
+            if (otherContent) otherContent.style.maxHeight = '0px';
+            if (otherIcon) otherIcon.textContent = '+';
+            const otherVideo = container.querySelector('video');
+            if (otherVideo) {
+                otherVideo.pause();
+                otherVideo.currentTime = 0;
+			}
+			if (currentFoldAudio) {
+                currentFoldAudio.pause();
+                currentFoldAudio = null;
+            }
+        }
+    });
+    if (isCurrentlyOpen) {
+        foldContainer.classList.remove('open');
+        contentDiv.style.maxHeight = '0px';
+        
+        const videoEl = foldContainer.querySelector('video');
+        if (videoEl) {
+            videoEl.pause();
+            videoEl.currentTime = 0;
+        }
+        if (currentFoldAudio) {
+            currentFoldAudio.pause();
+            currentFoldAudio = null;
+        }
+    } else {
+        foldContainer.classList.add('open');
+        contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
+
+        const videoSrc = foldContainer.dataset.video;
+        const musicSrc = foldContainer.dataset.music;
+        const videoEl = foldContainer.querySelector('video');
+
+        if (videoSrc && videoEl) {
+            videoEl.currentTime = 0;
+            openFullscreenVideo(videoEl, () => {
+                playFoldMusic(musicSrc);
+            });
+        } else {
+            playFoldMusic(musicSrc);
+        }
+    }
+    iconSpan.classList.add('rotate');
+    setTimeout(() => {
+        iconSpan.textContent = isCurrentlyOpen ? '+' : '-';
+    }, 75);
+    setTimeout(() => {
+        iconSpan.classList.remove('rotate');
+    }, 150);
+};
+
+window.openFullscreenVideo = function(videoEl, onVideoEnded) {
     if (document.querySelector('.lobo-video-modal')) return;
 
     const modal = document.createElement('div');
@@ -310,20 +381,39 @@ window.openFullscreenVideo = function(videoEl) {
 
     modal.appendChild(bigVideo);
     document.body.appendChild(modal);
+
+    let isClosed = false;
     const removeModalFn = () => {
+        if (isClosed) return;
+        isClosed = true;
         bigVideo.pause();
-        modal.remove();
-    };
-    bigVideo.addEventListener('ended', () => {
         modal.classList.add('fade-out');
-        setTimeout(removeModalFn, 400); 
-    });
+        setTimeout(() => {
+            modal.remove();
+            if (typeof onVideoEnded === 'function') {
+                onVideoEnded();
+                onVideoEnded = null;
+            }
+        }, 400);  
+    };
+
+    bigVideo.addEventListener('ended', removeModalFn);
+    
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
-            modal.classList.add('fade-out');
-            setTimeout(removeModalFn, 400);
-            
             bigVideo.pause();
+            removeModalFn();
         }
     });
 };
+
+function playFoldMusic(musicSrc) {
+    if (!musicSrc) return;
+    if (currentFoldAudio) {
+        currentFoldAudio.pause();
+        currentFoldAudio = null;
+    }
+    currentFoldAudio = new Audio(musicSrc);
+    currentFoldAudio.loop = true;
+    currentFoldAudio.play().catch(() => {});
+}

@@ -2,6 +2,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/fireba
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 import { serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
+let currentFoldAudio = null;
+
 const firebaseConfig = {
     apiKey: "AIzaSyBLHdA1sxx3iO4hg2SGfFK7qpMzh5CpzIE",
     authDomain: "tlb-vn-database.firebaseapp.com",
@@ -120,7 +122,6 @@ function parseCustomEmojis(text) {
 
 let previousText;
 let foldIndex = 0;
-let currentFoldAudio = null;
 
 do {
     previousText = parsed;

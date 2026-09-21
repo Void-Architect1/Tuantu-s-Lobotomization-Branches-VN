@@ -288,7 +288,6 @@ window.toggleLoboFold = function(headerElement) {
         }
     } else {
         foldContainer.classList.add('open');
-        
         contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
 
         const transitionEndHandler = () => {

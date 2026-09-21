@@ -266,9 +266,10 @@ window.toggleLoboFold = function(headerElement) {
             if (otherVideo) {
                 otherVideo.pause();
                 otherVideo.currentTime = 0;
-			}
+            }
         }
     });
+
     if (isCurrentlyOpen) {
         foldContainer.classList.remove('open');
         contentDiv.style.maxHeight = '0px';
@@ -278,23 +279,36 @@ window.toggleLoboFold = function(headerElement) {
             videoEl.pause();
             videoEl.currentTime = 0;
         }
-		const musicSrc = foldContainer.dataset.music;
+        const musicSrc = foldContainer.dataset.music;
         if (musicSrc && currentMusicSrc === musicSrc) {
             playFoldMusic(null);
         }
     } else {
         foldContainer.classList.add('open');
         contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
+        setTimeout(() => {
+            const previewPanel = headerElement.closest('.preview-panel') || window;
+            
+            if (previewPanel !== window) {
+                const panelRect = previewPanel.getBoundingClientRect();
+                const headerRect = headerElement.getBoundingClientRect();
+                const scrollTop = previewPanel.scrollTop;
+                
+                const targetScrollTop = scrollTop + (headerRect.top - panelRect.top) - 15;
 
-		setTimeout(() => {
-            const elementPosition = headerElement.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - 20;
+                previewPanel.scrollTo({
+                    top: targetScrollTop,
+                    behavior: 'smooth'
+                });
+            } else {
+                const headerRect = headerElement.getBoundingClientRect();
+                window.scrollTo({
+                    top: window.pageYOffset + headerRect.top - 15,
+                    behavior: 'smooth'
+                });
+            }
+        }, 125);
 
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
-        }, 120);
         const videoSrc = foldContainer.dataset.video;
         const musicSrc = foldContainer.dataset.music;
         const videoEl = foldContainer.querySelector('video');
@@ -308,6 +322,7 @@ window.toggleLoboFold = function(headerElement) {
             playFoldMusic(musicSrc);
         }
     }
+
     iconSpan.classList.add('rotate');
     setTimeout(() => {
         iconSpan.textContent = isCurrentlyOpen ? '+' : '-';
@@ -316,7 +331,6 @@ window.toggleLoboFold = function(headerElement) {
         iconSpan.classList.remove('rotate');
     }, 150);
 };
-
 window.openFullscreenVideo = function(videoEl, onVideoEnded) {
     if (document.querySelector('.lobo-video-modal')) return;
 

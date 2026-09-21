@@ -288,17 +288,20 @@ window.openFullscreenVideo = function(videoEl) {
 
     modal.appendChild(bigVideo);
     document.body.appendChild(modal);
-
-    const closeModal = () => {
+    const removeModalFn = () => {
         bigVideo.pause();
         modal.remove();
     };
     bigVideo.addEventListener('ended', () => {
-        closeModal();
+        modal.classList.add('fade-out');
+        setTimeout(removeModalFn, 1000); 
     });
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
-            closeModal();
+            modal.classList.add('fade-out');
+            setTimeout(removeModalFn, 1000);
+            
+            bigVideo.pause();
         }
     });
 };

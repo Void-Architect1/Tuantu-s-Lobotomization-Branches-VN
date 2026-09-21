@@ -131,7 +131,7 @@ do {
         let videoHtml = '';
         if (cleanVideoSrc !== '') {
             videoHtml = `<div class="fold-popup-video" style="margin-top:10px;">
-                <video src="${cleanVideoSrc}" muted playsinline controls style="width:100%; border-radius:8px;"></video>
+                <video src="${cleanVideoSrc}" playsinline onended="handleVideoEnded(this)" style="width:100%; border-radius:8px;"></video>
             </div>`;
         }
 
@@ -258,17 +258,8 @@ window.toggleLoboFold = function(headerElement) {
         if (videoEl) {
             videoEl.currentTime = 0;
             videoEl.play().catch(err => {
-                console.log("Lỗi phát video:", err);
+                console.log("Không thể tự phát video:", err);
             });
-            if (videoEl.requestFullscreen) {
-                videoEl.requestFullscreen().catch(err => {
-                    console.log("Trình duyệt chặn yêu cầu fullscreen tự động:", err);
-                });
-            } else if (videoEl.webkitRequestFullscreen) { /* Safari */
-                videoEl.webkitRequestFullscreen();
-            } else if (videoEl.msRequestFullscreen) { /* IE/Edge cũ */
-                videoEl.msRequestFullscreen();
-            }
         }
     } else {
         contentDiv.style.maxHeight = '0px';
@@ -276,10 +267,6 @@ window.toggleLoboFold = function(headerElement) {
         if (videoEl) {
             videoEl.pause();
             videoEl.currentTime = 0;
-            
-            if (document.fullscreenElement) {
-                document.exitFullscreen().catch(err => console.log(err));
-            }
         }
     }
 
@@ -290,6 +277,17 @@ window.toggleLoboFold = function(headerElement) {
     setTimeout(() => {
         iconSpan.classList.remove('rotate');
     }, 150);
+};
+
+window.handleVideoEnded = function(videoEl) {
+    const foldContainer = videoEl.closest('.lobo-fold-container');
+    if (!foldContainer) return;
+    videoEl.pause();
+    
+    const videoWrapper = videoEl.closest('.fold-popup-video');
+    if (videoWrapper) {
+        videoWrapper.style.opacity = '0.9';
+    }
 };
 
 function updatePreview() {

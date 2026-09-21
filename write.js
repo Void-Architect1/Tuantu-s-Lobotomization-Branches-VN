@@ -286,7 +286,15 @@ window.toggleLoboFold = function(headerElement) {
         foldContainer.classList.add('open');
         contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
 
-		headerElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		setTimeout(() => {
+            const elementPosition = headerElement.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - 20;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }, 120);
         const videoSrc = foldContainer.dataset.video;
         const musicSrc = foldContainer.dataset.music;
         const videoEl = foldContainer.querySelector('video');

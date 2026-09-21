@@ -126,9 +126,8 @@ do {
     parsed = parsed.replace(/\[fold:\s*([^\]|]+)(?:\s*\|\s*video="([^"]*)")?\](((?!\[fold:|\[\/fold\])[\s\S])*?)\[\/fold\]/g, (match, title, videoSrc, content) => {
         foldIndex++;
         const uniqueId = `lobo-fold-${foldIndex}`;
-        const cleanVideoSrc = videoSrc ? videoSrc.trim() : '';
+        const cleanVideoSrc = videoSrc ? videoSrc.trim().replace(/['"]+/g, '') : '';
 
-		const cleanVideoSrc = videoSrc ? videoSrc.trim().replace(/['"]+/g, '') : '';
         let videoHtml = '';
         if (cleanVideoSrc !== '') {
             videoHtml = `<div class="fold-popup-video" style="margin-top:10px;">

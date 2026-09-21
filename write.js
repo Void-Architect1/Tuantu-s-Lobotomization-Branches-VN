@@ -3,6 +3,7 @@ import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12
 import { serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 let currentFoldAudio = null;
+let currentMusicSrc = "";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBLHdA1sxx3iO4hg2SGfFK7qpMzh5CpzIE",
@@ -445,12 +446,24 @@ document.addEventListener("click", event => {
 });
 
 function playFoldMusic(musicSrc) {
-    if (!musicSrc) return;
+    if (!musicSrc) {
+        if (currentFoldAudio) { currentFoldAudio.pause(); currentFoldAudio = null; currentMusicSrc = ""; }
+        return;
+    }
+
+    if (currentFoldAudio && currentMusicSrc === musicSrc) {
+        return; 
+    }
+
     if (currentFoldAudio) {
         currentFoldAudio.pause();
         currentFoldAudio = null;
     }
+
+    currentMusicSrc = musicSrc;
     currentFoldAudio = new Audio(musicSrc);
     currentFoldAudio.loop = true;
-    currentFoldAudio.play().catch(() => {});
+    currentFoldAudio.play().catch((err) => {
+        console.log("Không thể tự động phát nhạc do chính sách trình duyệt:", err);
+    });
 }

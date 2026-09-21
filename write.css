@@ -570,23 +570,42 @@ button:hover { background: #c9302c; }
     color: rgba(255, 255, 255, 0.7);
 }
 
-.lobo-fold-container.open .fold-popup-video {
-    position: relative;
+.lobo-video-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100vw;
-    max-width: 100%;
-    margin-left: 0;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    opacity: 0;
+    animation: fadeInModal 0.3s forwards;
 }
 
-.fold-popup-video {
-    position: relative;
-    width: 100%;
-    margin-top: 10px;
-}
-
-.fold-popup-video video {
-    display: block;
-    width: 100%;
-    height: auto;
+.lobo-video-modal video {
+    max-width: 90%;
+    max-height: 90vh;
     object-fit: contain;
-    border-radius: 4px;
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(255, 148, 65, 0.3);
+}
+
+.lobo-video-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #fff;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    background: none;
+    border: none;
+    z-index: 100000;
+}
+
+@keyframes fadeInModal {
+    to { opacity: 1; }
 }

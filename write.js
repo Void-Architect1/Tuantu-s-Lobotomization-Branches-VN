@@ -129,7 +129,7 @@ do {
         const cleanVideoSrc = videoSrc ? videoSrc.trim() : '';
         
         let videoHtml = '';
-        if (cleanVideoSrc) {
+        if (cleanVideoSrc !== '') {
             videoHtml = `<div class="fold-popup-video" style="margin-top:10px;">
                 <video src="${cleanVideoSrc}" autoplay muted playsinline style="width:100%; border-radius:8px;"></video>
             </div>`;

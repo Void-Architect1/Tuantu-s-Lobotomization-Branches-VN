@@ -267,7 +267,6 @@ window.toggleLoboFold = function(headerElement) {
         const videoEl = foldContainer.querySelector('video');
         if (videoEl) {
             videoEl.currentTime = 0;
-            videoEl.muted = false;
             videoEl.play().catch(err => {
                 console.log("Vẫn bị chặn, thử fallback về muted:", err);
                 videoEl.muted = true;

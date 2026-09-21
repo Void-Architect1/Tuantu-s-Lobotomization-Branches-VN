@@ -131,7 +131,7 @@ do {
         let videoHtml = '';
         if (cleanVideoSrc !== '') {
             videoHtml = `<div class="fold-popup-video" style="margin-top:10px;">
-                <video src="${cleanVideoSrc}" playsinline autoplay onended="handleVideoEnded(this)" style="width:100%; border-radius:8px;"></video>
+                <video src="${cleanVideoSrc}" playsinline autoplay muted onended="handleVideoEnded(this)" style="width:100%; border-radius:8px;"></video>
             </div>`;
         }
 

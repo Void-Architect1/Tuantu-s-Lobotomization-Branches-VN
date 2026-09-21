@@ -127,7 +127,8 @@ do {
         foldIndex++;
         const uniqueId = `lobo-fold-${foldIndex}`;
         const cleanVideoSrc = videoSrc ? videoSrc.trim() : '';
-        
+
+		const cleanVideoSrc = videoSrc ? videoSrc.trim().replace(/['"]+/g, '') : '';
         let videoHtml = '';
         if (cleanVideoSrc !== '') {
             videoHtml = `<div class="fold-popup-video" style="margin-top:10px;">

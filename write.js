@@ -267,10 +267,6 @@ window.toggleLoboFold = function(headerElement) {
                 otherVideo.pause();
                 otherVideo.currentTime = 0;
 			}
-			if (currentFoldAudio) {
-                currentFoldAudio.pause();
-                currentFoldAudio = null;
-            }
         }
     });
     if (isCurrentlyOpen) {

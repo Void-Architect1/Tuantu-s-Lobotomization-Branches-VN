@@ -2,6 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/fireba
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 let currentFoldAudio = null;
+let currentMusicSrc = "";
 
 const firebaseConfig = {
 	apiKey: "AIzaSyBLHdA1sxxi3iO4hg2SGfFK7qpMzh5CpzIE",

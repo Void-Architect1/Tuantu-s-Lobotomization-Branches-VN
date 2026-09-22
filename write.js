@@ -130,6 +130,44 @@ do {
         foldIndex++;
         const uniqueId = `lobo-fold-${foldIndex}`;
         
+        const blockRegex = /\[block\s*(?:\Vert{}\s*(?:music="([^"]*)"\vert{}cutscene="([^"]*)"))*(?:\s*\Vert{}\s*(?:music="([^"]*)"\vert{}cutscene="([^"]*)"))?\]([\s\S]*?)\[\/block\]/g;
+        let blocks = [];
+        let blockMatch;
+
+        while ((blockMatch = blockRegex.exec(content)) !== null) {
+            const bMusic1 = blockMatch[1] || '';
+            const bCut1 = blockMatch[2] || '';
+            const bMusic2 = blockMatch[3] || '';
+            const bCut2 = blockMatch[4] || '';
+            const bContent = blockMatch[5] || '';
+
+            blocks.push({
+                music: (bMusic1 || bMusic2).trim().replace(/['"]+/g, ''),
+                cutscene: (bCut1 || bCut2).trim().replace(/['"]+/g, ''),
+                content: bContent.trim()
+            });
+        }
+
+        if (blocks.length > 0) {
+            let slidesHtml = '';
+            blocks.forEach((blk, idx) => {
+                let slideVideoHtml = '';
+                if (blk.cutscene) {
+                    slideVideoHtml = `<div style="margin-top:8px;"><button onclick="playBlockCutscene(this)" data-cutscene="${blk.cutscene}" style="background:#d9534f; color:#fff; padding:6px 12px; border:none; border-radius:4px; cursor:pointer; font-size:0.8rem;">▶ Xem lại Cutscene</button></div>`;
+                }
+
+                slidesHtml += `
+                    <div class="lobo-vn-slide ${idx === 0 ? 'active-slide' : ''}" data-index="${idx}" data-music="${blk.music}" data-cutscene="${blk.cutscene}">
+                        <div class="lobo-vn-content-box">${blk.content}${slideVideoHtml}</div>
+                        <div class="lobo-vn-footer">
+                            <span class="lobo-vn-counter">Trang ${idx + 1} / ${blocks.length}</span>
+                            ${idx < blocks.length - 1 ? `<button class="lobo-vn-next-btn" onclick="nextLoboBlock(this)">Tiếp tục ▶</button>` : `<span style="font-size: 0.8rem; color: #ff9441; font-weight: bold;">(Hết chương)</span>`}
+                        </div>
+                    </div>`;
+            });
+
+            return `<div class="lobo-fold-container" id="${uniqueId}"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner"><div class="lobo-vn-block-container">${slidesHtml}</div></div></div></div>`;
+        }
         const videoSrc = v1 || v2 || '';
         const musicSrc = m1 || m2 || '';
 
@@ -495,3 +533,43 @@ function playFoldMusic(musicSrc) {
         console.log("Không thể tự động phát nhạc do chính sách trình duyệt:", err);
     });
 }
+
+window.nextLoboBlock = function(btnElement) {
+    const container = btnElement.closest('.lobo-vn-block-container');
+    if (!container) return;
+
+    const slides = Array.from(container.querySelectorAll('.lobo-vn-slide'));
+    const currentIndex = slides.findIndex(s => s.classList.contains('active-slide'));
+    
+    if (currentIndex === -1 || currentIndex >= slides.length - 1) return;
+
+    slides[currentIndex].classList.remove('active-slide');
+    const nextSlide = slides[currentIndex + 1];
+    nextSlide.classList.add('active-slide');
+
+    const foldContent = container.closest('.lobo-fold-content');
+    if (foldContent && foldContent.style.maxHeight && foldContent.style.maxHeight !== 'none') {
+        foldContent.style.maxHeight = foldContent.scrollHeight + 'px';
+    }
+
+    const musicSrc = nextSlide.dataset.music;
+    const cutsceneSrc = nextSlide.dataset.cutscene;
+
+    if (musicSrc !== undefined) {
+        playFoldMusic(musicSrc || null);
+    }
+
+    if (cutsceneSrc) {
+        const dummyVideo = document.createElement('video');
+        dummyVideo.src = cutsceneSrc;
+        openFullscreenVideo(dummyVideo);
+    }
+};
+
+window.playBlockCutscene = function(buttonEl) {
+    const cutsceneSrc = buttonEl.dataset.cutscene;
+    if (!cutsceneSrc) return;
+    const dummyVideo = document.createElement('video');
+    dummyVideo.src = cutsceneSrc;
+    openFullscreenVideo(dummyVideo);
+};

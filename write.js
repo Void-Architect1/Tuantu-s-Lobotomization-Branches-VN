@@ -152,7 +152,7 @@ do {
             blocks.forEach((blk, idx) => {
                 let slideVideoHtml = '';
                 if (blk.cutscene) {
-                    slideVideoHtml = `<div style="margin-top:8px;"><button onclick="playBlockCutscene(this)" data-cutscene="${blk.cutscene}" style="background:#d9534f; color:#fff; padding:6px 12px; border:none; border-radius:4px; cursor:pointer; font-size:0.8rem;">▶ Xem lại Cutscene</button></div>`;
+                    slideVideoHtml = `<div class="fold-popup-video" style="margin-top:10px;"><video src="${blk.cutscene}" playsinline onclick="openFullscreenVideo(this)" style="width:100%; border-radius:8px; cursor:pointer;"></video></div>`;
                 }
 
                 slidesHtml += `

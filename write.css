@@ -606,3 +606,66 @@ button:hover { background: #c9302c; }
 .lobo-video-modal.fade-out {
     opacity: 0;
 }
+
+.lobo-vn-block-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.lobo-vn-slide {
+    display: none;
+    animation: fadeInSlide 0.3s ease-in-out;
+}
+
+.lobo-vn-slide.active-slide {
+    display: block;
+}
+
+@keyframes fadeInSlide {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.lobo-vn-content-box {
+    color: #ccc;
+    line-height: 1.4;
+    font-size: 0.95rem;
+    white-space: pre-line;
+    font-family: 'Gill sans', sans-serif;
+    min-height: 60px;
+}
+
+.lobo-vn-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px dashed rgba(255, 148, 65, 0.4);
+    padding-top: 8px;
+    margin-top: 5px;
+}
+
+.lobo-vn-counter {
+    font-size: 0.8rem;
+    color: #888;
+    font-family: monospace;
+}
+
+.lobo-vn-next-btn {
+    background: #ff9441;
+    color: #000;
+    border: none;
+    padding: 6px 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    width: auto;
+    margin-top: 0;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.lobo-vn-next-btn:hover {
+    background: #ffaa66;
+    transform: scale(1.02);
+}

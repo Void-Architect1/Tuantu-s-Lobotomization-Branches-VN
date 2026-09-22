@@ -90,6 +90,43 @@ do {
         foldIndex++;
         const uniqueId = `lobo-fold-${foldIndex}`;
         
+        const blockRegex = /\[block(?:\s*\|\s*(?:music="([^"]*)"|cutscene="([^"]*)"))*(?:\s*\|\s*(?:music="([^"]*)"|cutscene="([^"]*)"))?\]([\s\S]*?)\[\/block\]/g;
+        let blocks = [];
+        let blockMatch;
+
+        while ((blockMatch = blockRegex.exec(content)) !== null) {
+            const values = blockMatch.slice(1, 5).filter(val => val !== undefined && val !== '');
+            const bMusic = values.find(v => v.includes('http') || v.endsWith('.mp3') || v.endsWith('.wav')) || values[0] || '';
+            const bCut = values.find(v => v.endsWith('.mp4') || v.endsWith('.webm') || v.endsWith('.mov')) || values[1] || '';
+            const bContent = blockMatch[5] || '';
+
+            blocks.push({
+                music: bMusic.trim().replace(/['"]+/g, ''),
+                cutscene: bCut.trim().replace(/['"]+/g, ''),
+                content: bContent.trim()
+            });
+        }
+
+        if (blocks.length > 0) {
+            let slidesHtml = '';
+            blocks.forEach((blk, idx) => {
+                let slideVideoHtml = '';
+                if (blk.cutscene) {
+                    slideVideoHtml = `<div style="margin-top:8px;"><button onclick="playBlockCutscene(this)" data-cutscene="${blk.cutscene}" style="background:#d9534f; color:#fff; padding:6px 12px; border:none; border-radius:4px; cursor:pointer; font-size:0.8rem;">▶ Xem lại Cutscene</button></div>`;
+                }
+
+                slidesHtml += `
+                    <div class="lobo-vn-slide ${idx === 0 ? 'active-slide' : ''}" data-index="${idx}" data-music="${blk.music}" data-cutscene="${blk.cutscene}">
+                        <div class="lobo-vn-content-box">${blk.content}${slideVideoHtml}</div>
+                        <div class="lobo-vn-footer">
+                            <span class="lobo-vn-counter">Trang ${idx + 1} / ${blocks.length}</span>
+                            ${idx < blocks.length - 1 ? `<button class="lobo-vn-next-btn" onclick="nextLoboBlock(this)">Tiếp tục ▶</button>` : `<span style="font-size: 0.8rem; color: #ff9441; font-weight: bold;">(Hết chương)</span>`}
+                        </div>
+                    </div>`;
+            });
+
+            return `<div class="lobo-fold-container" id="${uniqueId}"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner"><div class="lobo-vn-block-container">${slidesHtml}</div></div></div></div>`;
+        }
         const videoSrc = v1 || v2 || '';
         const musicSrc = m1 || m2 || '';
 

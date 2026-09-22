@@ -130,20 +130,19 @@ do {
         foldIndex++;
         const uniqueId = `lobo-fold-${foldIndex}`;
         
-        const blockRegex = /\[block\s*(?:\Vert{}\s*(?:music="([^"]*)"\vert{}cutscene="([^"]*)"))*(?:\s*\Vert{}\s*(?:music="([^"]*)"\vert{}cutscene="([^"]*)"))?\]([\s\S]*?)\[\/block\]/g;
+        const blockRegex = /\[block(?:\s*\|\s*(?:music="([^"]*)"|cutscene="([^"]*)"))*(?:\s*\|\s*(?:music="([^"]*)"|cutscene="([^"]*)"))?\]([\s\S]*?)\[\/block\]/g;
         let blocks = [];
         let blockMatch;
 
         while ((blockMatch = blockRegex.exec(content)) !== null) {
-            const bMusic1 = blockMatch[1] || '';
-            const bCut1 = blockMatch[2] || '';
-            const bMusic2 = blockMatch[3] || '';
-            const bCut2 = blockMatch[4] || '';
+            const values = blockMatch.slice(1, 5).filter(val => val !== undefined && val !== '');
+            const bMusic = values.find(v => v.includes('http') || v.endsWith('.mp3') || v.endsWith('.wav')) || values[0] || '';
+            const bCut = values.find(v => v.endsWith('.mp4') || v.endsWith('.webm') || v.endsWith('.mov')) || values[1] || '';
             const bContent = blockMatch[5] || '';
 
             blocks.push({
-                music: (bMusic1 || bMusic2).trim().replace(/['"]+/g, ''),
-                cutscene: (bCut1 || bCut2).trim().replace(/['"]+/g, ''),
+                music: bMusic.trim().replace(/['"]+/g, ''),
+                cutscene: bCut.trim().replace(/['"]+/g, ''),
                 content: bContent.trim()
             });
         }

@@ -130,7 +130,7 @@ do {
         foldIndex++;
         const uniqueId = `lobo-fold-${foldIndex}`;
         
-        const blockRegex = /\[block(?:\s*\Vert{}\s*(?:music="([^"]*)"\vert{}cutscene="([^"]*)"))*(?:\s*\Vert{}\s*(?:music="([^"]*)"\vert{}cutscene="([^"]*)"))?\]([\s\S]*?)\[\/block\]/g;
+        const blockRegex = /\[block(?:\s*\|\s*(?:music="([^"]*)"|cutscene="([^"]*)"))*(?:\s*\|\s*(?:music="([^"]*)"|cutscene="([^"]*)"))?\]([\s\S]*?)\[\/block\]/g;
         let blocks = [];
         let blockMatch;
 

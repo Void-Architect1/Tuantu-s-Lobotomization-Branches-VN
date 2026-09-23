@@ -350,7 +350,7 @@ function toggleVnFold(headerElement, foldContainer) {
         playFoldMusic(null);
     } else {
         foldContainer.classList.add('open');
-        contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
+        contentDiv.style.maxHeight = (contentDiv.scrollHeight + 40) + 'px';
         if (cutsceneSrc && cutsceneSrc !== 'undefined' && cutsceneSrc !== '') {
             playFoldMusic(null); 
             openFullscreenVideo(cutsceneSrc, () => {
@@ -389,7 +389,7 @@ function toggleNormalFold(headerElement, foldContainer) {
         playFoldMusic(null);
     } else {
         foldContainer.classList.add('open');
-        contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
+        contentDiv.style.maxHeight = (contentDiv.scrollHeight + 40) + 'px';
         playFoldMusic(null);
         if (videoSrc && videoEl) {
             videoEl.currentTime = 0;
@@ -448,33 +448,6 @@ window.openFullscreenVideo = function(videoSource, onVideoEnded) {
     });
 };
 
-window.nextLoboBlock = function(btnElement) {
-    const container = btnElement.closest('.lobo-vn-block-container');
-    if (!container) return;
-    const slides = Array.from(container.querySelectorAll('.lobo-vn-slide'));
-    const currentIndex = slides.findIndex(s => s.classList.contains('active-slide'));
-    if (currentIndex === -1 || currentIndex >= slides.length - 1) return;
-    const currentSlide = slides[currentIndex];
-    const nextSlide = slides[currentIndex + 1];
-    currentSlide.classList.remove('active-slide');
-    nextSlide.classList.add('active-slide');
-    const foldContent = container.closest('.lobo-fold-content');
-    if (foldContent && foldContent.style.maxHeight && foldContent.style.maxHeight !== 'none') {
-        foldContent.style.maxHeight = foldContent.scrollHeight + 'px';
-    }
-    const currentMusic = currentSlide.dataset.music;
-    const nextMusic = nextSlide.dataset.music;
-    const cutsceneSrc = nextSlide.dataset.cutscene;
-    if (nextMusic !== undefined && nextMusic !== currentMusic) {
-        playFoldMusic(nextMusic || null);
-    }
-    if (cutsceneSrc) {
-        const dummyVideo = document.createElement('video');
-        dummyVideo.src = cutsceneSrc;
-        openFullscreenVideo(dummyVideo);
-    }
-};
-
 function playFoldMusic(musicSrc) {
     if (!musicSrc) {
         if (currentFoldAudio) { currentFoldAudio.pause(); currentFoldAudio = null; currentMusicSrc = ""; }
@@ -508,7 +481,7 @@ window.nextLoboBlock = function(btnElement) {
     nextSlide.classList.add('active-slide');
     const foldContent = container.closest('.lobo-fold-content');
     if (foldContent && foldContent.style.maxHeight && foldContent.style.maxHeight !== 'none') {
-        foldContent.style.maxHeight = foldContent.scrollHeight + 'px';
+        foldContent.style.maxHeight = (trueHeight + 40) + 'px';
     }
     const currentMusic = currentSlide.dataset.music;
     const nextMusic = nextSlide.dataset.music;

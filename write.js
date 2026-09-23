@@ -124,17 +124,22 @@ function parseCustomEmojis(text) {
 let previousText;
 let foldIndex = 0;
 
+// ==========================================
+// BƯỚC 1: XỬ LÝ RIÊNG FOLD CHỨA BLOCK (VISUAL NOVEL)
+// ==========================================
 do {
     previousText = parsed;
-    parsed = parsed.replace(/\[fold:\s*([^\]|]+)(?:\s*\|\s*(?:video="([^"]*)"|music="([^"]*)"))*(?:\s*\|\s*(?:video="([^"]*)"|music="([^"]*)"))?\](((?!\[fold:|\[\/fold\])[\s\S])*?)\[\/fold\]/g, (match, title, v1, m1, v2, m2, content) => {
+    // Regex này CHỈ BẮT những thẻ [fold] nào BẮT BUỘC phải chứa ít nhất một thẻ [block] ở bên trong
+    parsed = parsed.replace(/\[fold:\s*([^\]|]+)\]([\s\S]*?)(?:\[block[\s\S]*?\[\/block\])+([\s\S]*?)\[\/fold\]/g, (match, title, beforeBlocks, afterBlocks) => {
         foldIndex++;
         const uniqueId = `lobo-fold-${foldIndex}`;
-        
-        const blockRegex = /\[block(?:\s*\|\s*(?:music="([^"]*)"|cutscene="([^"]*)"))*(?:\s*\|\s*(?:music="([^"]*)"|cutscene="([^"]*)"))?\]([\s\S]*?)\[\/block\]/g;
+        const fullContent = beforeBlocks + afterBlocks; // Gom lại nội dung chứa các block
+
+        const blockRegex = /\[block(?:\s*\Vert{}\s*(?:music="([^"]*)"\vert{}cutscene="([^"]*)"))*(?:\s*\Vert{}\s*(?:music="([^"]*)"\vert{}cutscene="([^"]*)"))?\]([\s\S]*?)\[\/block\]/g;
         let blocks = [];
         let blockMatch;
 
-        while ((blockMatch = blockRegex.exec(content)) !== null) {
+        while ((blockMatch = blockRegex.exec(fullContent)) !== null) {
             const values = blockMatch.slice(1, 5).filter(val => val !== undefined && val !== '');
             const bMusic = values.find(v => v.includes('http') || v.endsWith('.mp3') || v.endsWith('.wav')) || values[0] || '';
             const bCut = values.find(v => v.endsWith('.mp4') || v.endsWith('.webm') || v.endsWith('.mov')) || values[1] || '';
@@ -147,26 +152,33 @@ do {
             });
         }
 
-        if (blocks.length > 0) {
-            let slidesHtml = '';
-            blocks.forEach((blk, idx) => {
-                let slideVideoHtml = '';
-                if (blk.cutscene) {
-                    slideVideoHtml = `<div class="fold-popup-video" style="margin-top:10px;"><video src="${blk.cutscene}" playsinline onclick="openFullscreenVideo(this)" style="width:100%; border-radius:8px; cursor:pointer;"></video></div>`;
-                }
+        let slidesHtml = '';
+        blocks.forEach((blk, idx) => {
+            let slideVideoHtml = '';
+            if (blk.cutscene) {
+                slideVideoHtml = `<div class="fold-popup-video" style="margin-top:10px;"><video src="${blk.cutscene}" playsinline onclick="openFullscreenVideo(this)" style="width:100%; border-radius:8px; cursor:pointer;"></video></div>`;
+            }
 
-                slidesHtml += `
-                    <div class="lobo-vn-slide ${idx === 0 ? 'active-slide' : ''}" data-index="${idx}" data-music="${blk.music}" data-cutscene="${blk.cutscene}">
-                        <div class="lobo-vn-content-box">${blk.content}${slideVideoHtml}</div>
-                        <div class="lobo-vn-footer">
-                            <span class="lobo-vn-counter">Trang ${idx + 1} / ${blocks.length}</span>
-                            ${idx < blocks.length - 1 ? `<button class="lobo-vn-next-btn" onclick="nextLoboBlock(this)">Tiếp tục ▶</button>` : `<span style="font-size: 0.8rem; color: #ff9441; font-weight: bold;">(Hết chương)</span>`}
-                        </div>
-                    </div>`;
-            });
+            slidesHtml += `
+                <div class="lobo-vn-slide ${idx === 0 ? 'active-slide' : ''}" data-index="${idx}" data-music="${blk.music}" data-cutscene="${blk.cutscene}">
+                    <div class="lobo-vn-content-box">${blk.content}${slideVideoHtml}</div>
+                    <div class="lobo-vn-footer">
+                        <span class="lobo-vn-counter">Trang ${idx + 1} / ${blocks.length}</span>
+                        ${idx < blocks.length - 1 ? `<button class="lobo-vn-next-btn" onclick="nextLoboBlock(this)">Tiếp tục ▶</button>` : `<span style="font-size: 0.8rem; color: #ff9441; font-weight: bold;">(Hết chương)</span>`}
+                    </div>
+                </div>`;
+        });
 
-            return `<div class="lobo-fold-container" id="${uniqueId}"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner"><div class="lobo-vn-block-container">${slidesHtml}</div></div></div></div>`;
-        }
+        return `<div class="lobo-fold-container lobo-vn-type" id="${uniqueId}"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner"><div class="lobo-vn-block-container">${slidesHtml}</div></div></div></div>`;
+    });
+} while (parsed !== previousText);
+
+do {
+    previousText = parsed;
+    parsed = parsed.replace(/\[fold:\s*([^\]|]+)(?:\s*\|\s*(?:video="([^"]*)"|music="([^"]*)"))*(?:\s*\|\s*(?:video="([^"]*)"|music="([^"]*)"))?\](((?!\[fold:|\[\/fold\])[\s\S])*?)\[\/fold\]/g, (match, title, v1, m1, v2, m2, content) => {
+        foldIndex++;
+        const uniqueId = `lobo-fold-${foldIndex}`;
+
         const videoSrc = v1 || v2 || '';
         const musicSrc = m1 || m2 || '';
 
@@ -177,7 +189,8 @@ do {
         if (cleanVideoSrc !== '') {
             videoHtml = `<div class="fold-popup-video" style="margin-top:10px;"><video src="${cleanVideoSrc}" playsinline onclick="openFullscreenVideo(this)" style="width:100%; border-radius:8px; cursor:pointer;"></video></div>`;
         }
-        return `<div class="lobo-fold-container" id="${uniqueId}" data-video="${cleanVideoSrc}" data-music="${cleanMusicSrc}"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner">${content.trim()}${videoHtml}</div></div></div>`;
+
+        return `<div class="lobo-fold-container lobo-normal-type" id="${uniqueId}" data-video="${cleanVideoSrc}" data-music="${cleanMusicSrc}"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner">${content.trim()}${videoHtml}</div></div></div>`;
     });
 } while (parsed !== previousText);
     
@@ -289,6 +302,57 @@ window.addEventListener("DOMContentLoaded", function() {
 window.toggleLoboFold = function(headerElement) {
     const foldContainer = headerElement.closest('.lobo-fold-container');
     if (!foldContainer) return;
+    const isVNFold = foldContainer.classList.contains('lobo-vn-type');
+    if (isVNFold) {
+        toggleVnFold(headerElement, foldContainer);
+    } else {
+        toggleNormalFold(headerElement, foldContainer);
+    }
+};
+
+function toggleVnFold(headerElement, foldContainer) {
+    const iconSpan = headerElement.querySelector('.lobo-fold-toggle-icon');
+    const contentDiv = foldContainer.querySelector('.lobo-fold-content');
+    if (!contentDiv) return;
+
+    const isCurrentlyOpen = foldContainer.classList.contains('open');
+
+    document.querySelectorAll('.lobo-fold-container.open').forEach(container => {
+        if (container !== foldContainer) {
+            container.classList.remove('open');
+            const otherContent = container.querySelector('.lobo-fold-content');
+            const otherIcon = container.querySelector('.lobo-fold-toggle-icon');
+            if (otherContent) otherContent.style.maxHeight = '0px';
+            if (otherIcon) otherIcon.textContent = '+';
+            const otherVideo = container.querySelector('video');
+            if (otherVideo) { otherVideo.pause(); otherVideo.currentTime = 0; }
+        }
+    });
+
+    const activeSlide = foldContainer.querySelector('.lobo-vn-slide.active-slide');
+    const musicSrc = activeSlide ? activeSlide.dataset.music : '';
+    const cutsceneSrc = activeSlide ? activeSlide.dataset.cutscene : '';
+
+    if (isCurrentlyOpen) {
+        foldContainer.classList.remove('open');
+        contentDiv.style.maxHeight = '0px';
+        playFoldMusic(null);
+    } else {
+        foldContainer.classList.add('open');
+        contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
+        playFoldMusic(null);
+        if (cutsceneSrc && cutsceneSrc !== 'undefined' && cutsceneSrc !== '') {
+            openFullscreenVideo(cutsceneSrc, () => {
+                playFoldMusic(musicSrc);
+            });
+        } else {
+            playFoldMusic(musicSrc);
+        }
+    }
+    animateIcon(iconSpan, isCurrentlyOpen);
+}
+
+function toggleNormalFold(headerElement, foldContainer) {
     const iconSpan = headerElement.querySelector('.lobo-fold-toggle-icon');
     const contentDiv = foldContainer.querySelector('.lobo-fold-content');
     if (!contentDiv) return;
@@ -301,60 +365,22 @@ window.toggleLoboFold = function(headerElement) {
             if (otherContent) otherContent.style.maxHeight = '0px';
             if (otherIcon) otherIcon.textContent = '+';
             const otherVideo = container.querySelector('video');
-            if (otherVideo) {
-                otherVideo.pause();
-                otherVideo.currentTime = 0;
-            }
+            if (otherVideo) { otherVideo.pause(); otherVideo.currentTime = 0; }
         }
     });
-    const activeSlide = foldContainer.querySelector('.lobo-vn-slide.active-slide');
-    const musicSrc = activeSlide ? activeSlide.dataset.music : foldContainer.dataset.music;
-    const cutsceneSrc = activeSlide ? activeSlide.dataset.cutscene : '';
+    const musicSrc = foldContainer.dataset.music || '';
+    const videoSrc = foldContainer.dataset.video || '';
+    const videoEl = foldContainer.querySelector('video');
     if (isCurrentlyOpen) {
         foldContainer.classList.remove('open');
         contentDiv.style.maxHeight = '0px';
-        const videoEl = foldContainer.querySelector('video');
-        if (videoEl) {
-            videoEl.pause();
-            videoEl.currentTime = 0;
-        }
+        if (videoEl) { videoEl.pause(); videoEl.currentTime = 0; }
         playFoldMusic(null);
     } else {
         foldContainer.classList.add('open');
         contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
-        const transitionEndHandler = () => {
-            if (foldContainer.classList.contains('open')) {
-                contentDiv.style.maxHeight = 'none';
-            }
-            contentDiv.removeEventListener('transitionend', transitionEndHandler);
-        };
-        contentDiv.addEventListener('transitionend', transitionEndHandler);
-        setTimeout(() => {
-            const previewPanel = headerElement.closest('.preview-panel') || window;
-            if (previewPanel !== window) {
-                const panelRect = previewPanel.getBoundingClientRect();
-                const headerRect = headerElement.getBoundingClientRect();
-                previewPanel.scrollTo({
-                    top: previewPanel.scrollTop + (headerRect.top - panelRect.top) - 15,
-                    behavior: 'smooth'
-                });
-            } else {
-                const headerRect = headerElement.getBoundingClientRect();
-                window.scrollTo({
-                    top: window.pageYOffset + headerRect.top - 15,
-                    behavior: 'smooth'
-                });
-            }
-        }, 125);
-        const videoSrc = foldContainer.dataset.video;
-        const videoEl = foldContainer.querySelector('video');
-        if (cutsceneSrc && cutsceneSrc !== 'undefined' && cutsceneSrc !== '') {
-            const dummyVideo = document.createElement('video');
-            dummyVideo.src = cutsceneSrc;
-            openFullscreenVideo(dummyVideo, () => {
-                playFoldMusic(musicSrc);
-            });
-        } else if (videoSrc && videoEl) {
+        playFoldMusic(null);
+        if (videoSrc && videoEl) {
             videoEl.currentTime = 0;
             openFullscreenVideo(videoEl, () => {
                 playFoldMusic(musicSrc);
@@ -363,16 +389,18 @@ window.toggleLoboFold = function(headerElement) {
             playFoldMusic(musicSrc);
         }
     }
-    if (iconSpan) {
-        iconSpan.classList.add('rotate');
-        setTimeout(() => {
-            iconSpan.textContent = isCurrentlyOpen ? '+' : '-';
-        }, 75);
-        setTimeout(() => {
-            iconSpan.classList.remove('rotate');
-        }, 150);
-    }
-};
+    animateIcon(iconSpan, isCurrentlyOpen);
+}
+function animateIcon(iconSpan, isCurrentlyOpen) {
+    if (!iconSpan) return;
+    iconSpan.classList.add('rotate');
+    setTimeout(() => {
+        iconSpan.textContent = isCurrentlyOpen ? '+' : '-';
+    }, 75);
+    setTimeout(() => {
+        iconSpan.classList.remove('rotate');
+    }, 150);
+}
 
 window.openFullscreenVideo = function(videoSource, onVideoEnded) {
     if (document.querySelector('.lobo-video-modal')) return;
@@ -535,13 +563,13 @@ window.nextLoboBlock = function(btnElement) {
     const nextMusic = nextSlide.dataset.music;
     const cutsceneSrc = nextSlide.dataset.cutscene;
     if (cutsceneSrc && cutsceneSrc !== 'undefined' && cutsceneSrc !== '') {
+        playFoldMusic(null); 
         openFullscreenVideo(cutsceneSrc, () => {
-            if (nextMusic !== undefined && nextMusic !== currentMusic) {
-                playFoldMusic(nextMusic || null);
-            }
+            playFoldMusic(nextMusic || null);
         });
-    } else {
-        if (nextMusic !== undefined && nextMusic !== currentMusic) {
+    } 
+    else {
+        if (nextMusic !== currentMusic) {
             playFoldMusic(nextMusic || null);
         }
     }

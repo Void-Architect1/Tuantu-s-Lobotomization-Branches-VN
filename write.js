@@ -374,14 +374,15 @@ window.toggleLoboFold = function(headerElement) {
     }
 };
 
-window.openFullscreenVideo = function(videoEl, onVideoEnded) {
+window.openFullscreenVideo = function(videoSource, onVideoEnded) {
     if (document.querySelector('.lobo-video-modal')) return;
     const modal = document.createElement('div');
     modal.className = 'lobo-video-modal';
     const bigVideo = document.createElement('video');
-    bigVideo.src = videoEl.src;
+    bigVideo.src = (typeof videoSource === 'string') ? videoSource : videoSource.src;
     bigVideo.autoplay = true;
     bigVideo.playsInline = true;
+    bigVideo.loop = false; 
     modal.appendChild(bigVideo);
     document.body.appendChild(modal);
     let isClosed = false;
@@ -394,11 +395,12 @@ window.openFullscreenVideo = function(videoEl, onVideoEnded) {
             modal.remove();
             if (typeof onVideoEnded === 'function') {
                 onVideoEnded();
-                onVideoEnded = null;
             }
         }, 400);  
     };
+
     bigVideo.addEventListener('ended', removeModalFn);
+    
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             bigVideo.pause();
@@ -532,12 +534,15 @@ window.nextLoboBlock = function(btnElement) {
     const currentMusic = currentSlide.dataset.music;
     const nextMusic = nextSlide.dataset.music;
     const cutsceneSrc = nextSlide.dataset.cutscene;
-    if (nextMusic !== undefined && nextMusic !== currentMusic) {
-        playFoldMusic(nextMusic || null);
-    }
     if (cutsceneSrc && cutsceneSrc !== 'undefined' && cutsceneSrc !== '') {
-        const dummyVideo = document.createElement('video');
-        dummyVideo.src = cutsceneSrc;
-        openFullscreenVideo(dummyVideo);
+        openFullscreenVideo(cutsceneSrc, () => {
+            if (nextMusic !== undefined && nextMusic !== currentMusic) {
+                playFoldMusic(nextMusic || null);
+            }
+        });
+    } else {
+        if (nextMusic !== undefined && nextMusic !== currentMusic) {
+            playFoldMusic(nextMusic || null);
+        }
     }
 };

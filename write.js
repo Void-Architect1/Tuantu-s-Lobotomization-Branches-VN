@@ -126,37 +126,31 @@ let foldIndex = 0;
 
 do {
     previousText = parsed;
-    parsed = parsed.replace(/\[fold:\s*([^\]|]+)\]([\s\S]*?)(?:\[block[\s\S]*?\[\/block\])+([\s\S]*?)\[\/fold\]/g, (match, title, beforeBlocks, afterBlocks) => {
+    parsed = parsed.replace(/\[fold:\s*([^\]|]+)\]([\s\S]*?)\[\/fold\]/g, (match, title, innerContent) => {
         foldIndex++;
         const uniqueId = `lobo-fold-${foldIndex}`;
-        const fullContent = beforeBlocks + afterBlocks;
         const blockRegex = /\[block([^\]]*)\]([\s\S]*?)\[\/block\]/g;
         let blocks = [];
         let blockMatch;
-        while ((blockMatch = blockRegex.exec(fullContent)) !== null) {
+        while ((blockMatch = blockRegex.exec(innerContent)) !== null) {
             const attrString = blockMatch[1] || '';
             const bContent = blockMatch[2] || '';
             let bMusic = '';
             let bCut = '';
-            const musicMatch = attrString.match(/music="([^"]*)"/);
+            const musicMatch = attrString.match(/music\s*=\s*"([^"]*)"/i) || attrString.match(/music\s*=\s*'([^']*)'/i);
             if (musicMatch) bMusic = musicMatch[1];
-
-            const cutMatch = attrString.match(/cutscene="([^"]*)"/);
+            const cutMatch = attrString.match(/cutscene\s*=\s*"([^"]*)"/i) || attrString.match(/cutscene\s*=\s*'([^']*)'/i);
             if (cutMatch) bCut = cutMatch[1];
-
             blocks.push({
                 music: bMusic.trim(),
                 cutscene: bCut.trim(),
                 content: bContent.trim()
             });
         }
-
-		const firstBlockMusic = blocks.length > 0 ? blocks[0].music : '';
+        const firstBlockMusic = blocks.length > 0 ? blocks[0].music : '';
         const firstBlockCutscene = blocks.length > 0 ? blocks[0].cutscene : '';
-
         let slidesHtml = '';
         blocks.forEach((blk, idx) => {
-
             slidesHtml += `
                 <div class="lobo-vn-slide ${idx === 0 ? 'active-slide' : ''}" data-index="${idx}" data-music="${blk.music}" data-cutscene="${blk.cutscene}">
                     <div class="lobo-vn-content-box">${blk.content}</div>

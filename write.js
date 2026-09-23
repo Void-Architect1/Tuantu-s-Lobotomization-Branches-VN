@@ -321,11 +321,6 @@ function toggleVnFold(headerElement, foldContainer) {
             if (otherVideo) { otherVideo.pause(); otherVideo.currentTime = 0; }
         }
     });
-
-    const activeSlide = foldContainer.querySelector('.lobo-vn-slide.active-slide');
-    const musicSrc = activeSlide ? activeSlide.dataset.music : '';
-    const cutsceneSrc = activeSlide ? activeSlide.dataset.cutscene : '';
-
     if (isCurrentlyOpen) {
         foldContainer.classList.remove('open');
         contentDiv.style.maxHeight = '0px';
@@ -333,6 +328,9 @@ function toggleVnFold(headerElement, foldContainer) {
     } else {
         foldContainer.classList.add('open');
         contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
+        const activeSlide = foldContainer.querySelector('.lobo-vn-slide.active-slide') || foldContainer.querySelector('.lobo-vn-slide');
+        const musicSrc = activeSlide ? activeSlide.dataset.music : '';
+        const cutsceneSrc = activeSlide ? activeSlide.dataset.cutscene : '';
         if (cutsceneSrc && cutsceneSrc !== 'undefined' && cutsceneSrc !== '') {
             playFoldMusic(null); 
             openFullscreenVideo(cutsceneSrc, () => {

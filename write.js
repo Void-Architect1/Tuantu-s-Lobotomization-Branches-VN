@@ -544,8 +544,10 @@ window.nextLoboBlock = function(btnElement) {
     currentSlide.classList.remove('active-slide');
     nextSlide.classList.add('active-slide');
     const foldContent = container.closest('.lobo-fold-content');
-    if (foldContent && foldContent.style.maxHeight && foldContent.style.maxHeight !== 'none') {
-        foldContent.style.maxHeight = foldContent.scrollHeight + 'px';
+    if (foldContent && foldContent.classList.contains('open') || foldContent.style.maxHeight !== '0px') {
+        foldContent.style.maxHeight = 'none';
+        let trueHeight = foldContent.scrollHeight;
+        foldContent.style.maxHeight = trueHeight + 'px';
     }
     const currentMusic = currentSlide.dataset.music;
     const nextMusic = nextSlide.dataset.music;

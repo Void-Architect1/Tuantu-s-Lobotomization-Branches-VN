@@ -130,34 +130,33 @@ do {
         foldIndex++;
         const uniqueId = `lobo-fold-${foldIndex}`;
         const fullContent = beforeBlocks + afterBlocks;
-
-        const blockRegex = /\[block(?:\s*\|\s*(?:music="([^"]*)"|cutscene="([^"]*)"))*(?:\s*\|\s*(?:music="([^"]*)"|cutscene="([^"]*)"))?\]([\s\S]*?)\[\/block\]/g;
+        const blockRegex = /\[block([^\]]*)\]([\s\S]*?)\[\/block\]/g;
         let blocks = [];
         let blockMatch;
-
         while ((blockMatch = blockRegex.exec(fullContent)) !== null) {
-            const values = blockMatch.slice(1, 5).filter(val => val !== undefined && val !== '');
-            const bMusic = values.find(v => v.includes('http') || v.endsWith('.mp3') || v.endsWith('.wav')) || values[0] || '';
-            const bCut = values.find(v => v.endsWith('.mp4') || v.endsWith('.webm') || v.endsWith('.mov')) || values[1] || '';
-            const bContent = blockMatch[5] || '';
+            const attrString = blockMatch[1] || '';
+            const bContent = blockMatch[2] || '';
+            let bMusic = '';
+            let bCut = '';
+            const musicMatch = attrString.match(/music="([^"]*)"/);
+            if (musicMatch) bMusic = musicMatch[1];
+
+            const cutMatch = attrString.match(/cutscene="([^"]*)"/);
+            if (cutMatch) bCut = cutMatch[1];
 
             blocks.push({
-                music: bMusic.trim().replace(/['"]+/g, ''),
-                cutscene: bCut.trim().replace(/['"]+/g, ''),
+                music: bMusic.trim(),
+                cutscene: bCut.trim(),
                 content: bContent.trim()
             });
         }
 
         let slidesHtml = '';
         blocks.forEach((blk, idx) => {
-            let slideVideoHtml = '';
-            if (blk.cutscene) {
-                slideVideoHtml = `<div class="fold-popup-video" style="margin-top:10px;"><video src="${blk.cutscene}" playsinline onclick="openFullscreenVideo(this)" style="width:100%; border-radius:8px; cursor:pointer;"></video></div>`;
-            }
 
             slidesHtml += `
                 <div class="lobo-vn-slide ${idx === 0 ? 'active-slide' : ''}" data-index="${idx}" data-music="${blk.music}" data-cutscene="${blk.cutscene}">
-                    <div class="lobo-vn-content-box">${blk.content}${slideVideoHtml}</div>
+                    <div class="lobo-vn-content-box">${blk.content}</div>
                     <div class="lobo-vn-footer">
                         <span class="lobo-vn-counter">Trang ${idx + 1} / ${blocks.length}</span>
                         ${idx < blocks.length - 1 ? `<button class="lobo-vn-next-btn" onclick="nextLoboBlock(this)">Tiếp tục ▶</button>` : `<span style="font-size: 0.8rem; color: #ff9441; font-weight: bold;">(Hết chương)</span>`}

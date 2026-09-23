@@ -130,7 +130,7 @@ do {
         foldIndex++;
         const uniqueId = `lobo-fold-${foldIndex}`;
         
-        const blockRegex = /\[block(?:\s*\|\s*(?:music="([^"]*)"|cutscene="([^"]*)"))*(?:\s*\|\s*(?:music="([^"]*)"|cutscene="([^"]*)"))?\]([\s\S]*?)\[\/block\]/g;
+        const blockRegex = /\[block(?:\s*\Vert{}\s*(?:music="([^"]*)"\vert{}cutscene="([^"]*)"))*(?:\s*\Vert{}\s*(?:music="([^"]*)"\vert{}cutscene="([^"]*)"))?\]([\s\S]*?)\[\/block\]/g;
         let blocks = [];
         let blockMatch;
 
@@ -156,7 +156,13 @@ do {
                 }
 
                 slidesHtml += `
-                    <div class="lobo-vn-slide ${idx === 0 ? 'active-slide' : ''}" data-index="${idx}" data-music="${blk.music}" data-cutscene="${blk.cutscene}"><div class="lobo-vn-content-box">${blk.content}${slideVideoHtml}</div><div class="lobo-vn-footer"><span class="lobo-vn-counter">Trang ${idx + 1} / ${blocks.length}</span>${idx < blocks.length - 1 ? `<button class="lobo-vn-next-btn" onclick="nextLoboBlock(this)">Tiếp tục ▶</button>` : `<span style="font-size: 0.8rem; color: #ff9441; font-weight: bold;">(Hết chương)</span>`}</div></div>`;
+                    <div class="lobo-vn-slide ${idx === 0 ? 'active-slide' : ''}" data-index="${idx}" data-music="${blk.music}" data-cutscene="${blk.cutscene}">
+                        <div class="lobo-vn-content-box">${blk.content}${slideVideoHtml}</div>
+                        <div class="lobo-vn-footer">
+                            <span class="lobo-vn-counter">Trang ${idx + 1} / ${blocks.length}</span>
+                            ${idx < blocks.length - 1 ? `<button class="lobo-vn-next-btn" onclick="nextLoboBlock(this)">Tiếp tục ▶</button>` : `<span style="font-size: 0.8rem; color: #ff9441; font-weight: bold;">(Hết chương)</span>`}
+                        </div>
+                    </div>`;
             });
 
             return `<div class="lobo-fold-container" id="${uniqueId}"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner"><div class="lobo-vn-block-container">${slidesHtml}</div></div></div></div>`;
@@ -283,13 +289,10 @@ window.addEventListener("DOMContentLoaded", function() {
 window.toggleLoboFold = function(headerElement) {
     const foldContainer = headerElement.closest('.lobo-fold-container');
     if (!foldContainer) return;
-
     const iconSpan = headerElement.querySelector('.lobo-fold-toggle-icon');
     const contentDiv = foldContainer.querySelector('.lobo-fold-content');
     if (!contentDiv) return;
-
     const isCurrentlyOpen = foldContainer.classList.contains('open');
-    
     document.querySelectorAll('.lobo-fold-container.open').forEach(container => {
         if (container !== foldContainer) {
             container.classList.remove('open');
@@ -304,25 +307,21 @@ window.toggleLoboFold = function(headerElement) {
             }
         }
     });
-
     const activeSlide = foldContainer.querySelector('.lobo-vn-slide.active-slide');
     const musicSrc = activeSlide ? activeSlide.dataset.music : foldContainer.dataset.music;
-
+    const cutsceneSrc = activeSlide ? activeSlide.dataset.cutscene : '';
     if (isCurrentlyOpen) {
         foldContainer.classList.remove('open');
         contentDiv.style.maxHeight = '0px';
-        
         const videoEl = foldContainer.querySelector('video');
         if (videoEl) {
             videoEl.pause();
             videoEl.currentTime = 0;
         }
-
         playFoldMusic(null);
     } else {
         foldContainer.classList.add('open');
         contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
-
         const transitionEndHandler = () => {
             if (foldContainer.classList.contains('open')) {
                 contentDiv.style.maxHeight = 'none';
@@ -330,7 +329,6 @@ window.toggleLoboFold = function(headerElement) {
             contentDiv.removeEventListener('transitionend', transitionEndHandler);
         };
         contentDiv.addEventListener('transitionend', transitionEndHandler);
-
         setTimeout(() => {
             const previewPanel = headerElement.closest('.preview-panel') || window;
             if (previewPanel !== window) {
@@ -348,11 +346,15 @@ window.toggleLoboFold = function(headerElement) {
                 });
             }
         }, 125);
-
         const videoSrc = foldContainer.dataset.video;
         const videoEl = foldContainer.querySelector('video');
-
-        if (videoSrc && videoEl) {
+        if (cutsceneSrc && cutsceneSrc !== 'undefined' && cutsceneSrc !== '') {
+            const dummyVideo = document.createElement('video');
+            dummyVideo.src = cutsceneSrc;
+            openFullscreenVideo(dummyVideo, () => {
+                playFoldMusic(musicSrc);
+            });
+        } else if (videoSrc && videoEl) {
             videoEl.currentTime = 0;
             openFullscreenVideo(videoEl, () => {
                 playFoldMusic(musicSrc);
@@ -361,7 +363,6 @@ window.toggleLoboFold = function(headerElement) {
             playFoldMusic(musicSrc);
         }
     }
-
     if (iconSpan) {
         iconSpan.classList.add('rotate');
         setTimeout(() => {
@@ -375,18 +376,14 @@ window.toggleLoboFold = function(headerElement) {
 
 window.openFullscreenVideo = function(videoEl, onVideoEnded) {
     if (document.querySelector('.lobo-video-modal')) return;
-
     const modal = document.createElement('div');
     modal.className = 'lobo-video-modal';
-
     const bigVideo = document.createElement('video');
     bigVideo.src = videoEl.src;
     bigVideo.autoplay = true;
     bigVideo.playsInline = true;
-
     modal.appendChild(bigVideo);
     document.body.appendChild(modal);
-
     let isClosed = false;
     const removeModalFn = () => {
         if (isClosed) return;
@@ -401,9 +398,7 @@ window.openFullscreenVideo = function(videoEl, onVideoEnded) {
             }
         }, 400);  
     };
-
     bigVideo.addEventListener('ended', removeModalFn);
-    
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             bigVideo.pause();
@@ -480,25 +475,19 @@ document.addEventListener("click", event => {
 				else { loadBox.classList.add("revealed"); loadBox.classList.remove("active"); loadBox.dataset.animating = "false"; }
 				return;
 			}
-			
 			output[index] = displayText[index];
-			
 			for (let position = index + 1; position < displayText.length; position++) {
 				output[position] = chars[Math.floor(Math.random() * chars.length)];
 			}
-			
 			loadBox.textContent = output.join(""); 
 			index++;
 		}, 50);
 	};
-	
 	const playNextLine = () => { if (lines[lineIndex] !== undefined) revealLine(lines[lineIndex]); };
-	
 	const firstLine = lines[0];
 	const randomOutput = () => { 
 		loadBox.textContent = firstLine.split("").map(() => chars[Math.floor(Math.random() * chars.length)]).join(""); 
 	};
-	
 	const randomInterval = setInterval(randomOutput, 50);
 	const messageOne = new Audio(rollAudioFiles[0]);
 	messageOne.addEventListener("ended", () => { clearInterval(randomInterval); revealLine(firstLine); }, { once: true });
@@ -511,16 +500,13 @@ function playFoldMusic(musicSrc) {
         if (currentFoldAudio) { currentFoldAudio.pause(); currentFoldAudio = null; currentMusicSrc = ""; }
         return;
     }
-
     if (currentFoldAudio && currentMusicSrc === musicSrc) {
         return; 
     }
-
     if (currentFoldAudio) {
         currentFoldAudio.pause();
         currentFoldAudio = null;
     }
-
     currentMusicSrc = musicSrc;
     currentFoldAudio = new Audio(musicSrc);
     currentFoldAudio.loop = true;
@@ -549,17 +535,9 @@ window.nextLoboBlock = function(btnElement) {
     if (nextMusic !== undefined && nextMusic !== currentMusic) {
         playFoldMusic(nextMusic || null);
     }
-    if (cutsceneSrc) {
+    if (cutsceneSrc && cutsceneSrc !== 'undefined' && cutsceneSrc !== '') {
         const dummyVideo = document.createElement('video');
         dummyVideo.src = cutsceneSrc;
         openFullscreenVideo(dummyVideo);
     }
-};
-
-window.playBlockCutscene = function(buttonEl) {
-    const cutsceneSrc = buttonEl.dataset.cutscene;
-    if (!cutsceneSrc) return;
-    const dummyVideo = document.createElement('video');
-    dummyVideo.src = cutsceneSrc;
-    openFullscreenVideo(dummyVideo);
 };

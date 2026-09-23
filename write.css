@@ -415,7 +415,7 @@ button:hover { background: #c9302c; }
     padding: 15px;
     border: 2px dashed rgba(242, 242, 242, 0.6);
     margin-top: 5px;
-    overflow-y: visible;
+    overflow-y: hidden;
 }
 
 

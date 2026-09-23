@@ -151,6 +151,9 @@ do {
             });
         }
 
+		const firstBlockMusic = blocks.length > 0 ? blocks[0].music : '';
+        const firstBlockCutscene = blocks.length > 0 ? blocks[0].cutscene : '';
+
         let slidesHtml = '';
         blocks.forEach((blk, idx) => {
 
@@ -164,7 +167,7 @@ do {
                 </div>`;
         });
 
-        return `<div class="lobo-fold-container lobo-vn-type" id="${uniqueId}"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner"><div class="lobo-vn-block-container">${slidesHtml}</div></div></div></div>`;
+        return `<div class="lobo-fold-container lobo-vn-type" id="${uniqueId}" data-music="${firstBlockMusic}" data-cutscene="${firstBlockCutscene}"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner"><div class="lobo-vn-block-container">${slidesHtml}</div></div></div></div>`;
     });
 } while (parsed !== previousText);
 

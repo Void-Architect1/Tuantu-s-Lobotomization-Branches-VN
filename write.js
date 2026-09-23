@@ -326,7 +326,7 @@ function toggleVnFold(headerElement, foldContainer) {
         playFoldMusic(null);
     } else {
         foldContainer.classList.add('open');
-        contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
+        contentDiv.style.maxHeight = (contentDiv.scrollHeight + 40) + 'px';
         if (cutsceneSrc && cutsceneSrc !== 'undefined' && cutsceneSrc !== '') {
             playFoldMusic(null); 
             openFullscreenVideo(cutsceneSrc, () => {
@@ -365,7 +365,7 @@ function toggleNormalFold(headerElement, foldContainer) {
         playFoldMusic(null);
     } else {
         foldContainer.classList.add('open');
-        contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
+        contentDiv.style.maxHeight = (contentDiv.scrollHeight + 40) + 'px';
         playFoldMusic(null);
         if (videoSrc && videoEl) {
             videoEl.currentTime = 0;
@@ -547,7 +547,7 @@ window.nextLoboBlock = function(btnElement) {
     if (foldContent && foldContent.classList.contains('open') || foldContent.style.maxHeight !== '0px') {
         foldContent.style.maxHeight = 'none';
         let trueHeight = foldContent.scrollHeight;
-        foldContent.style.maxHeight = (trueHeight + 30) + 'px';
+        foldContent.style.maxHeight = (trueHeight + 40) + 'px';
     }
     const currentMusic = currentSlide.dataset.music;
     const nextMusic = nextSlide.dataset.music;

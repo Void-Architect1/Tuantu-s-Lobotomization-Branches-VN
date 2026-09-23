@@ -310,9 +310,7 @@ function toggleVnFold(headerElement, foldContainer) {
     const iconSpan = headerElement.querySelector('.lobo-fold-toggle-icon');
     const contentDiv = foldContainer.querySelector('.lobo-fold-content');
     if (!contentDiv) return;
-
     const isCurrentlyOpen = foldContainer.classList.contains('open');
-
     document.querySelectorAll('.lobo-fold-container.open').forEach(container => {
         if (container !== foldContainer) {
             container.classList.remove('open');
@@ -336,8 +334,8 @@ function toggleVnFold(headerElement, foldContainer) {
     } else {
         foldContainer.classList.add('open');
         contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
-        playFoldMusic(null);
         if (cutsceneSrc && cutsceneSrc !== 'undefined' && cutsceneSrc !== '') {
+            playFoldMusic(null); 
             openFullscreenVideo(cutsceneSrc, () => {
                 playFoldMusic(musicSrc);
             });
@@ -547,6 +545,7 @@ window.nextLoboBlock = function(btnElement) {
     const slides = Array.from(container.querySelectorAll('.lobo-vn-slide'));
     const currentIndex = slides.findIndex(s => s.classList.contains('active-slide'));
     if (currentIndex === -1 || currentIndex >= slides.length - 1) return;
+    
     const currentSlide = slides[currentIndex];
     const nextSlide = slides[currentIndex + 1];
     currentSlide.classList.remove('active-slide');
@@ -559,12 +558,11 @@ window.nextLoboBlock = function(btnElement) {
     const nextMusic = nextSlide.dataset.music;
     const cutsceneSrc = nextSlide.dataset.cutscene;
     if (cutsceneSrc && cutsceneSrc !== 'undefined' && cutsceneSrc !== '') {
-        playFoldMusic(null); 
+        playFoldMusic(null);
         openFullscreenVideo(cutsceneSrc, () => {
             playFoldMusic(nextMusic || null);
         });
-    } 
-    else {
+    } else {
         if (nextMusic !== currentMusic) {
             playFoldMusic(nextMusic || null);
         }

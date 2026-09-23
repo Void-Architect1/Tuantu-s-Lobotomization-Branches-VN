@@ -156,13 +156,7 @@ do {
                 }
 
                 slidesHtml += `
-                    <div class="lobo-vn-slide ${idx === 0 ? 'active-slide' : ''}" data-index="${idx}" data-music="${blk.music}" data-cutscene="${blk.cutscene}">
-                        <div class="lobo-vn-content-box">${blk.content}${slideVideoHtml}</div>
-                        <div class="lobo-vn-footer">
-                            <span class="lobo-vn-counter">Trang ${idx + 1} / ${blocks.length}</span>
-                            ${idx < blocks.length - 1 ? `<button class="lobo-vn-next-btn" onclick="nextLoboBlock(this)">Tiếp tục ▶</button>` : `<span style="font-size: 0.8rem; color: #ff9441; font-weight: bold;">(Hết chương)</span>`}
-                        </div>
-                    </div>`;
+                    <div class="lobo-vn-slide ${idx === 0 ? 'active-slide' : ''}" data-index="${idx}" data-music="${blk.music}" data-cutscene="${blk.cutscene}"><div class="lobo-vn-content-box">${blk.content}${slideVideoHtml}</div><div class="lobo-vn-footer"><span class="lobo-vn-counter">Trang ${idx + 1} / ${blocks.length}</span>${idx < blocks.length - 1 ? `<button class="lobo-vn-next-btn" onclick="nextLoboBlock(this)">Tiếp tục ▶</button>` : `<span style="font-size: 0.8rem; color: #ff9441; font-weight: bold;">(Hết chương)</span>`}</div></div>`;
             });
 
             return `<div class="lobo-fold-container" id="${uniqueId}"><div class="lobo-fold-header" onclick="toggleLoboFold(this)"><span class="lobo-fold-toggle-icon">+</span><span class="lobo-fold-title">${title.trim()}</span></div><div class="lobo-fold-content"><div class="lobo-fold-inner"><div class="lobo-vn-block-container">${slidesHtml}</div></div></div></div>`;

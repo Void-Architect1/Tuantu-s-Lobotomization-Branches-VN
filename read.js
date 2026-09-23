@@ -317,39 +317,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.toggleLoboFold = function(headerElement) {
     const foldContainer = headerElement.closest('.lobo-fold-container');
-    const iconSpan = headerElement.querySelector('.lobo-fold-toggle-icon');
-    const contentDiv = foldContainer.querySelector(':scope > .lobo-fold-content');
-    const isOpen = foldContainer.classList.toggle('open');
-    
-    const videoEl = foldContainer.querySelector('video');
-
-    if (isOpen) {
-        contentDiv.style.maxHeight = contentDiv.scrollHeight + 'px';
-        
-        if (videoEl) {
-            videoEl.currentTime = 0;
-            openFullscreenVideo(videoEl);
-        }
-    } else {
-        contentDiv.style.maxHeight = '0px';
-        
-        if (videoEl) {
-            videoEl.pause();
-            videoEl.currentTime = 0;
-        }
-    }
-
-    iconSpan.classList.add('rotate');
-    setTimeout(() => {
-        iconSpan.textContent = isOpen ? '-' : '+';
-    }, 75);
-    setTimeout(() => {
-        iconSpan.classList.remove('rotate');
-    }, 150);
-};
-
-window.toggleLoboFold = function(headerElement) {
-    const foldContainer = headerElement.closest('.lobo-fold-container');
     if (!foldContainer) return;
     const isVNFold = foldContainer.classList.contains('lobo-vn-type');
     if (isVNFold) {

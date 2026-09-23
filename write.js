@@ -124,18 +124,14 @@ function parseCustomEmojis(text) {
 let previousText;
 let foldIndex = 0;
 
-// ==========================================
-// BƯỚC 1: XỬ LÝ RIÊNG FOLD CHỨA BLOCK (VISUAL NOVEL)
-// ==========================================
 do {
     previousText = parsed;
-    // Regex này CHỈ BẮT những thẻ [fold] nào BẮT BUỘC phải chứa ít nhất một thẻ [block] ở bên trong
     parsed = parsed.replace(/\[fold:\s*([^\]|]+)\]([\s\S]*?)(?:\[block[\s\S]*?\[\/block\])+([\s\S]*?)\[\/fold\]/g, (match, title, beforeBlocks, afterBlocks) => {
         foldIndex++;
         const uniqueId = `lobo-fold-${foldIndex}`;
-        const fullContent = beforeBlocks + afterBlocks; // Gom lại nội dung chứa các block
+        const fullContent = beforeBlocks + afterBlocks;
 
-        const blockRegex = /\[block(?:\s*\Vert{}\s*(?:music="([^"]*)"\vert{}cutscene="([^"]*)"))*(?:\s*\Vert{}\s*(?:music="([^"]*)"\vert{}cutscene="([^"]*)"))?\]([\s\S]*?)\[\/block\]/g;
+        const blockRegex = /\[block(?:\s*\|\s*(?:music="([^"]*)"|cutscene="([^"]*)"))*(?:\s*\|\s*(?:music="([^"]*)"|cutscene="([^"]*)"))?\]([\s\S]*?)\[\/block\]/g;
         let blocks = [];
         let blockMatch;
 

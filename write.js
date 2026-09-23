@@ -547,7 +547,7 @@ window.nextLoboBlock = function(btnElement) {
     if (foldContent && foldContent.classList.contains('open') || foldContent.style.maxHeight !== '0px') {
         foldContent.style.maxHeight = 'none';
         let trueHeight = foldContent.scrollHeight;
-        foldContent.style.maxHeight = trueHeight + 'px';
+        foldContent.style.maxHeight = (trueHeight + 30) + 'px';
     }
     const currentMusic = currentSlide.dataset.music;
     const nextMusic = nextSlide.dataset.music;

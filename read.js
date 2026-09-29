@@ -114,9 +114,14 @@ do {
             slidesHtml += `
                 <div class="lobo-vn-slide ${idx === 0 ? 'active-slide' : ''}" data-index="${idx}" data-music="${blk.music}" data-cutscene="${blk.cutscene}">
                     <div class="lobo-vn-content-box">${blk.content}</div>
-                    <div class="lobo-vn-footer">
+                    <div class="lobo-vn-footer" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            ${idx > 0 ? `<button class="lobo-vn-prev-btn" onclick="prevLoboBlock(this)">◀ Quay lại</button>` : ''}
+                        </div>
                         <span class="lobo-vn-counter">Trang ${idx + 1} / ${blocks.length}</span>
-                        ${idx < blocks.length - 1 ? `<button class="lobo-vn-next-btn" onclick="nextLoboBlock(this)">Tiếp tục ▶</button>` : `<span style="font-size: 0.8rem; color: #ff9441; font-weight: bold;">(Hết chương)</span>`}
+                        <div>
+                            ${idx < blocks.length - 1 ? `<button class="lobo-vn-next-btn" onclick="nextLoboBlock(this)">Tiếp tục ▶</button>` : `<span style="font-size: 0.8rem; color: #ff9441; font-weight: bold;">(Hết chương)</span>`}
+                        </div>
                     </div>
                 </div>`;
         });
@@ -499,5 +504,28 @@ window.nextLoboBlock = function(btnElement) {
         if (nextMusic !== currentMusic) {
             playFoldMusic(nextMusic || null);
         }
+    }
+};
+
+window.prevLoboBlock = function(btnElement) {
+    const container = btnElement.closest('.lobo-vn-block-container');
+    if (!container) return;
+    const slides = Array.from(container.querySelectorAll('.lobo-vn-slide'));
+    const currentIndex = slides.findIndex(s => s.classList.contains('active-slide'));
+    if (currentIndex <= 0) return;
+    const currentSlide = slides[currentIndex];
+    const prevSlide = slides[currentIndex - 1];
+    currentSlide.classList.remove('active-slide');
+    prevSlide.classList.add('active-slide');
+    const foldContent = container.closest('.lobo-fold-content');
+    if (foldContent && (foldContent.classList.contains('open') || foldContent.style.maxHeight !== '0px')) {
+        foldContent.style.maxHeight = 'none';
+        let trueHeight = foldContent.scrollHeight;
+        foldContent.style.maxHeight = (trueHeight + 40) + 'px';
+    }
+    const currentMusic = currentSlide.dataset.music;
+    const prevMusic = prevSlide.dataset.music;
+    if (prevMusic !== currentMusic) {
+        playFoldMusic(prevMusic || null);
     }
 };
